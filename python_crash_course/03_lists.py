@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 # import this
+import random
 
 languages = ['python', 'c++', 'java', 'c#', 'css']
 print(languages)
@@ -47,9 +48,40 @@ languages.reverse()
 print(f"Reverse list: {languages}")
 
 # Length list
-print(f"{len(languages)} items are of the list")
+print(f"{len(languages)} items are of the list\n")
 
+# --- loop for ---
+i = 1
+for language in languages:
+    print(f"{i}. {language}")
+    i += 1
 
+print("\n")
+for i in range(1, 3):
+    print(i)
 
+# --- create list by range ---
+print("\n")
+number = list(range(1, 11))
+print(number)
+
+rand_number = []
+square = []
+for i in range(1, 11):
+    rand_number.append((random.randrange(1, 11)))
+    square.append(i ** 2)
+print(rand_number)
+print(square)
+
+# Statistics
+print(f"Max: {max(rand_number)}")
+print(f"Min: {min(rand_number)}")
+print(f"Sum: {sum(rand_number)}")
+
+# List Comprehensions
+comp_rand_number = [random.randrange(1, 11) for i in range(10)]
+comp_square = [i ** 2 for i in range(1, 11)]
+print(comp_rand_number)
+print(comp_square)
 
 
