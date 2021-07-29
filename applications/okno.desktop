@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=okno_nook
+Comment=okienko
+Exec=/home/arek/magazyn/projects/python/01_hello/okno.py
+Terminal=False
+Version=1.0
+Categories=Favorites
+Icon=/home/arek/magazyn/projects/python/01_hello/nook.png

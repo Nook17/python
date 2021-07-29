@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=data_nook
+Comment=Lists & Dictionaries
+Exec=/home/arek/magazyn/projects/python/01_hello/data.py
+Terminal=True
+Version=1.0
+Categories=Favorites
+Icon=/home/arek/magazyn/projects/python/01_hello/nook.png
