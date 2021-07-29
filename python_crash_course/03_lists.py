@@ -30,7 +30,8 @@ languages.remove('c++')
 print(languages)
 
 # --- Organizing the list ---
-languages = ['python', 'c++', 'java', 'c#', 'css', 'go', 'curl', 'pascal', 'fortran', 'perl', 'php']
+languages = ['python', 'c++', 'java', 'c#', 'css', 'go', 'curl', 'pascal', 
+             'fortran', 'perl', 'php']
 
 # sort - permanently
 languages.sort()
@@ -39,7 +40,8 @@ languages.sort(reverse=True)
 print(languages)
 
 # sort temporarily
-languages = ['python', 'c++', 'java', 'c#', 'css', 'go', 'curl', 'pascal', 'fortran', 'perl', 'php']
+languages = ['python', 'c++', 'java', 'c#', 'css', 'go', 'curl', 'pascal', 
+             'fortran', 'perl', 'php']
 print(f"Sorted list: {sorted(languages)}")
 print(f"Original list: {languages}")
 
@@ -84,4 +86,21 @@ comp_square = [i ** 2 for i in range(1, 11)]
 print(comp_rand_number)
 print(comp_square)
 
+# --- Part of List ---
+
+# slice
+languages = ['python', 'c++', 'java', 'c#', 'css', 'go', 'curl', 'pascal',
+             'fortran', 'perl', 'php']
+print(languages[0:3])       # when you start from the beginning you can write 
+                            # [:3], or end of list [5:]
+print(languages[-3:])       # last three items
+
+# coping list
+languages_copy = languages[:]
+print(languages_copy)
+
+# --- Tuples ---
+print("\n TUPLES")
+nook = (20, 17, 256)
+print(nook[1])
 
