@@ -19,10 +19,18 @@ class Car:
     def write_odometer(self, value):
         self.odometer = value
 
+class Engine:
+    def __init__(self, type='V8'):
+        self.type = type
+
+    def engine_describe(self):
+        print(F"Type engine is: {self.type}")
+
 class ElectricCar(Car):
     def __init__(self, brand, model, year=0):
         super().__init__(brand, model, year)
         self.battery_size = 17
+        self.engine = Engine(type)
 
     def describe_battery(self):
         print(f"This car has a {self.battery_size}-kWh battery_size")
@@ -39,4 +47,5 @@ astra.read_odometer()
 tesla = ElectricCar('tesla', 'model S', 2020)
 tesla.vmax()
 tesla.describe_battery()
-
+tesla.engine.type = 'R4'
+tesla.engine.engine_describe()
