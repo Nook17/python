@@ -12,5 +12,11 @@
 		<li class="list-group-item">No added any entires</li>
 	 {% endfor %}
 	</ul>
+	<div class='text-center'>
+	  <form>
+		<button type="submit" formaction="{% url 'learning_logs:new_entry' topic.id %}" 
+		  class="btn btn-outline-dark btn-sm">Add entry</button>
+  	  </form>
+	</div>
   {% include "learning_logs/footer.html" %}
 {% endblock content %}

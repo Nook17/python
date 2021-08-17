@@ -1,6 +1,7 @@
 {% extends "learning_logs/base.html" %}
 
 {% block content %}
+<div class='container'>  
   <p class="text-center">Topics List</p>
 	<ul class="list-group list-group-flush">
 	  {% for topic in topics %}
@@ -13,5 +14,12 @@
 		<li class="list-group-item">No added any topic</li>
 	 {% endfor %}
 	</ul>
+	<div class='text-center'>
+	  <form>
+		<button type="submit" formaction="{% url 'learning_logs:new_topic' %}" 
+		  class="btn btn-outline-dark btn-sm">Add topic</button>
+  	  </form>
+	</div>
+</div>
   {% include "learning_logs/footer.html" %}
 {% endblock content %}

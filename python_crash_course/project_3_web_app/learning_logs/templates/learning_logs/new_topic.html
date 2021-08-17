@@ -1,0 +1,21 @@
+{% extends "learning_logs/base.html" %}
+
+{% load bootstrap %}
+
+{% block content %}
+<p class="text-center">New topic</p>
+<div class="container">
+	<form action="{% url 'learning_logs:new_topic' %}" method="post">
+	  <div class="mb-3">
+		<label for="InputTopic" class="form-label">Topic</label>
+		{% csrf_token %}
+		{{ form|bootstrap }}
+		<div id="topicHelp" class="form-text">Enter you new topic</div>
+	  </div>
+	  <button type="submit" class="btn btn-primary">Send</button>
+	</form>
+</div>
+
+
+  {% include "learning_logs/footer.html" %}
+{% endblock content %}
