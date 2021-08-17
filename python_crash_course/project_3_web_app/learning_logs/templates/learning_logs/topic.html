@@ -1,0 +1,16 @@
+{% extends "learning_logs/base.html" %}
+
+{% block content %}
+<p class="text-center">Topic: {{ topic  }}</p>
+	<ul class="list-group">
+	  {% for entry in entries %}
+	    <li class="list-group-item">
+			<p>{{ entry.date_added|date:'d M Y H:i' }}</p>
+			<p>{{ entry.text|linebreaks }}</p>
+		</li>
+      {% empty %}
+		<li class="list-group-item">No added any entires</li>
+	 {% endfor %}
+	</ul>
+  {% include "learning_logs/footer.html" %}
+{% endblock content %}

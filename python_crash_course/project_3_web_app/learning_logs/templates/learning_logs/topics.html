@@ -1,0 +1,17 @@
+{% extends "learning_logs/base.html" %}
+
+{% block content %}
+  <p class="text-center">Topics List</p>
+	<ul class="list-group list-group-flush">
+	  {% for topic in topics %}
+	    <li class="list-group-item">
+		  <a href="{% url 'learning_logs:topic' topic.id %}">
+			{{ topic  }}
+		  </a>
+		</li>
+      {% empty %}
+		<li class="list-group-item">No added any topic</li>
+	 {% endfor %}
+	</ul>
+  {% include "learning_logs/footer.html" %}
+{% endblock content %}
