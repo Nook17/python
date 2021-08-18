@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Topic
+from .models import Topic, Entry
 from .forms import TopicForm, EntryForm
 
 # Create your views here.
@@ -40,4 +40,31 @@ def new_entry(request, topic_id):
             new_entry.save()
             return redirect('learning_logs:topic', topic_id=topic_id)
     context = {'topic': topic, 'form': form}
-    return render(request, 'learning_logs/new_entry')
+    return render(request, 'learning_logs/new_entry.html', context)
+
+def update_entry(request, entry_id):
+    entry = Entry.objects.get(id=entry_id)
+    topic = entry.topic
+    if request.method != 'POST':    # if 'GET'
+        form = EntryForm(instance=entry)
+    else:
+        form = EntryForm(instance=entry, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('learning_logs:topic', topic_id=topic.id)
+
+    context = {'entry': entry, 'topic': topic, 'form': form}
+    return render(request, 'learning_logs/update_entry.html', context)
+
+def delete_entry(request, entry_id):
+    try:
+        entry = Entry.objects.get(id=entry_id)
+        topic = Topic.objects.get(id=entry.topic.id)
+        entries = topic.entry_set.order_by('-date_added')
+    except Entry.DoesNotExist:
+        return redirect('learning_logs:index')
+    entry.delete()
+
+    context = {'topic': topic, 'entries': entries}
+    return render(request, 'learning_logs/topic.html', context)
+

@@ -3,6 +3,19 @@
 {% block content %}
   <p class="text-center">Learning Log helps you keep track of your learning, for any topic you're
 learning about.</p>
+
+<div class='text-center'>
+{% if user.is_authenticated %}
+  Hello {{ user.username }}
+  <p><small><a href="{% url 'users:logout' %}">Logout</a></small></p>
+{% else %}
+  <form>
+	<button type="submit" formaction="{% url 'users:login' %}" 
+	  class="btn btn-outline-success btn-sm">Login</button>
+  </form>
+{% endif %}
+</div>
+
   {% include "learning_logs/footer.html" %}
 {% endblock content %}
 

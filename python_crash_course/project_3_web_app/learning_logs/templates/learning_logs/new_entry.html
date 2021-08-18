@@ -7,7 +7,7 @@
 <div class="container">
 	<form action="{% url 'learning_logs:new_entry' topic.id %}" method="post">
 	  <div class="mb-3">
-		<label for="InputTopic" class="form-label">Topic</label>
+		<label for="InputTopic" class="form-label">Entry</label>
 		{% csrf_token %}
 		{{ form.as_p }}
 		<div id="topicHelp" class="form-text">Enter you new entry</div>

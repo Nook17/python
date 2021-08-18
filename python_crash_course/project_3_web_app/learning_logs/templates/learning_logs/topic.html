@@ -5,7 +5,12 @@
 	<ul class="list-group">
 	  {% for entry in entries %}
 	    <li class="list-group-item">
-			<p>{{ entry.date_added|date:'d M Y H:i' }}</p>
+			<p>{{ entry.date_added|date:'d M Y H:i' }} 
+			  <a href="{% url 'learning_logs:update_entry' entry.id %}">
+				  <i class="bi bi-pen text-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"></i></a>
+			  <a href="{% url 'learning_logs:delete_entry' entry.id %}">
+				  <i class="bi bi-trash text-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"></i></a>
+			</p>
 			<p>{{ entry.text|linebreaks }}</p>
 		</li>
       {% empty %}
