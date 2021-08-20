@@ -1,22 +1,13 @@
 {% extends "learning_logs/base.html" %}
 
 {% block content %}
-  <p class="text-center">Learning Log helps you keep track of your learning, for any topic you're
-learning about.</p>
+	<main class="container">
+	  <div class="bg-light p-5 rounded">
+		<h1>Track your learning</h1>
+		<p class="lead">Make your own Learning Log, and keep a list of the topics you're learning about. Whenever you learn something new about a topic, make an entry summarizing what you've learned.</p>
+	  </div>
+	</main>
 
-<div class='text-center'>
-{% if user.is_authenticated %}
-  Hello {{ user.username }}
-  <p><small><a href="{% url 'users:logout' %}">Logout</a></small></p>
-{% else %}
-  <form>
-	<button type="submit" formaction="{% url 'users:login' %}" 
-	  class="btn btn-outline-success btn-sm">Login</button>
-	<button type="submit" formaction="{% url 'users:register' %}" 
-	  class="btn btn-outline-success btn-sm">Register</button>
-  </form>
-{% endif %}
-</div>
 
   {% include "learning_logs/footer.html" %}
 {% endblock content %}
