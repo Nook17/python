@@ -1,0 +1,14 @@
+{% extends "cfd/base.html" %}
+
+{% block content %}
+	<main class="container flex-shrink-0">
+	  <div class="p-5 rounded">
+		<p class="lead">Statement</p>
+		  <p>Day: <b>{{ format_day }}</b></p>
+		  {{ day_st|safe }}
+		<p>Sum: <b>{{ short_day_sum }}</b> zł</p>
+	  </div>
+	</main>
+  {% include "cfd/footer.html" %}
+{% endblock content %}
+

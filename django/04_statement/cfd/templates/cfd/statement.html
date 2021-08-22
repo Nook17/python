@@ -1,0 +1,17 @@
+{% extends "cfd/base.html" %}
+
+{% block content %}
+	<main class="container flex-shrink-0">
+	  <div class="p-5 rounded">
+		<p class="lead">Statement</p>
+		  <p>Sum: <b>{{ all_sum|safe }}</b> zł</p>
+		    <ul>  	
+		      {% for url_statement in url_statements %}
+			    <li><a href="{% url 'cfd:statements' url_statement %}">{{ url_statement }}</a></li>
+			  {% endfor %}
+		    </ul>	 
+	  </div>
+	</main>
+  {% include "cfd/footer.html" %}
+{% endblock content %}
+

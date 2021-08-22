@@ -76,7 +76,7 @@ filename = 'txt_files/numbers.json'
 with open(filename, 'w') as f:
     json.dump(numbers, f)
 with open(filename, 'r') as f:
-    numb = json.load(f)
+    numb = json.loads(f)
 print(numb)
 
 

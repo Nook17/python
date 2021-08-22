@@ -1,0 +1,56 @@
+{
+  "Sheet1": [
+    {
+      "Ticket": 107847291,
+      "Open Time": "2021.06.01 09:02:16",
+      "Type": "buy",
+      "Size": 0.3,
+      "Item": "us.100..",
+      "Price": 13708.22,
+      "S / L": 0,
+      "T / P": 13708.22,
+      "Close Time": "2021.06.01 09:03:35",
+      "Commission": -9.6,
+      "Profit": 65.82
+    },
+    {
+      "Ticket": 107848656,
+      "Open Time": "2021.06.01 09:53:04",
+      "Type": "buy",
+      "Size": 3,
+      "Item": "us.100..",
+      "Price": 13714.24,
+      "S / L": 0,
+      "T / P": 13716.32,
+      "Close Time": "2021.06.01 09:59:50",
+      "Commission": -96,
+      "Profit": 826.33
+    },
+    {
+      "Ticket": 107849048,
+      "Open Time": "2021.06.01 10:14:31",
+      "Type": "buy",
+      "Size": 3,
+      "Item": "us.100..",
+      "Price": 13724.92,
+      "S / L": 0,
+      "T / P": 13724.92,
+      "Close Time": "2021.06.01 10:54:58",
+      "Commission": -96,
+      "Profit": 2499.67
+    },
+    {
+      "Ticket": 107860074,
+      "Open Time": "2021.06.02 12:18:30",
+      "Type": "buy",
+      "Size": 1,
+      "Item": "us.100..",
+      "Price": 13638.03,
+      "S / L": 0,
+      "T / P": 13639.6,
+      "Close Time": "2021.06.02 12:31:16",
+      "Commission": -32,
+      "Profit": 516.55
+    }
+  ]
+}
