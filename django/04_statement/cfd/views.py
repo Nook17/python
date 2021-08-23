@@ -12,20 +12,6 @@ def df_db():
 def index(request):
     return render(request, 'cfd/index.html')
 
-# def statement(request):
-#     df = df_db()
-#     all_sum = df.profit.sum()
-#     day_statement = list(df['open_time'].apply(lambda x: x.split(' ')[0] if len(x) > 10 else x))
-#     url_statements = list(set(day_statement))
-#     url_statements.sort(key = lambda date: datetime.strptime(date, '%Y.%m.%d'))
-#     format_days = []
-#     for url_stat in url_statements:
-#         day_real = datetime.strptime(url_stat, '%Y.%m.%d')
-#         format_days.append(day_real.strftime('%A - %d %B %Y'))
-#     day_dict = {}
-#     day_dict = {url_statements[i]: format_days[i] for i in range(len(format_days))}
-#     context = {'all_sum': all_sum, 'day_dict': day_dict}
-#     return render(request, 'cfd/statement.html', context)
 def statement(request):
     df = df_db()
     all_sum = df.profit.sum()
@@ -33,7 +19,6 @@ def statement(request):
     url_statements = list(set(day_statement))
     url_statements.sort(key = lambda date: datetime.strptime(date, '%Y.%m.%d'))
     format_days=[]
-    # commission=[]
     profit=[]
     loss=[]
     balance=[]
@@ -44,7 +29,6 @@ def statement(request):
         day_st = df[df['open_time'].str[:10] == url_stat]
         # --- commision ---
         commission_sum = day_st.commission.sum()
-        # commission.append(commission_sum)
         # --- Profit ----
         sum_profit = 0
         for i in day_st.profit:
@@ -62,22 +46,14 @@ def statement(request):
         balance.append(day_sum)
 
     lists = list(zip(format_days, profit, loss, balance))
-    sum_dict = dict(zip(url_statements, lists))
+    dicts = dict(zip(url_statements, lists))
 
     # day_dict = {}
     # day_dict = {url_statements[i]: format_days[i] for i in range(len(format_days))}
     
-    context = {'all_sum': all_sum, 'sum_dict': sum_dict}
-    # context = {'all_sum': all_sum, 'day_dict': day_dict,
-    #         'profit': profit, 'loss': loss, 'balance': balance}
+    context = {'all_sum': all_sum, 'dicts': dicts}
     return render(request, 'cfd/statement.html', context)
-'''
-    url_statements[]
-        format_days = []
-        profit=[]
-        loss=[]
-        balance=[]
-'''
+
 def statements(request, url_statement):
     df = df_db()
     day_st = df[df['open_time'].str[:10] == url_statement]
@@ -113,5 +89,5 @@ def statements(request, url_statement):
     context = {'format_day': format_day, 'day_st': day_st.to_html(index=False),
             'day_sum': round(day_sum, 2), 'sum_profit': round(sum_profit, 2),
             'loss_profit': round(loss_profit, 2), 'pkt_sum': round(pkt_sum, 2),
-            'commission_sum': commission_sum, 'swap_sum': swap_sum}
+            'commission_sum': round(commission_sum, 2), 'swap_sum': round(swap_sum, 2)}
     return render(request, 'cfd/statements.html', context)

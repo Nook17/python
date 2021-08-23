@@ -5,11 +5,26 @@
 	  <div class="p-5 rounded">
 		<p class="lead">Statement</p>
 		  <p>Sum: <b>{{ all_sum|safe }}</b> zł</p>
-		    <ul>  	
-			  {% for dic_date, dic_items in sum_dict.items %}
-			  {{ sum_dict[dic_date][0][0] }}
-			  {% endfor %}
-			</ul>
+		  <table class="table table-striped">
+			  <thead>
+				<tr>
+				  <th scope="col">Date</th>
+				  <th scope="col">Profit</th>
+				  <th scope="col">Loss</th>
+				  <th scope="col">Balance</th>
+				</tr>
+			  </thead>
+			  <tbody>
+				{% for dic_date, dic_items in dicts.items %}
+				<tr>
+				  <td><a href="{% url 'cfd:statements' dic_date %}">{{ dic_items.0 }}</a></td>
+				  <td>{{ dic_items.1|floatformat:2 }}</td>
+				  <td>{{ dic_items.2|floatformat:2 }}</td>
+				  <td>{{ dic_items.3|floatformat:2 }}</td>
+				</tr>
+				{% endfor %}
+			  </tbody>
+			</table>
 	  </div>
 	</main>
   {% include "cfd/footer.html" %}
