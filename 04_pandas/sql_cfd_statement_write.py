@@ -13,7 +13,7 @@ engine = create_engine('mysql+pymysql://root@localhost:3306/statement')
 # print(df.loc[0:10, ['Profit', 'Size']])  
 
 # --- Write to database ---
-df = pd.read_excel('statements/statement.xlsx')
+df = pd.read_excel('statements/statement_long.xlsx')
 df.rename(columns={
     'Ticket': 'ticket',
     'Open Time': 'open_time',
@@ -33,6 +33,7 @@ df.rename(columns={
 df.to_sql(
         name='cfd_statement',
         con=engine,
-        index=False,
-        if_exists='append'
+        index=True,
+        # if_exists='append'
+        if_exists='replace'
         )
