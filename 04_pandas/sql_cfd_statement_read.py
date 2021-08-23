@@ -7,9 +7,10 @@ from sqlalchemy import create_engine
 engine = create_engine('mysql+pymysql://root@localhost:3306/statement')
 
 # --- read from database ---
-df = pd.read_sql_table("cfd_statement", engine)
+# df = pd.read_sql_table("cfd_statement", engine)
+df = pd.read_sql("cfd_statement", engine)
 print(df)
-print(df.info())
+# print(df.info())
 # print(df.loc[0:10, ['Profit', 'Size']])  
 
 # --- Write to database ---

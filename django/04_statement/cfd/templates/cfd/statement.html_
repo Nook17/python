@@ -6,10 +6,13 @@
 		<p class="lead">Statement</p>
 		  <p>Sum: <b>{{ all_sum|safe }}</b> zł</p>
 		    <ul>  	
-			  {% for dic_date, dic_items in sum_dict.items %}
-			  {{ sum_dict[dic_date][0][0] }}
+		      {% for day_short, day_long in day_dict.items %}
+			    <li><a href="{% url 'cfd:statements' day_short %}">{{ day_long }}</a></li>
 			  {% endfor %}
 			</ul>
+			{{ profit }}
+			{{ loss }}
+			{{ balance }}
 	  </div>
 	</main>
   {% include "cfd/footer.html" %}

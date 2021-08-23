@@ -34,6 +34,7 @@ df.to_sql(
         name='cfd_statement',
         con=engine,
         index=True,
-        # if_exists='append'
-        if_exists='replace'
+        index_label='id',
+        # if_exists='append',
+        if_exists='replace',
         )

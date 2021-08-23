@@ -6,7 +6,12 @@
 		<p class="lead">Statement</p>
 		  <p>Day: <b>{{ format_day }}</b></p>
 		  {{ day_st|safe }}
-		<p>Sum: <b>{{ short_day_sum }}</b> zł</p>
+		<p>Profit: <b>{{ sum_profit }}</b> zł</p>
+		<p>Loss: <b>{{ loss_profit }}</b> zł</p>
+		<p>Balance: <b>{{ day_sum }}</b> zł</p>
+		<p>pkt: <b>{{ pkt_sum }}</b> pkt</p>
+		<p>Commission: <b>{{ commission_sum }}</b> zł</p>
+		<p>Swap: <b>{{ swap_sum }}</b> zł</p>
 	  </div>
 	</main>
   {% include "cfd/footer.html" %}
