@@ -15,7 +15,7 @@ def index(request):
 def statement(request):
     df = df_db()
     all_sum = df.profit.sum()
-    day_statement = list(df['open_time'].apply(lambda x: x.split(' ')[0] if len(x) > 10 else x))
+    day_statement = list(df['close_time'].apply(lambda x: x.split(' ')[0] if len(x) > 10 else x))
     url_statements = list(set(day_statement))
     url_statements.sort(key = lambda date: datetime.strptime(date, '%Y.%m.%d'))
     format_days=[]
@@ -26,7 +26,7 @@ def statement(request):
         day_real = datetime.strptime(url_stat, '%Y.%m.%d')
         format_days.append(day_real.strftime('%A - %d %B %Y'))
 
-        day_st = df[df['open_time'].str[:10] == url_stat]
+        day_st = df[df['close_time'].str[:10] == url_stat]
         # --- commision ---
         commission_sum = day_st.commission.sum()
         # --- Profit ----
@@ -51,12 +51,12 @@ def statement(request):
     # day_dict = {}
     # day_dict = {url_statements[i]: format_days[i] for i in range(len(format_days))}
     
-    context = {'all_sum': all_sum, 'dicts': dicts}
+    context = {'all_sum': round(all_sum, 2), 'dicts': dicts}
     return render(request, 'cfd/statement.html', context)
 
 def statements(request, url_statement):
     df = df_db()
-    day_st = df[df['open_time'].str[:10] == url_statement]
+    day_st = df[df['close_time'].str[:10] == url_statement]
     day_st = day_st.drop(['id', 'ticket', 'taxes'], axis=1)
     day_real = datetime.strptime(url_statement, '%Y.%m.%d')
     format_day = day_real.strftime('%A - %d %B %Y')
