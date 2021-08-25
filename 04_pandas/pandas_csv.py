@@ -31,7 +31,16 @@ df = pd.read_excel('statements/statement.xlsx')
 # print(df.loc[[3, 10], ['Profit', 'Size']])  # show [rows], [columns]
 # print(df.loc[0:10, ['Profit', 'Size']])  # show [rows], [columns]
 # print(df['Size'].value_counts())
+# --- Index ---
+# print(df.set_index('Profit'))                   # Temporary changes
+# print(df.set_index('Profit', inplace=True))     # Permament changes
+print(df.set_index('Profit').sort_index(ascending=True))
+# print(df.sort_index())
+
+
+
 # ------------------------------------------------------
+
 # --- Shape -> columns & rows ---
 # shape_statement = df.shape
 # len_statement = shape_statement[0]
@@ -73,13 +82,14 @@ df = pd.read_excel('statements/statement.xlsx')
 # print(sum_profit)
     
 # --- pkt ---
-pkt_buy, pkt_sell = 0, 0
-for index, row in df.iterrows():
-    if row['Type'] == 'buy':
-        pkt_buy = (row['Price.1'] - row['Price'])
-    elif i['Type'] == 'sell':
-        pkt_sell = (row['Price'] - row['Price.1'])
-    print(pkt_buy + pkt_sell)
+# pkt_buy, pkt_sell = 0, 0
+# for index, row in df.iterrows():
+#     if row['Type'] == 'buy':
+#         pkt_buy = (row['Price.1'] - row['Price'])
+#     elif i['Type'] == 'sell':
+#         pkt_sell = (row['Price'] - row['Price.1'])
+#     pkt = (pkt_buy + pkt_sell)
+#     print(round(pkt))
 
 # ==============================================
 #   Column      Non-Null Count  Dtype  
