@@ -6,7 +6,7 @@ html {
 }
 body {
   /* Margin bottom by footer height */
-  /* margin-bottom: 60px; */
+    margin-bottom: 60px;
 	background-attachment: fixed;
     background-position: center center;
     background-image: url("/static/cfd/assets/paper.png");

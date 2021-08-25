@@ -12,15 +12,17 @@ def df_db():
     df = pd.DataFrame(statements)
     return df
 
+
 def index(request):
     return render(request, 'cfd/index.html')
+
 
 def statement(request):
     df = df_db()
     all_sum = df.profit.sum()
-    day_statement = list(df['close_time'].apply(lambda x: x.split(' ')[0] if len(x) > 10 else x))
+    day_statement = list(df['close_time'].apply(lambda x: x.split(' ')[0] if len(x)>10 else x))
     url_statements = list(set(day_statement))
-    url_statements.sort(key = lambda date: datetime.strptime(date, '%Y.%m.%d'))
+    url_statements.sort(key=lambda date: datetime.strptime(date, '%Y.%m.%d'))
     format_days=[]
     profit=[]
     loss=[]
@@ -58,6 +60,7 @@ def statement(request):
 url_from_request = ''
 format_day_from_request = ''
 
+
 def statements(request, url_statement):
     df = df_db()
     global url_from_request
@@ -94,29 +97,30 @@ def statements(request, url_statement):
     # --- Swap ---
     swap_sum = day_st.swap.sum()
     # -------------------
-    context = {'format_day': format_day, 'day_st': day_st.to_html(index=False),
+    context = {
+            'format_day': format_day, 'day_st': day_st.to_html(index=False),
             'day_sum': round(day_sum, 2), 'sum_profit': round(sum_profit, 2),
             'loss_profit': round(loss_profit, 2), 'pkt_sum': round(pkt_sum, 2),
-            'commission_sum': round(commission_sum, 2), 'swap_sum': round(swap_sum, 2),
-            'url_from_request': url_from_request}
+            'commission_sum': round(commission_sum, 2), 
+            'swap_sum': round(swap_sum, 2), 'url_from_request': url_from_request}
     return render(request, 'cfd/statements.html', context)
 
 
 class ChartData(APIView):
-        # authentication_classes = []
-        # permission_classes = []
+    # authentication_classes = []
+    # permission_classes = []
 
-        def get(self, request, format = None):
-            global url_from_request
-            global format_day_from_request
-            chartLabel = format_day_from_request
-            df = df_db()
-            day_st = df[df['close_time'].str[:10] == url_from_request]
-            labels = day_st.index.values
-            chartdata = list(day_st.profit)
-            data ={
-                        "labels":labels,
-                        "chartLabel":chartLabel,
-                        "chartdata":chartdata,
-                }
-            return Response(data)
+    def get(self, request, format=None):
+        global url_from_request
+        global format_day_from_request
+        chartLabel = format_day_from_request
+        df = df_db()
+        day_st = df[df['close_time'].str[:10] == url_from_request]
+        labels = day_st.index.values
+        chartdata = list(day_st.profit)
+        data = {
+                "labels": labels,
+                "chartLabel": chartLabel,
+                "chartdata": chartdata,
+            }
+        return Response(data)
