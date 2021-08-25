@@ -1,4 +1,7 @@
 from django.shortcuts import render
+from django.views.generic import View
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from .models import Statement
 import pandas as pd
 from datetime import datetime
@@ -48,18 +51,23 @@ def statement(request):
     lists = list(zip(format_days, profit, loss, balance))
     dicts = dict(zip(url_statements, lists))
 
-    # day_dict = {}
-    # day_dict = {url_statements[i]: format_days[i] for i in range(len(format_days))}
-    
     context = {'all_sum': round(all_sum, 2), 'dicts': dicts}
     return render(request, 'cfd/statement.html', context)
 
+
+url_from_request = ''
+format_day_from_request = ''
+
 def statements(request, url_statement):
     df = df_db()
+    global url_from_request
+    global format_day_from_request
+    url_from_request = url_statement
     day_st = df[df['close_time'].str[:10] == url_statement]
     day_st = day_st.drop(['id', 'ticket', 'taxes'], axis=1)
     day_real = datetime.strptime(url_statement, '%Y.%m.%d')
     format_day = day_real.strftime('%A - %d %B %Y')
+    format_day_from_request = format_day
     # --- commision ---
     commission_sum = day_st.commission.sum()
     # --- Profit ----
@@ -89,5 +97,26 @@ def statements(request, url_statement):
     context = {'format_day': format_day, 'day_st': day_st.to_html(index=False),
             'day_sum': round(day_sum, 2), 'sum_profit': round(sum_profit, 2),
             'loss_profit': round(loss_profit, 2), 'pkt_sum': round(pkt_sum, 2),
-            'commission_sum': round(commission_sum, 2), 'swap_sum': round(swap_sum, 2)}
+            'commission_sum': round(commission_sum, 2), 'swap_sum': round(swap_sum, 2),
+            'url_from_request': url_from_request}
     return render(request, 'cfd/statements.html', context)
+
+
+class ChartData(APIView):
+        # authentication_classes = []
+        # permission_classes = []
+
+        def get(self, request, format = None):
+            global url_from_request
+            global format_day_from_request
+            chartLabel = format_day_from_request
+            df = df_db()
+            day_st = df[df['close_time'].str[:10] == url_from_request]
+            labels = day_st.index.values
+            chartdata = list(day_st.profit)
+            data ={
+                        "labels":labels,
+                        "chartLabel":chartLabel,
+                        "chartdata":chartdata,
+                }
+            return Response(data)

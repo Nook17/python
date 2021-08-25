@@ -4,13 +4,22 @@ from django.views.generic import View
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
+from .models import Statement
+import pandas as pd
+
+
 class HomeView(View):
 	def get(self, request, *args, **kwargs):
-		return render(request, 'chartjs/index.html')
+            # statements = Statement.objects.all().values()
+            # df = pd.DataFrame(statements)
+            # labels_df = df.index.values
+            # chartdata_df = list(df.profit)
+            # context = {'labels_df': labels_df, 'chartdata_df': chartdata_df}
+            # return render(request, 'chartjs/index.html', context)
+            return render(request, 'chartjs/index.html')
 
 
 ####################################################
-
 ## if you don't want to user rest_framework
 
 # def get_data(request, *args, **kwargs):
@@ -21,31 +30,33 @@ class HomeView(View):
 #	 }
 #
 # return JsonResponse(data) # http response
-
-
 #######################################################
 
 ## using rest_framework classes
 
 class ChartData(APIView):
-	authentication_classes = []
-	permission_classes = []
+        authentication_classes = []
+        permission_classes = []
 
-	def get(self, request, format = None):
-		labels = [
-			'January',
-			'February',
-			'March',
-			'April',
-			'May',
-			'June',
-			'July'
-			]
-		chartLabel = "my data"
-		chartdata = [10, 10, 5, 2, 20, 30, 45]
-		data ={
-					"labels":labels,
-					"chartLabel":chartLabel,
-					"chartdata":chartdata,
-			}
-		return Response(data)
+        def get(self, request, format = None):
+            labels = [
+                'January',
+                'February',
+                'March',
+                'April',
+                'May',
+                'June',
+                'July'
+                ]
+            chartLabel = "my data"
+            chartdata = [10, 10, 5, 2, 20, 30, 45]
+            statements = Statement.objects.all().values()
+            df = pd.DataFrame(statements)
+            labels = df.index.values
+            chartdata = list(df.profit)
+            data ={
+                        "labels":labels,
+                        "chartLabel":chartLabel,
+                        "chartdata":chartdata,
+                }
+            return Response(data)

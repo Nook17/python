@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/2.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
-
+from pathlib import Path
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -76,10 +76,20 @@ WSGI_APPLICATION = 'charts.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'data_visualization',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
+        'USER': 'root',
+        'PASSWORD': '',
     }
 }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
 
 
 # Password validation
@@ -114,7 +124,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
