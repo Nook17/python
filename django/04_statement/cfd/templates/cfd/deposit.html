@@ -1,0 +1,20 @@
+{% extends "cfd/base.html" %}
+
+{% block content %}
+	<main class="container flex-shrink-0">
+	  <div class="p-5 rounded">
+		<p class="lead">Deposit</p>
+		<div class="row">
+			<div class="col-md-6">
+				<p class="lead">{{ depo|safe }}</p>
+			</div>
+			<div class="col-md-6">
+			  <p class="lead">Bbb</p>
+			</div>
+		</div>
+
+	  </div>
+	</main>
+  {% include "cfd/footer.html" %}
+{% endblock content %}
+

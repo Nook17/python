@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.generic import View
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Statement
+from .models import Statement, Deposit
 import pandas as pd
 from datetime import datetime
 
@@ -12,9 +12,25 @@ def df_db():
     df = pd.DataFrame(statements)
     return df
 
+def depo_db():
+    deposits = Deposit.objects.all().values()
+    depo = pd.DataFrame(deposits)
+    return depo
 
 def index(request):
     return render(request, 'cfd/index.html')
+
+
+def deposit(request):
+    depo = depo_db()
+    depo = depo.drop(['id'], axis=1)
+    depo['date_dep'] = pd.to_datetime(depo['date_dep']).dt.date
+    context = {'depo': depo.to_html(index=False)}
+    return render(request, 'cfd/deposit.html', context)
+
+
+def withdrawal(request):
+    return render(request, 'cfd/withdrawal.html')
 
 
 def statement(request):
@@ -63,12 +79,10 @@ format_day_from_request = ''
 
 def statements(request, url_statement):
     df = df_db()
-    df['open_time'] = pd.to_datetime(df['open_time']).dt.date
-    df['close_time'] = pd.to_datetime(df['close_time']).dt.date
     global url_from_request
     global format_day_from_request
     url_from_request = url_statement
-    day_st = df.loc[df['close_time'] == url_statement]
+    day_st = df[df['close_time'].dt.strftime('%Y-%m-%d') == url_statement]
     df = df.drop(['id', 'ticket', 'taxes'], axis=1)
     day_st = day_st.drop(['id', 'ticket', 'taxes'], axis=1)
     day_real = datetime.strptime(url_statement, '%Y-%m-%d')
@@ -100,8 +114,9 @@ def statements(request, url_statement):
     # --- Swap ---
     swap_sum = day_st.swap.sum()
     # -------------------
+    day_st['open_time'] = pd.to_datetime(day_st['open_time']).dt.date
+    day_st['close_time'] = pd.to_datetime(day_st['close_time']).dt.date
     context = {
-            'df': df.to_html(index=False),
             'format_day': format_day, 'day_st': day_st.to_html(index=False),
             'day_sum': round(day_sum, 2), 'sum_profit': round(sum_profit, 2),
             'loss_profit': round(loss_profit, 2), 'pkt_sum': round(pkt_sum, 2),
@@ -119,7 +134,7 @@ class ChartData(APIView):
         global format_day_from_request
         chartLabel = format_day_from_request
         df = df_db()
-        day_st = df[df['close_time'].str[:10] == url_from_request]
+        day_st = df[df['close_time'].dt.strftime('%Y-%m-%d') == url_from_request]
         labels = day_st.index.values
         chartdata = list(day_st.profit)
         data = {

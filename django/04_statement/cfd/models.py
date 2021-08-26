@@ -21,3 +21,11 @@ class Statement(models.Model):
     objects = DataFrameManager()
     # def __str__(self):
     #     return self.open_time
+
+
+class Deposit(models.Model):
+    date_dep = models.DateTimeField(auto_now=False, auto_now_add=False)
+    amount_dep = models.FloatField()
+    bank_name = models.CharField(max_length=255)
+
+    objects = DataFrameManager()

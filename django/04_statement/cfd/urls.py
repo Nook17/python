@@ -7,4 +7,6 @@ urlpatterns = [
     path('statement/', views.statement, name='statement'),
     path('statement/<str:url_statement>/', views.statements, name='statements'),
     path('api', views.ChartData.as_view()),
+    path('deposit/', views.deposit, name='deposit'),
+    path('withdrawal/', views.withdrawal, name='withdrawal'),
     ]
