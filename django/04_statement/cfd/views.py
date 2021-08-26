@@ -20,18 +20,18 @@ def index(request):
 def statement(request):
     df = df_db()
     all_sum = df.profit.sum()
-    day_statement = list(df['close_time'].apply(lambda x: x.split(' ')[0] if len(x)>10 else x))
-    url_statements = list(set(day_statement))
-    url_statements.sort(key=lambda date: datetime.strptime(date, '%Y.%m.%d'))
-    format_days=[]
-    profit=[]
-    loss=[]
-    balance=[]
+    df['open_time'] = pd.to_datetime(df['open_time']).dt.date
+    df['close_time'] = pd.to_datetime(df['close_time']).dt.date
+    url_statements = list(set(df['close_time']))
+    url_statements.sort()
+    format_days = []
+    profit = []
+    loss = []
+    balance = []
     for url_stat in url_statements:
-        day_real = datetime.strptime(url_stat, '%Y.%m.%d')
-        format_days.append(day_real.strftime('%A - %d %B %Y'))
+        day_st = df.loc[df['close_time'] == url_stat]
+        format_days.append(url_stat.strftime('%A - %d %B %Y'))
 
-        day_st = df[df['close_time'].str[:10] == url_stat]
         # --- commision ---
         commission_sum = day_st.commission.sum()
         # --- Profit ----
@@ -63,14 +63,17 @@ format_day_from_request = ''
 
 def statements(request, url_statement):
     df = df_db()
+    df['open_time'] = pd.to_datetime(df['open_time']).dt.date
+    df['close_time'] = pd.to_datetime(df['close_time']).dt.date
     global url_from_request
     global format_day_from_request
     url_from_request = url_statement
-    day_st = df[df['close_time'].str[:10] == url_statement]
+    day_st = df.loc[df['close_time'] == url_statement]
+    df = df.drop(['id', 'ticket', 'taxes'], axis=1)
     day_st = day_st.drop(['id', 'ticket', 'taxes'], axis=1)
-    day_real = datetime.strptime(url_statement, '%Y.%m.%d')
+    day_real = datetime.strptime(url_statement, '%Y-%m-%d')
     format_day = day_real.strftime('%A - %d %B %Y')
-    format_day_from_request = format_day
+    format_day_from_request = day_st
     # --- commision ---
     commission_sum = day_st.commission.sum()
     # --- Profit ----
@@ -98,6 +101,7 @@ def statements(request, url_statement):
     swap_sum = day_st.swap.sum()
     # -------------------
     context = {
+            'df': df.to_html(index=False),
             'format_day': format_day, 'day_st': day_st.to_html(index=False),
             'day_sum': round(day_sum, 2), 'sum_profit': round(sum_profit, 2),
             'loss_profit': round(loss_profit, 2), 'pkt_sum': round(pkt_sum, 2),

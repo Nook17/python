@@ -9,9 +9,24 @@ engine = create_engine('mysql+pymysql://root@localhost:3306/statement')
 # --- read from database ---
 # df = pd.read_sql_table("cfd_statement", engine)
 df = pd.read_sql("cfd_statement", engine)
-print(df)
+# print(df)
 # print(df.info())
-# print(df.loc[0:10, ['Profit', 'Size']])  
+# print(df.loc[0:10, ['Profit', 'Size']])
+
+# --- Format Date. Cut Time from date ---
+df['open_time'] = pd.to_datetime(df['open_time']).dt.date
+df['close_time'] = pd.to_datetime(df['close_time']).dt.date
+# print(df)
+
+# format_days = []
+# url_statements = list(set(df['close_time']))
+# url_statements.sort()
+# for url_stat in url_statements:
+#     format_days.append(url_stat.strftime('%A - %d %B %Y'))
+#     day_st = df.loc[df['close_time'] == url_stat]
+day_st = df[(df['close_time'] == '2021-08-19')]
+print(day_st)
+# print(df)
 
 # --- Write to database ---
 # df = pd.read_excel('statements/statement.xlsx')

@@ -34,12 +34,30 @@ df = pd.read_excel('statements/statement.xlsx')
 # --- Index ---
 # print(df.set_index('Profit'))                   # Temporary changes
 # print(df.set_index('Profit', inplace=True))     # Permament changes
-print(df.set_index('Profit').sort_index(ascending=True))
+# print(df.set_index('Profit').sort_index(ascending=True))
 # print(df.sort_index())
 
 
-
 # ------------------------------------------------------
+# --- Format Date. Cut Time from date ---
+df['Open Time'] = pd.to_datetime(df['Open Time']).dt.date
+df['Close Time'] = pd.to_datetime(df['Close Time']).dt.date
+# print(df)
+# print(df.info())
+
+format_days = []
+url_statements = list(set(df['Close Time']))
+url_statements.sort()
+# url_statements['Close Time'] = pd.to_datetime(url_statements['Close Time']).dt.date
+for url_stat in url_statements:
+    format_days.append(url_stat.strftime('%A - %d %B %Y'))
+    # day_st = df.loc[df['Close Time'] == url_stat]
+    # short_date = pd.to_datetime(url_stat).date
+    print(url_stat)
+
+# print(url_statements)
+# print(format_days)
+# print(day_st)
 
 # --- Shape -> columns & rows ---
 # shape_statement = df.shape
@@ -80,7 +98,7 @@ print(df.set_index('Profit').sort_index(ascending=True))
 #     if i > 0:
 #         sum_profit += i
 # print(sum_profit)
-    
+
 # --- pkt ---
 # pkt_buy, pkt_sell = 0, 0
 # for index, row in df.iterrows():
