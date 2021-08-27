@@ -5,11 +5,50 @@
 	  <div class="p-5 rounded">
 		<p class="lead">Deposit</p>
 		<div class="row">
-			<div class="col-md-6">
-				<p class="lead">{{ depo|safe }}</p>
+			<div class="col-md-7">
+
+				<table class="table table-striped">
+				  <thead>
+					<tr>
+					  <th scope="col">Date</th>
+					  <th scope="col">Amount</th>
+					  <th scope="col">Bank</th>
+					  <th scope="col"></th>
+					</tr>
+				  </thead>
+				  <tbody>
+					{% for dep in depo %}
+					<tr>
+					  <td>{{ dep.date_dep|date:'d M Y' }}</td>
+					  <td>{{ dep.amount_dep }}</td>
+					  <td>{{ dep.bank_name }}</td>
+					  <td>
+						  <a href="{% url 'cfd:update_deposit' dep.id %}">
+							  <i class="bi bi-pen text-info" 
+								  data-bs-toggle="tooltip" 
+								  data-bs-placement="top" title="Edit"></i>
+						  </a>
+						  <a href="#">
+							  <i class="bi bi-trash text-danger ml-4" 
+								  data-bs-toggle="tooltip" 
+								  data-bs-placement="top" title="Delete"></i>
+						  </a>
+					  </td>
+					</tr>
+					{% endfor %}
+				  </tbody>
+				</table>
+
+				<div class='text-center'>
+				  <form>
+					<button type="submit" formaction="{% url 'cfd:new_deposit' %}" 
+					  class="btn btn-outline-dark btn-sm">New depo</button>
+				  </form>
+				</div>
+
 			</div>
-			<div class="col-md-6">
-			  <p class="lead">Bbb</p>
+			<div class="col-md-5">
+			  <p class="lead">new column</p>
 			</div>
 		</div>
 

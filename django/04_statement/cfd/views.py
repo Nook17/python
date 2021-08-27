@@ -1,9 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import View
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Statement, Deposit
+from .forms import DepositForm
 import pandas as pd
+import json
 from datetime import datetime
 
 
@@ -12,10 +14,12 @@ def df_db():
     df = pd.DataFrame(statements)
     return df
 
+
 def depo_db():
-    deposits = Deposit.objects.all().values()
+    deposits = Deposit.objects.all().values().order_by('date_dep')
     depo = pd.DataFrame(deposits)
-    return depo
+    return deposits
+
 
 def index(request):
     return render(request, 'cfd/index.html')
@@ -23,10 +27,34 @@ def index(request):
 
 def deposit(request):
     depo = depo_db()
-    depo = depo.drop(['id'], axis=1)
-    depo['date_dep'] = pd.to_datetime(depo['date_dep']).dt.date
-    context = {'depo': depo.to_html(index=False)}
+    context = {'depo': depo}
     return render(request, 'cfd/deposit.html', context)
+
+
+def new_deposit(request):
+    if request.method != 'POST':    # if 'GET'
+        form = DepositForm()
+    else:
+        form = DepositForm(data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('cfd:deposit')
+    context = {'form': form}
+    return render(request, 'cfd/new_deposit.html', context)
+
+
+def update_deposit(request, deposit_id):
+    updepo = Deposit.objects.get(id=deposit_id)
+    if request.method != 'POST':
+        form = DepositForm(instance=updepo)
+    else:
+        form = DepositForm(instance=updepo, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('cfd:deposit')
+    context = {'updepo': updepo, 'form': form}
+    # context = {'updepo': updepo, 'deposit_id': deposit_id}
+    return render(request, 'cfd/update_deposit.html', context)
 
 
 def withdrawal(request):
@@ -120,7 +148,7 @@ def statements(request, url_statement):
             'format_day': format_day, 'day_st': day_st.to_html(index=False),
             'day_sum': round(day_sum, 2), 'sum_profit': round(sum_profit, 2),
             'loss_profit': round(loss_profit, 2), 'pkt_sum': round(pkt_sum, 2),
-            'commission_sum': round(commission_sum, 2), 
+            'commission_sum': round(commission_sum, 2),
             'swap_sum': round(swap_sum, 2), 'url_from_request': url_from_request}
     return render(request, 'cfd/statements.html', context)
 
