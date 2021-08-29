@@ -1,0 +1,54 @@
+{% extends "cfd/base.html" %}
+{% load static %}
+{% block link %}
+	<link rel="stylesheet" href="{% static 'cfd/style/table.css' %}" type="text/css">
+{% endblock link %}
+
+{% block content %}
+  <main class="container flex-shrink-0">
+    <div class="p-5 rounded">
+	  <p class="lead">Compound interest on a monthly basis</p>
+      <div class="row">
+
+		<form action="{% url 'cfd:new_percent' %}" method="post">
+			{% csrf_token %}
+			  <div class="col-auto">
+				<div class="input-group mb-3">
+				  <button class="btn btn-outline-secondary" type="submit"
+					  id="button-addon1">Set</button>
+				  <input type="number" name="percent_year" value="{{ percent|floatformat:"1" }}" class="form-control">
+				  <input type="number" name="amount_year" value="{{ amount_base|safe }}" class="form-control">
+				</div>
+			  </div>
+		</form>
+	  </div>
+      <div class="row">
+        <div class="col-md-7">
+			<table class="tg">
+				<thead>
+				  <tr>
+					<th class="tg-month" colspan="4">MONTH 1</th>
+				  </tr>
+				</thead>
+				<tbody>
+				  {% for l in lists %}
+				  <tr>
+					  <td class="tg-no">{{ forloop.counter }}</td>
+					  <td class="tg-amount">{{ l.0|floatformat:"0" }}</td>
+					  <td class="tg-profit">{{ l.1|floatformat:"0" }}</td>
+					  <td class="tg-sumday">{{ l.2|floatformat:"0" }}</td>
+				  </tr>
+				  {% endfor %}
+				  <tr>
+					  <td class="tg-percent" colspan="2"><span class="text-temp">%M: </span>{{ per_month|floatformat:"0" }}</td>
+					<td class="tg-summonth" colspan="2"><span class="text-temp">sum: </span>{{ sum_month|floatformat:"0" }}</td>
+				  </tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="col-md-5"></div>
+      </div>
+    </div>
+	</main>
+  {% include "cfd/footer.html" %}
+{% endblock content %}

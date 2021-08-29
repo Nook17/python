@@ -6,7 +6,6 @@
 		<p class="lead">Deposit</p>
 		<div class="row">
 			<div class="col-md-7">
-
 				<table class="table table-striped">
 				  <thead>
 					<tr>
@@ -28,7 +27,7 @@
 								  data-bs-toggle="tooltip" 
 								  data-bs-placement="top" title="Edit"></i>
 						  </a>
-						  <a href="#">
+						  <a href="{% url 'cfd:delete_deposit' dep.id %}">
 							  <i class="bi bi-trash text-danger ml-4" 
 								  data-bs-toggle="tooltip" 
 								  data-bs-placement="top" title="Delete"></i>
@@ -45,13 +44,28 @@
 					  class="btn btn-outline-dark btn-sm">New depo</button>
 				  </form>
 				</div>
-
 			</div>
 			<div class="col-md-5">
-			  <p class="lead">new column</p>
+				<table class="table table-striped">
+				  <thead>
+					<tr>
+					  <th scope="col">SUM</th>
+					  <th scope="col">Loss</th>
+					  <th scope="col">Profit</th>
+					  <th scope="col">Ballance</th>
+					</tr>
+				  </thead>
+				  <tbody>
+					<tr>
+					  <td>{{ sum }}</td>
+					  <td>-100</td>
+					  <td>1000</td>
+					  <td>900</td>
+					</tr>
+				  </tbody>
+				</table>
 			</div>
 		</div>
-
 	  </div>
 	</main>
   {% include "cfd/footer.html" %}

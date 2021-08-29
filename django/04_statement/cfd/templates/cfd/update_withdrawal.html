@@ -2,28 +2,29 @@
 {% block content %}
 	<main class="container flex-shrink-0">
 	  <div class="p-5 rounded">
-		<p class="lead">Deposit</p>
+		<p class="lead">Update withdrawal</p>
 		<div class="row">
 			<div class="col-md-6">
 				<div class="container bootstrap-iso">
-					<form action="{% url 'cfd:new_deposit' %}" method="post">
+					<form action="{% url 'cfd:update_withdrawal' upwd.id %}" method="post">
 						{% csrf_token %}
 						  <div class="col-auto">
 							<label class="visually-hidden" 
 								for="autoSizingInput">Date
 							</label>
-							<input type="text" name="date_dep" class="form-control" 
-							  id="date" placeholder="2021-01-25">
+							<input type="text" name="date_wd"
+							  value="{{ upwd.date_wd|date }}" 
+							  class="form-control" id="date">
 						  </div>
 						  <div class="col-auto mt-3">
 							<label class="visually-hidden" 
 								for="autoSizingInputGroup">Amount
 							</label>
 							<div class="input-group">
-							  <input type="number" name="amount_dep"
+							  <input type="number" name="amount_wd"
 									 			 class="form-control"
 												 id="autoSizingInputGroup"
-												 placeholder="1500">
+												 value="{{ upwd.amount_wd|safe }}">
 							</div>
 						  </div>
 						  <div class="col-auto mt-3">
@@ -40,7 +41,7 @@
 							<button type="submit" 
 								class="btn btn-outline-dark btn-sm">Send
 							</button>
-						  </div>					
+						  </div>
 					</form>
 				</div>
 			</div>
@@ -51,7 +52,7 @@
 	</main>
 <script>
     $(document).ready(function(){
-      var date_input=$('input[name="date_dep"]'); //our date input has the name "date"
+      var date_input=$('input[name="date_wd"]'); //our date input has the name "date"
       var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
       var options={
         format: 'yyyy-mm-dd',
@@ -62,6 +63,6 @@
       date_input.datepicker(options);
     })
 </script>
-	{% include "cfd/footer.html" %}
+  {% include "cfd/footer.html" %}
 {% endblock content %}
 

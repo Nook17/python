@@ -36,24 +36,75 @@ df = pd.read_excel('statements/statement.xlsx')
 # print(df.set_index('Profit', inplace=True))     # Permament changes
 # print(df.set_index('Profit').sort_index(ascending=True))
 # print(df.sort_index())
+# --- Filtering ---
+# print(df['Commission'] == -9.6)   # show 'True' or 'False' per column
+# filt = (df['Commission'] == -9.6)
+# print(df[filt])                     # return all row with 'True' criteria
+# print(df.loc[filt])                 # --//--
+# print(df.loc[filt, 'Profit'])       # --//-- , and show only this column
+# filt = (df['Close Time'].str[:10] == '2021.06.08') & (df['Profit'] <= -100)
+# print(df[filt])
+# print(df[~filt])                    # show only opposite results
+### this string is contains in 'Close Time' column
+# filt = df['Close Time'].str.contains('2021.06.08', na=False)
+# print(df[filt])
+# --- Updating Rows and Columns ---
+# df.columns = [x.upper() for x in df.columns]    # change to uppercase col name
+# print(df)
+# df.columns = df.columns.str.replace(' ', '_')   # replace 
+# print(df.columns)
+# df.rename(columns={'S / L': 'Stop Loss', 'T / P': 'Take Profit'}, inplace=True)
+# print(df)
+# df.loc[29, ['Type']] = ['sell'] # replace value in specific columns
+# print(df)
+### filtr and change value
+# filt = (df['Commission'] == -9.6)
+# df.loc[filt, 'Type'] = 'sell'
+# print(df)
+###
+#print(df['Type'].apply(len))    # show length 
+### change function
+# def change_to_upper(text):
+#     return text.upper()
+# df['Type'] = df['Type'].apply(change_to_upper)
+# print(df)
+# df['Type'] = df['Type'].apply(lambda x: x.lower())  # Reverse changes
+# print(df)
+###
+# print(df.applymap(len))
+# ---Add/Remove Rows and Columns From DataFrames ---
+# df['Ballance'] = df['Profit'] + df['Commission']    # add column (temporary)
+# print(df)
+# print(df.drop(columns=['Taxes', 'Swap']))   # drop columns (temporary)
+# df.drop(columns=['Taxes', 'Swap'], inplace=True)   # drop columns (permanently)
+# print(df)
+# print(df['Open Time'].str.split(' '))   # make a list from 'Open Time' column
+# print(df['Open Time'].str.split(' ', expand=True))   # split 'Open Time' column
+# df[['Date', 'Time']] = df['Open Time'].str.split(' ', expand=True)
+# print(df.drop(index=4))
+filt = df['Commission'] == -9.6
+print(df.drop(index=df[filt].index))
+# print(df)
+
+
 
 
 # ------------------------------------------------------
 # --- Format Date. Cut Time from date ---
-df['Open Time'] = pd.to_datetime(df['Open Time']).dt.date
-df['Close Time'] = pd.to_datetime(df['Close Time']).dt.date
+# df['Open Time'] = pd.to_datetime(df['Open Time']).dt.date
+# df['Close Time'] = pd.to_datetime(df['Close Time']).dt.date
 # print(df)
 # print(df.info())
 
-format_days = []
-url_statements = list(set(df['Close Time']))
-url_statements.sort()
+# format_days = []
+# url_statements = list(set(df['Close Time']))
+# url_statements.sort()
 # url_statements['Close Time'] = pd.to_datetime(url_statements['Close Time']).dt.date
-for url_stat in url_statements:
-    format_days.append(url_stat.strftime('%A - %d %B %Y'))
+# for url_stat in url_statements:
+    # format_days.append(url_stat.strftime('%A - %d %B %Y'))
     # day_st = df.loc[df['Close Time'] == url_stat]
     # short_date = pd.to_datetime(url_stat).date
-    print(url_stat)
+    # print(url_stat)
 
 # print(url_statements)
 # print(format_days)

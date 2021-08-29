@@ -29,3 +29,18 @@ class Deposit(models.Model):
     bank_name = models.CharField(max_length=255)
 
     objects = DataFrameManager()
+
+
+class Withdrawal(models.Model):
+    date_wd = models.DateTimeField(auto_now=False, auto_now_add=False)
+    amount_wd = models.FloatField()
+    bank_name = models.CharField(max_length=255)
+
+    objects = DataFrameManager()
+
+
+class Notesdb(models.Model):
+    percent_year = models.FloatField()
+    amount_year = models.IntegerField()
+
+    objects = DataFrameManager()

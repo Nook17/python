@@ -1,10 +1,11 @@
 {% extends "cfd/base.html" %}
 
 {% block content %}
-	<main class="container flex-shrink-0">
-	  <div class="p-5 rounded">
-		<p class="lead">Statement</p>
-		  <p>Sum: <b>{{ all_sum }}</b> zł</p>
+  <main class="container flex-shrink-0">
+    <div class="p-5 rounded">
+	  <p class="lead">Statement</p>
+      <div class="row">
+        <div class="col-md-7">
 		  <table class="table table-striped">
 			  <thead>
 				<tr>
@@ -24,9 +25,32 @@
 				</tr>
 				{% endfor %}
 			  </tbody>
+		  </table>
+	    </div>
+		<div class="col-md-5">
+			<table class="table table-striped">
+			  <thead>
+				<tr>
+				  <th scope="col">Profit</th>
+				  <th scope="col">Loss</th>
+				  <th scope="col">Ballance</th>
+				  <th scope="col">Commission</th>
+				  <th scope="col">Swap</th>
+				</tr>
+			  </thead>
+			  <tbody>
+				<tr>
+				  <td>{{ profit_sum }}</td>
+				  <td>{{ loss_sum }}</td>
+				  <td>{{ ballance_sum }}</td>
+				  <td>{{ commission_sum }}</td>
+				  <td>{{ swap_sum }}</td>
+				</tr>
+			  </tbody>
 			</table>
-	  </div>
+		</div>
+      </div>
+    </div>
 	</main>
   {% include "cfd/footer.html" %}
 {% endblock content %}
-

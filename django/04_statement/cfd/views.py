@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
 from django.views.generic import View
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Statement, Deposit
-from .forms import DepositForm
+from .models import Statement, Deposit, Withdrawal, Notesdb
+from .forms import DepositForm, WithdrawalForm, NotesdbForm
 import pandas as pd
 import json
 from datetime import datetime
@@ -17,8 +19,24 @@ def df_db():
 
 def depo_db():
     deposits = Deposit.objects.all().values().order_by('date_dep')
-    depo = pd.DataFrame(deposits)
     return deposits
+
+
+def depo_db_pandas():
+    deposits = Deposit.objects.all().values()
+    depo = pd.DataFrame(deposits)
+    return depo
+
+
+def wd_db():
+    withdrawal = Withdrawal.objects.all().values().order_by('date_wd')
+    return withdrawal
+
+
+def wd_db_pandas():
+    withdrawal = Withdrawal.objects.all().values()
+    wd = pd.DataFrame(withdrawal)
+    return wd
 
 
 def index(request):
@@ -27,7 +45,13 @@ def index(request):
 
 def deposit(request):
     depo = depo_db()
-    context = {'depo': depo}
+    depo_sum = depo_db_pandas()
+    if not depo_sum.empty:
+        sum = depo_sum.amount_dep.sum()
+    else:
+        sum = 0 
+    sum = depo_sum.amount_dep.sum()
+    context = {'depo': depo, 'sum': sum}
     return render(request, 'cfd/deposit.html', context)
 
 
@@ -53,51 +77,114 @@ def update_deposit(request, deposit_id):
             form.save()
             return redirect('cfd:deposit')
     context = {'updepo': updepo, 'form': form}
-    # context = {'updepo': updepo, 'deposit_id': deposit_id}
     return render(request, 'cfd/update_deposit.html', context)
 
 
+def delete_deposit(request, deposit_id):
+    depo = depo_db()
+    try:
+        deldepo = Deposit.objects.get(id=deposit_id)
+    except Deposit.DoesNotExist:
+        return redirect('cfd:deposit')
+    deldepo.delete()
+    context = {'depo': depo}
+    return HttpResponseRedirect(reverse('cfd:deposit'))
+    return render(request, 'cfd/deposit.html', context) 
+
+
 def withdrawal(request):
-    return render(request, 'cfd/withdrawal.html')
+    wdd = wd_db()
+    wd_sum = wd_db_pandas()
+    if not wd_sum.empty:
+        sum = wd_sum.amount_wd.sum()
+    else:
+        sum = 0 
+    context = {'wdd': wdd, 'sum': sum}
+    return render(request, 'cfd/withdrawal.html', context)
+
+
+def new_withdrawal(request):
+    if request.method != 'POST':    # if 'GET'
+        form = WithdrawalForm()
+    else:
+        form = WithdrawalForm(data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('cfd:withdrawal')
+    context = {'form': form}
+    return render(request, 'cfd/new_withdrawal.html', context)
+
+
+def update_withdrawal(request, withdrawal_id):
+    upwd = Withdrawal.objects.get(id=withdrawal_id)
+    if request.method != 'POST':
+        form = WithdrawalForm(instance=upwd)
+    else:
+        form = WithdrawalForm(instance=upwd, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('cfd:withdrawal')
+    context = {'upwd': upwd, 'form': form}
+    return render(request, 'cfd/update_withdrawal.html', context)
+
+
+def delete_withdrawal(request, withdrawal_id):
+    wdd = wd_db()
+    try:
+        delwd = Withdrawal.objects.get(id=withdrawal_id)
+    except Withdrawal.DoesNotExist:
+        return redirect('cfd:withdrawal')
+    delwd.delete()
+    context = {'wdd': wdd}
+    return HttpResponseRedirect(reverse('cfd:withdrawal'))
+    return render(request, 'cfd/withdrawal.html', context) 
 
 
 def statement(request):
     df = df_db()
-    all_sum = df.profit.sum()
+    commission_sum = df.commission.sum()
+    swap_sum = df.swap.sum()
+    filter_profit = (df['profit'] > 0)
+    filter_loss = (df['profit'] < 0)
+    profit_sum = df.loc[filter_profit, 'profit'].sum()
+    loss_sum = df.loc[filter_loss, 'profit'].sum()
+    ballance_sum = profit_sum + loss_sum + commission_sum + swap_sum
     df['open_time'] = pd.to_datetime(df['open_time']).dt.date
     df['close_time'] = pd.to_datetime(df['close_time']).dt.date
     url_statements = list(set(df['close_time']))
     url_statements.sort()
     format_days = []
-    profit = []
-    loss = []
-    balance = []
+    profit_per_day = []
+    loss_per_day = []
+    balance_per_day = []
     for url_stat in url_statements:
         day_st = df.loc[df['close_time'] == url_stat]
         format_days.append(url_stat.strftime('%A - %d %B %Y'))
-
         # --- commision ---
-        commission_sum = day_st.commission.sum()
+        commission_day = day_st.commission.sum()
         # --- Profit ----
         sum_profit = 0
         for i in day_st.profit:
             if i > 0:
                 sum_profit += i
-        profit.append(sum_profit + commission_sum)
+        profit_per_day.append(sum_profit + commission_day)
         # --- Loss ---
         loss_profit = 0
         for i in day_st.profit:
             if i < 0:
                 loss_profit += i
-        loss.append(loss_profit)
+        loss_per_day.append(loss_profit)
         # --- Balance ---
-        day_sum = sum_profit + commission_sum + loss_profit
-        balance.append(day_sum)
-
-    lists = list(zip(format_days, profit, loss, balance))
+        day_sum = sum_profit + commission_day + loss_profit
+        balance_per_day.append(day_sum)
+    lists = list(zip(format_days, profit_per_day, loss_per_day, balance_per_day))
     dicts = dict(zip(url_statements, lists))
-
-    context = {'all_sum': round(all_sum, 2), 'dicts': dicts}
+    context = {'dicts': dicts,
+            'profit_sum': round(profit_sum, 2),
+            'loss_sum': round(loss_sum, 2),
+            'ballance_sum': round(ballance_sum, 2), 
+            'commission_sum': round(commission_sum, 2),
+            'swap_sum': round(swap_sum, 2)}
     return render(request, 'cfd/statement.html', context)
 
 
@@ -154,9 +241,6 @@ def statements(request, url_statement):
 
 
 class ChartData(APIView):
-    # authentication_classes = []
-    # permission_classes = []
-
     def get(self, request, format=None):
         global url_from_request
         global format_day_from_request
@@ -171,3 +255,45 @@ class ChartData(APIView):
                 "chartdata": chartdata,
             }
         return Response(data)
+
+
+def year(request):
+    per = Notesdb.objects.all().values()
+    df = pd.DataFrame(per)
+    lm = ['MONTH 1', 'MONTH 2', 'MONTH 3', 'MONTH 4', 'MONTH 5', 'MONTH 6', 
+            'MONTH 7', 'MONTH 8', 'MONTH 9', 'MONTH 10', 'MONTH 11', 'MONTH 12']
+    l1 = []
+    l2 = []
+    l3 = []
+
+    filt = (df['id'] == 1)
+    percent = float(df.loc[filt, 'percent_year'])
+    amount_base = int(df.loc[filt, 'amount_year'])
+    amount = amount_base
+    # percent_year = 1
+
+    for i in range(22):
+        l1.append(amount)
+        numb = (amount * percent) / 100
+        amount += numb
+        l2.append(numb)
+        l3.append(amount)
+    sum_month = l3[21] - amount_base
+    per_month = ((l3[21] - amount_base) / amount_base) * 100
+    lists = list(zip(l1, l2, l3))
+    context = {'percent': percent, 'amount_base': amount_base, 'lists': lists,
+            'sum_month': sum_month, 'per_month': per_month,
+            'l1': l1, 'l2': l2, 'l3': l3, 'range': range(22)}
+    return render(request, 'cfd/year.html', context)
+
+
+def new_percent(request):
+    n_per = Notesdb.objects.get(id=1) 
+    if request.method != 'POST':
+        form = NotesdbForm(instance=n_per)
+    else:
+        form = NotesdbForm(instance=n_per, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('cfd:year')
+    return redirect('cfd:year')
