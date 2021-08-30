@@ -49,7 +49,7 @@ def deposit(request):
     if not depo_sum.empty:
         sum = depo_sum.amount_dep.sum()
     else:
-        sum = 0 
+        sum = 0
     sum = depo_sum.amount_dep.sum()
     context = {'depo': depo, 'sum': sum}
     return render(request, 'cfd/deposit.html', context)
@@ -89,7 +89,7 @@ def delete_deposit(request, deposit_id):
     deldepo.delete()
     context = {'depo': depo}
     return HttpResponseRedirect(reverse('cfd:deposit'))
-    return render(request, 'cfd/deposit.html', context) 
+    return render(request, 'cfd/deposit.html', context)
 
 
 def withdrawal(request):
@@ -98,7 +98,7 @@ def withdrawal(request):
     if not wd_sum.empty:
         sum = wd_sum.amount_wd.sum()
     else:
-        sum = 0 
+        sum = 0
     context = {'wdd': wdd, 'sum': sum}
     return render(request, 'cfd/withdrawal.html', context)
 
@@ -137,7 +137,7 @@ def delete_withdrawal(request, withdrawal_id):
     delwd.delete()
     context = {'wdd': wdd}
     return HttpResponseRedirect(reverse('cfd:withdrawal'))
-    return render(request, 'cfd/withdrawal.html', context) 
+    return render(request, 'cfd/withdrawal.html', context)
 
 
 def statement(request):
@@ -182,7 +182,7 @@ def statement(request):
     context = {'dicts': dicts,
             'profit_sum': round(profit_sum, 2),
             'loss_sum': round(loss_sum, 2),
-            'ballance_sum': round(ballance_sum, 2), 
+            'ballance_sum': round(ballance_sum, 2),
             'commission_sum': round(commission_sum, 2),
             'swap_sum': round(swap_sum, 2)}
     return render(request, 'cfd/statement.html', context)
@@ -260,35 +260,30 @@ class ChartData(APIView):
 def year(request):
     per = Notesdb.objects.all().values()
     df = pd.DataFrame(per)
-    lm = ['MONTH 1', 'MONTH 2', 'MONTH 3', 'MONTH 4', 'MONTH 5', 'MONTH 6', 
-            'MONTH 7', 'MONTH 8', 'MONTH 9', 'MONTH 10', 'MONTH 11', 'MONTH 12']
-    l1 = []
-    l2 = []
-    l3 = []
+    l1, l2, l3, lper, lsum = [], [], [], [], []
 
     filt = (df['id'] == 1)
     percent = float(df.loc[filt, 'percent_year'])
     amount_base = int(df.loc[filt, 'amount_year'])
     amount = amount_base
-    # percent_year = 1
 
-    for i in range(22):
+    for i in range(264):
         l1.append(amount)
         numb = (amount * percent) / 100
         amount += numb
         l2.append(numb)
         l3.append(amount)
-    sum_month = l3[21] - amount_base
-    per_month = ((l3[21] - amount_base) / amount_base) * 100
-    lists = list(zip(l1, l2, l3))
+        lper.append(((amount - amount_base) / amount_base) * 100)
+    for i in range(1, 13):
+        lsum.append(l3[(i*22)-1] - l1[(i*22)-22])
+    lists = list(zip(l1, l2, l3, lper))
     context = {'percent': percent, 'amount_base': amount_base, 'lists': lists,
-            'sum_month': sum_month, 'per_month': per_month,
-            'l1': l1, 'l2': l2, 'l3': l3, 'range': range(22)}
+               'lsum': lsum}
     return render(request, 'cfd/year.html', context)
 
 
 def new_percent(request):
-    n_per = Notesdb.objects.get(id=1) 
+    n_per = Notesdb.objects.get(id=1)
     if request.method != 'POST':
         form = NotesdbForm(instance=n_per)
     else:
@@ -297,3 +292,7 @@ def new_percent(request):
             form.save()
             return redirect('cfd:year')
     return redirect('cfd:year')
+
+
+def calc(request):
+    return render(request, 'cfd/calc.html')

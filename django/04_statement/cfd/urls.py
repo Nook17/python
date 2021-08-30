@@ -17,5 +17,5 @@ urlpatterns = [
     path('delete_withdrawal/<int:withdrawal_id>/', views.delete_withdrawal, name='delete_withdrawal'),
     path('year', views.year, name='year'),
     path('year/new', views.new_percent, name='new_percent'),
-    # path('year/newamo', views.new_amount, name='new_amount'),
+    path('calc', views.calc, name='calc'),
     ]

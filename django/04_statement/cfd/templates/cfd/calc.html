@@ -1,0 +1,71 @@
+{% extends "cfd/base.html" %}
+{% load static %}
+{% block link %}
+	<link rel="stylesheet" href="{% static 'cfd/style/table.css' %}" type="text/css">
+{% endblock link %}
+
+{% block content %}
+  <main class="container flex-shrink-0">
+    <div class="p-5 rounded">
+	  <p class="lead">Calculate take profit & stop loss</p>
+      <div class="row">
+		  <div class="col-md-4">
+			<form action="" method="post">
+				{% csrf_token %}
+				  <div class="col-auto">
+					<div class="input-group input-group-sm">
+					  <button class="btn btn-outline-secondary btn-sm" type="submit"
+						  id="button-addon1">Set</button>
+					  <input type="number" step="0.1" name="percent_year" 
+					  value="1" class="form-control">
+					</div>
+						<span class="year-sm-text">
+						  Set the percentage [%] and the amount.  
+						</span>
+				  </div>
+			</form>
+		  </div> <!-- col-md -->
+      </div> <!-- row -->
+      <div class="row">
+        <div class="col-md-3">
+			<table class="tg">
+				<thead>
+				  <tr>
+					<th class="tg-month" colspan="4">MONTH 1</th>
+				  </tr>
+				</thead>
+				<tbody>
+					  <tr>
+						  <td class="tg-sumday">xxx</td>
+					  </tr>
+				</tbody>
+			</table>
+		</div> <!-- col-md -->
+      </div> <!-- row -->
+      <div class="row">
+        <div class="col-md-4">
+			<ul>
+				buy_calcdb:
+				<li>buy_level</li>
+			</ul>
+			<ul>
+				sell_calcdb:
+				<li>sell_level</li>
+			</ul>
+		</div> <!-- col-md -->
+        <div class="col-md-4">
+			<ul>
+				notesdb:
+				<li>margin_value</li>
+				<li>pip_value</li>
+				<li>gap</li>
+				<li>tp_buy</li>
+				<li>tp_sell</li>
+			</ul>
+		</div> <!-- col-md -->
+      </div> <!-- row -->
+
+	</div><!-- p-5 rounded -->
+  </main>
+  {% include "cfd/footer.html" %}
+{% endblock content %}
