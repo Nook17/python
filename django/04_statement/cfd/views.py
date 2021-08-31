@@ -50,7 +50,6 @@ def deposit(request):
         sum = depo_sum.amount_dep.sum()
     else:
         sum = 0
-    sum = depo_sum.amount_dep.sum()
     context = {'depo': depo, 'sum': sum}
     return render(request, 'cfd/deposit.html', context)
 
@@ -180,11 +179,11 @@ def statement(request):
     lists = list(zip(format_days, profit_per_day, loss_per_day, balance_per_day))
     dicts = dict(zip(url_statements, lists))
     context = {'dicts': dicts,
-            'profit_sum': round(profit_sum, 2),
-            'loss_sum': round(loss_sum, 2),
-            'ballance_sum': round(ballance_sum, 2),
-            'commission_sum': round(commission_sum, 2),
-            'swap_sum': round(swap_sum, 2)}
+               'profit_sum': round(profit_sum, 2),
+               'loss_sum': round(loss_sum, 2),
+               'ballance_sum': round(ballance_sum, 2),
+               'commission_sum': round(commission_sum, 2),
+               'swap_sum': round(swap_sum, 2)}
     return render(request, 'cfd/statement.html', context)
 
 
@@ -260,13 +259,15 @@ class ChartData(APIView):
 def year(request):
     per = Notesdb.objects.all().values()
     df = pd.DataFrame(per)
+    if not len(df.columns) == 0:
+        filt = (df['id'] == 1)
+        percent = float(df.loc[filt, 'percent_year'])
+        amount_base = int(df.loc[filt, 'amount_year'])
+    else:
+        percent = 1
+        amount_base = 1000
     l1, l2, l3, lper, lsum = [], [], [], [], []
-
-    filt = (df['id'] == 1)
-    percent = float(df.loc[filt, 'percent_year'])
-    amount_base = int(df.loc[filt, 'amount_year'])
     amount = amount_base
-
     for i in range(264):
         l1.append(amount)
         numb = (amount * percent) / 100
@@ -283,11 +284,20 @@ def year(request):
 
 
 def new_percent(request):
-    n_per = Notesdb.objects.get(id=1)
-    if request.method != 'POST':
-        form = NotesdbForm(instance=n_per)
+    per = Notesdb.objects.all().values()
+    df = pd.DataFrame(per)
+    if not df.empty:
+        n_per = Notesdb.objects.get(id=1)
+        if request.method != 'POST':
+            form = NotesdbForm(instance=n_per)
+        else:
+            form = NotesdbForm(instance=n_per, data=request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('cfd:year')
+        return redirect('cfd:year')
     else:
-        form = NotesdbForm(instance=n_per, data=request.POST)
+        form = NotesdbForm(data=request.POST)
         if form.is_valid():
             form.save()
             return redirect('cfd:year')
@@ -295,4 +305,8 @@ def new_percent(request):
 
 
 def calc(request):
+    return render(request, 'cfd/calc.html')
+
+
+def calc_set(request):
     return render(request, 'cfd/calc.html')
