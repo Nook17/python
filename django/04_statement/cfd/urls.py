@@ -15,8 +15,11 @@ urlpatterns = [
     path('new_withdrawal/', views.new_withdrawal, name='new_withdrawal'),
     path('update_withdrawal/<int:withdrawal_id>/', views.update_withdrawal, name='update_withdrawal'),
     path('delete_withdrawal/<int:withdrawal_id>/', views.delete_withdrawal, name='delete_withdrawal'),
-    path('year', views.year, name='year'),
+    path('year/', views.year, name='year'),
     path('year/set', views.new_percent, name='new_percent'),
-    path('calc', views.calc, name='calc'),
+    path('calc/', views.calc, name='calc'),
     path('calc/set', views.calc_set, name='calc_set'),
+    path('calc/buy_create', views.calc_buy_create, name='calc_buy_create'),
+    # path('calc/buy_update/<int:buy_id>/', views.calc_buy_update, name='calc_buy_update'),
+    path('calc/buy_delete/<int:buy_id>/', views.calc_buy_delete, name='calc_buy_delete'),
     ]

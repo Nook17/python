@@ -1,7 +1,7 @@
 # import form class from django
 from django import forms
 # import GeeksModel from models.py
-from .models import Deposit, Withdrawal, Notesdb
+from .models import Deposit, Withdrawal, Notesdb, Buy_calc
 
 
 # create a ModelForm
@@ -23,4 +23,9 @@ class WithdrawalForm(forms.ModelForm):
 class NotesdbForm(forms.ModelForm):
     class Meta:
         model = Notesdb
+        fields = "__all__"
+
+class Buy_calcForm(forms.ModelForm):
+    class Meta:
+        model = Buy_calc
         fields = "__all__"

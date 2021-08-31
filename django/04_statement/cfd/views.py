@@ -4,8 +4,8 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Statement, Deposit, Withdrawal, Notesdb
-from .forms import DepositForm, WithdrawalForm, NotesdbForm
+from .models import Statement, Deposit, Withdrawal, Notesdb, Buy_calc
+from .forms import DepositForm, WithdrawalForm, NotesdbForm, Buy_calcForm
 import pandas as pd
 import json
 from datetime import datetime
@@ -305,8 +305,76 @@ def new_percent(request):
 
 
 def calc(request):
-    return render(request, 'cfd/calc.html')
+    cal = Notesdb.objects.all().values()
+    buy_level = Buy_calc.objects.all().values().order_by('-buy_level')
+    df_cal = pd.DataFrame(cal)
+    # df_buy = pd.DataFrame(buy_lev)
+    # buy_level = list(set(df_buy['buy_level']))
+    if not len(df_cal.columns) == 0:
+        filt = (df_cal['id'] == 2)
+        gap = int(df_cal.loc[filt, 'gap'])
+        lot = float(df_cal.loc[filt, 'lot'])
+        margin_value = int(df_cal.loc[filt, 'margin_value'])
+        pip_value = float(df_cal.loc[filt, 'pip_value'])
+        tp_buy = int(df_cal.loc[filt, 'tp_buy'])
+    else:
+        percent = 1
+        amount_base = 1000
+    context = {'gap': gap, 'lot': lot, 'margin_value': margin_value,
+               'pip_value': pip_value, 'tp_buy': tp_buy,
+               'buy_level': buy_level}    
+    return render(request, 'cfd/calc.html', context)
 
 
 def calc_set(request):
+    cal = Notesdb.objects.all().values()
+    df = pd.DataFrame(cal)
+    if not df.empty:
+        cal_db = Notesdb.objects.get(id=2)
+        if request.method != 'POST':
+            form = NotesdbForm(instance=cal_db)
+        else:
+            form = NotesdbForm(instance=cal_db, data=request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('cfd:calc')
+        return redirect('cfd:calc')
+    else:
+        form = NotesdbForm(data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('cfd:calc')
     return render(request, 'cfd/calc.html')
+
+
+def calc_buy_create(request):
+    if request.method != 'POST':
+        form = Buy_calcForm()
+    else:
+        form = Buy_calcForm(data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('cfd:calc')    
+    return render(request, 'cfd/calc.html')
+
+
+# def calc_buy_update(request, buy_id):
+    # upwd = Withdrawal.objects.get(id=withdrawal_id)
+    # if request.method != 'POST':
+    #     form = WithdrawalForm(instance=upwd)
+    # else:
+    #     form = WithdrawalForm(instance=upwd, data=request.POST)
+    #     if form.is_valid():
+    #         form.save()
+    #         return redirect('cfd:withdrawal')    
+    # return render(request, 'cfd/calc.html')
+
+
+def calc_buy_delete(request, buy_id):
+    # cbd = Buy_calc.objects.all().values()
+    try:
+        cbd = Buy_calc.objects.get(id=buy_id)
+    except Buy_calc.DoesNotExist:
+        return redirect('cfd:calc')
+    cbd.delete()
+    return HttpResponseRedirect(reverse('cfd:calc'))    

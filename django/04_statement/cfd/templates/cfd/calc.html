@@ -14,39 +14,68 @@
 			<form action="{% url 'cfd:calc_set' %}" method="post" class="row g-3">
 			  {% csrf_token %}
 			  <div class="col-md-6 input-group-sm">
-				<input type="number" step="1" name="" value="1" class="form-control">
+				  <input type="number" step="1" name="margin_value" value="{{ margin_value }}" class="form-control">
 				<label for="margin_value" class="year-sm-text">Margin value</label>
 			  </div>
 			  <div class="col-md-6 input-group-sm">
-				<input type="number" step="0.1" name="pip_value" value="1" class="form-control">
+				<input type="number" step="0.1" name="pip_value" value="{{ pip_value|floatformat:"1" }}" class="form-control">
 				<label for="pip_value" class="year-sm-text">Pip value</label>
 			  </div>
 			  <div class="col-md-6 input-group-sm">
-				<input type="number" step="1" name="gap" value="1" class="form-control">
+				  <input type="number" step="1" name="gap" value="{{ gap }}" class="form-control">
 				<label for="gap" class="year-sm-text">Gap</label>
 			  </div>
 			  <div class="col-md-6 input-group-sm">
-				<input type="number" step="0.1" name="lot" value="1" class="form-control">
+				  <input type="number" step="0.1" name="lot" value="{{ lot|floatformat:"1" }}" class="form-control">
 				<label for="lot" class="year-sm-text">Lot size</label>
 			  </div>
 			  <div class="col-12 input-group-sm">
-				<input type="number" step="1" name="tp_buy" value="1" class="form-control">
+				  <input type="number" step="1" name="tp_buy" value="{{ tp_buy|safe }}" class="form-control">
 				<label for="tp_buy" class="year-sm-text">Take Profit</label>
 			  </div>
 			  <div class="col-12 input-group-sm text-center">
 				<button type="submit" class="btn btn-outline-secondary btn-sm">Set</button>
 			  </div>
 			</form>
-
+			<div class="row">
+				<div class="col-md-4">
+					<p class="lead">Profit: </p>
+				</div>
+			</div>
 		  </div> <!-- col-md -->
 		  <div class="col-md-4">
 
-			<form action="{% url 'cfd:calc_set' %}" method="post" class="row g-3">
+			<form action="{% url 'cfd:calc_buy_create' %}" method="post" class="row g-3">
 			  {% csrf_token %}
 			  <div class="card ncard border-info mb-1" style="max-width: 18rem;">
 				<div class="card-header">Set trade levels</div>
 				  <div class="card-body">
-					  <div class="col-md-8 input-group-sm">
+					  <div class="col-md-12">
+						<table class="table table-sm">
+						  <thead>
+							<tr>
+							  <th scope="col">Trade Levels:</th>
+							  <th scope="col"></th>
+							</tr>
+						  </thead>
+						  <tbody>
+							  {% for buy_l in buy_level %}
+							<tr>
+							  <td>{{ buy_l.buy_level }}</td>
+							  <td>
+								  <a href="{% url 'cfd:calc_buy_delete' buy_l.id %}">
+									  <i class="bi bi-trash text-danger ml-4" 
+										  data-bs-toggle="tooltip" 
+										  data-bs-placement="top" title="Delete"></i>
+								  </a>
+							  </td>
+							</tr>
+							{% endfor %}
+						  </tbody>
+						</table>
+					  </div>
+					   
+					  <div class="col-md-12 input-group-sm">
 						<input type="number" step="1" name="buy_level" value="1" class="form-control">
 						<label for="buy_level" class="year-sm-text">Buy Level</label>
 					  </div>
