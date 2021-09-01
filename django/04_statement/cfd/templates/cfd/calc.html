@@ -10,7 +10,6 @@
 	  <p class="lead">Calculate take profit & stop loss</p>
       <div class="row">
 		  <div class="col-md-4">
-
 			<form action="{% url 'cfd:calc_set' %}" method="post" class="row g-3">
 			  {% csrf_token %}
 			  <div class="col-md-6 input-group-sm">
@@ -18,7 +17,7 @@
 				<label for="margin_value" class="year-sm-text">Margin value</label>
 			  </div>
 			  <div class="col-md-6 input-group-sm">
-				<input type="number" step="0.1" name="pip_value" value="{{ pip_value|floatformat:"1" }}" class="form-control">
+				<input type="number" step="0.01" name="pip_value" value="{{ pip_value|floatformat:"2" }}" class="form-control">
 				<label for="pip_value" class="year-sm-text">Pip value</label>
 			  </div>
 			  <div class="col-md-6 input-group-sm">
@@ -26,7 +25,7 @@
 				<label for="gap" class="year-sm-text">Gap</label>
 			  </div>
 			  <div class="col-md-6 input-group-sm">
-				  <input type="number" step="0.1" name="lot" value="{{ lot|floatformat:"1" }}" class="form-control">
+				  <input type="number" step="0.01" name="lot" value="{{ lot|floatformat:"2" }}" class="form-control">
 				<label for="lot" class="year-sm-text">Lot size</label>
 			  </div>
 			  <div class="col-12 input-group-sm">
@@ -38,32 +37,40 @@
 			  </div>
 			</form>
 			<div class="row">
-				<div class="col-md-4">
-					<p class="lead">Profit: </p>
+				<div class="col-md-12">
+					<p class="lead mt-4">Profit: 
+					{% if sum_profit > 0 %}
+					  <span class="text-success">{{ sum_profit|floatformat:"2" }}</span>
+					{% else %}
+					  <span class="text-danger">{{ sum_profit|floatformat:"2" }}</span>
+					{% endif %}
+					</p>
 				</div>
 			</div>
 		  </div> <!-- col-md -->
-		  <div class="col-md-4">
+		  <div class="col-md-8">
 
-			<form action="{% url 'cfd:calc_buy_create' %}" method="post" class="row g-3">
+			<form action="{% url 'cfd:calc_buy_create' %}" method="post" class="">
 			  {% csrf_token %}
-			  <div class="card ncard border-info mb-1" style="max-width: 18rem;">
+			  <div class="ncard border-info mb-1" style="max-width: 18rem;">
 				<div class="card-header">Set trade levels</div>
 				  <div class="card-body">
-					  <div class="col-md-12">
+					  <div class="col-md-4">
 						<table class="table table-sm">
 						  <thead>
 							<tr>
-							  <th scope="col">Trade Levels:</th>
+							  <th scope="col">Profit:</th>
+							  <th scope="col">Levels:</th>
 							  <th scope="col"></th>
 							</tr>
 						  </thead>
 						  <tbody>
-							  {% for buy_l in buy_level %}
+							  {% for buy_l in buy_zip %}
 							<tr>
-							  <td>{{ buy_l.buy_level }}</td>
+							  <td>{{ buy_l.0|floatformat:"2" }}</td>
+							  <td>{{ buy_l.1.1 }}</td>
 							  <td>
-								  <a href="{% url 'cfd:calc_buy_delete' buy_l.id %}">
+								  <a href="{% url 'cfd:calc_buy_delete' buy_l.1.0 %}">
 									  <i class="bi bi-trash text-danger ml-4" 
 										  data-bs-toggle="tooltip" 
 										  data-bs-placement="top" title="Delete"></i>
@@ -74,9 +81,9 @@
 						  </tbody>
 						</table>
 					  </div>
-					   
+
 					  <div class="col-md-12 input-group-sm">
-						<input type="number" step="1" name="buy_level" value="1" class="form-control">
+						<input type="number" step="1" name="buy_level" value="" class="form-control">
 						<label for="buy_level" class="year-sm-text">Buy Level</label>
 					  </div>
 					  <div class="col-12 input-group-sm text-center">

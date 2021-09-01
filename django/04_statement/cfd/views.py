@@ -308,8 +308,9 @@ def calc(request):
     cal = Notesdb.objects.all().values()
     buy_level = Buy_calc.objects.all().values().order_by('-buy_level')
     df_cal = pd.DataFrame(cal)
-    # df_buy = pd.DataFrame(buy_lev)
-    # buy_level = list(set(df_buy['buy_level']))
+    df_buy = pd.DataFrame(buy_level)
+    df_buy.sort_values('buy_level', ascending=False, inplace=True)
+    buy_levels = df_buy.values.tolist()
     if not len(df_cal.columns) == 0:
         filt = (df_cal['id'] == 2)
         gap = int(df_cal.loc[filt, 'gap'])
@@ -318,11 +319,20 @@ def calc(request):
         pip_value = float(df_cal.loc[filt, 'pip_value'])
         tp_buy = int(df_cal.loc[filt, 'tp_buy'])
     else:
-        percent = 1
-        amount_base = 1000
+        variables = 'default'   # temporary values
+
+    profit_levels = []
+    for lev in Buy_calc.objects.values_list('buy_level', flat=True).order_by('-buy_level'):
+        profit_levels.append((tp_buy-lev)*pip_value)
+
+    buy_zip = list(zip(profit_levels, buy_levels))
+
+    sum_profit = sum(profit_levels)
     context = {'gap': gap, 'lot': lot, 'margin_value': margin_value,
                'pip_value': pip_value, 'tp_buy': tp_buy,
-               'buy_level': buy_level}    
+               'buy_level': buy_level, 'profit_levels': profit_levels,
+               'sum_profit': sum_profit,
+               'buy_levels': buy_levels, 'buy_zip': buy_zip}
     return render(request, 'cfd/calc.html', context)
 
 
@@ -354,20 +364,8 @@ def calc_buy_create(request):
         form = Buy_calcForm(data=request.POST)
         if form.is_valid():
             form.save()
-            return redirect('cfd:calc')    
+            return redirect('cfd:calc')
     return render(request, 'cfd/calc.html')
-
-
-# def calc_buy_update(request, buy_id):
-    # upwd = Withdrawal.objects.get(id=withdrawal_id)
-    # if request.method != 'POST':
-    #     form = WithdrawalForm(instance=upwd)
-    # else:
-    #     form = WithdrawalForm(instance=upwd, data=request.POST)
-    #     if form.is_valid():
-    #         form.save()
-    #         return redirect('cfd:withdrawal')    
-    # return render(request, 'cfd/calc.html')
 
 
 def calc_buy_delete(request, buy_id):
@@ -377,4 +375,4 @@ def calc_buy_delete(request, buy_id):
     except Buy_calc.DoesNotExist:
         return redirect('cfd:calc')
     cbd.delete()
-    return HttpResponseRedirect(reverse('cfd:calc'))    
+    return HttpResponseRedirect(reverse('cfd:calc'))

@@ -22,4 +22,17 @@
 .col-margin-20 { margin-top: 2.0em; }
 .col-margin-30 { margin-top: 3.0em; }
 body .year-sm-text { font-size: 0.7rem; color: #686868; }
-.ncard .card { background-color: rgb(0 0 0 / 8%) }
+
+.ncard {
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: rgb(0 0 0 / 8%);
+    background-clip: border-box;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: .25rem;
+}
