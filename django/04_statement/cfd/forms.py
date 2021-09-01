@@ -24,6 +24,10 @@ class NotesdbForm(forms.ModelForm):
     class Meta:
         model = Notesdb
         fields = "__all__"
+        # widgets = {
+        #     'buy_or_sell': forms.RadioSelect
+        # }
+
 
 class Buy_calcForm(forms.ModelForm):
     class Meta:

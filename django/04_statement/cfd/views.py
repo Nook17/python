@@ -345,6 +345,7 @@ def calc_set(request):
             form = NotesdbForm(instance=cal_db)
         else:
             form = NotesdbForm(instance=cal_db, data=request.POST)
+            # form.buy_or_sell = request.POST['buy_or_sell'] == 'true'
             if form.is_valid():
                 form.save()
                 return redirect('cfd:calc')

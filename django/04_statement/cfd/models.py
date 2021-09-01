@@ -40,6 +40,10 @@ class Withdrawal(models.Model):
     objects = DataFrameManager()
 
 
+BOOL_CHOICES = ((True, 'Yes'), (False, 'No'))
+# BOOL_CHOICES = ((True, 'Buy'), (False, 'Sell'))
+
+
 class Notesdb(models.Model):
     percent_year = models.FloatField(null=True, blank=True)
     amount_year = models.IntegerField(null=True, blank=True)
@@ -50,6 +54,10 @@ class Notesdb(models.Model):
     lot = models.FloatField(null=True, blank=True)
     tp_buy = models.IntegerField(null=True, blank=True)
     tp_sell = models.IntegerField(null=True, blank=True)
+    # buy_or_sell = models.BooleanField(default=False, null=True)
+    buy_or_sell = models.BooleanField(choices=BOOL_CHOICES, null=True)
+    # buy_or_sell = models.ChoiceField(choices=BOOL_CHOICES, null=True)
+    
 
     objects = DataFrameManager()
 
