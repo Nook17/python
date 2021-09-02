@@ -309,30 +309,34 @@ def calc(request):
     buy_level = Buy_calc.objects.all().values().order_by('-buy_level')
     df_cal = pd.DataFrame(cal)
     df_buy = pd.DataFrame(buy_level)
-    df_buy.sort_values('buy_level', ascending=False, inplace=True)
-    buy_levels = df_buy.values.tolist()
+    try:
+        df_buy.sort_values('buy_level', ascending=False, inplace=True)
+        buy_levels = df_buy.values.tolist()
+    except KeyError:
+        buy_levels = [1]
     if not len(df_cal.columns) == 0:
         filt = (df_cal['id'] == 2)
         gap = int(df_cal.loc[filt, 'gap'])
         lot = float(df_cal.loc[filt, 'lot'])
         margin_value = int(df_cal.loc[filt, 'margin_value'])
         pip_value = float(df_cal.loc[filt, 'pip_value'])
-        tp_buy = int(df_cal.loc[filt, 'tp_buy'])
+        tp = int(df_cal.loc[filt, 'tp'])
+        select = df_cal.at[1, 'buy_or_sell']
     else:
         variables = 'default'   # temporary values
 
     profit_levels = []
     for lev in Buy_calc.objects.values_list('buy_level', flat=True).order_by('-buy_level'):
-        profit_levels.append((tp_buy-lev)*pip_value)
+        if select == 'Long':
+            profit_levels.append((tp-lev)*(pip_value*lot*100))
+        elif select == 'Short':
+            profit_levels.append((lev-tp)*(pip_value*lot*100))
 
     buy_zip = list(zip(profit_levels, buy_levels))
-
     sum_profit = sum(profit_levels)
     context = {'gap': gap, 'lot': lot, 'margin_value': margin_value,
-               'pip_value': pip_value, 'tp_buy': tp_buy,
-               'buy_level': buy_level, 'profit_levels': profit_levels,
-               'sum_profit': sum_profit,
-               'buy_levels': buy_levels, 'buy_zip': buy_zip}
+               'pip_value': pip_value, 'tp': tp, 'select': select,
+               'sum_profit': sum_profit, 'buy_zip': buy_zip}
     return render(request, 'cfd/calc.html', context)
 
 
@@ -345,7 +349,6 @@ def calc_set(request):
             form = NotesdbForm(instance=cal_db)
         else:
             form = NotesdbForm(instance=cal_db, data=request.POST)
-            # form.buy_or_sell = request.POST['buy_or_sell'] == 'true'
             if form.is_valid():
                 form.save()
                 return redirect('cfd:calc')
@@ -370,7 +373,6 @@ def calc_buy_create(request):
 
 
 def calc_buy_delete(request, buy_id):
-    # cbd = Buy_calc.objects.all().values()
     try:
         cbd = Buy_calc.objects.get(id=buy_id)
     except Buy_calc.DoesNotExist:

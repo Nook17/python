@@ -40,10 +40,6 @@ class Withdrawal(models.Model):
     objects = DataFrameManager()
 
 
-# BOOL_CHOICES = ((True, 'Yes'), (False, 'No'))
-# BOOL_CHOICES = ((True, 'Buy'), (False, 'Sell'))
-
-
 class Notesdb(models.Model):
     percent_year = models.FloatField(null=True, blank=True)
     amount_year = models.IntegerField(null=True, blank=True)
@@ -52,12 +48,8 @@ class Notesdb(models.Model):
     pip_value = models.FloatField(null=True, blank=True)
     gap = models.IntegerField(null=True, blank=True)
     lot = models.FloatField(null=True, blank=True)
-    tp_buy = models.IntegerField(null=True, blank=True)
-    tp_sell = models.IntegerField(null=True, blank=True)
-    # buy_or_sell = models.BooleanField(default=False, null=True)
+    tp = models.IntegerField(null=True, blank=True)
     buy_or_sell = models.CharField(max_length=255, null=True, blank=True)
-    # buy_or_sell = models.ChoiceField(choices=BOOL_CHOICES, null=True)
-    
 
     objects = DataFrameManager()
 
@@ -68,7 +60,7 @@ class Buy_calc(models.Model):
     objects = DataFrameManager()
 
 
-class Sell_calc(models.Model):
-    sell_level = models.IntegerField()
+# class Sell_calc(models.Model):
+#     sell_level = models.IntegerField()
 
-    objects = DataFrameManager()
+#     objects = DataFrameManager()
