@@ -29,28 +29,37 @@
 				<label for="lot" class="year-sm-text">Lot size</label>
 			  </div>
 			  <div class="col-12 input-group-sm">
+				<select class="form-select form-control" name="buy_or_sell" aria-label="Default select example">
+				  <option selected>Long</option>
+				  <option value="Short">Short</option>
+				</select>
+				  <label for="buy_or_sell" class="year-sm-text">Select Long or Short</label>
+			  </div>
+			  <div class="col-12 input-group-sm">
 				<input type="number" step="1" name="tp_buy" value="{{ tp_buy|safe }}" class="form-control">
 				<label for="tp_buy" class="year-sm-text">Take Profit</label>
 			  </div>
-			  <div class="form-check">
-				  <input class="form-check-input" type="radio" name="buy_or_sell" id="" checked>
-				  <label class="form-check-label" for="buy_or_sell">
-					Buy
-				  </label>
-			  </div>
-			  <div class="form-check">
-				  <input class="form-check-input" type="radio" name="buy_or_sell" id="" >
-				  <label class="form-check-label" for="buy_or_sell">
-					Sell
-				  </label>
-			  </div>
+
+
+			  <!-- <div class="form-check"> -->
+				  <!-- <input class="form-check-input" type="radio" name="buy_or_sell" id="" checked> -->
+				  <!-- <label class="form-check-label" for="buy_or_sell"> -->
+					<!-- Buy -->
+				  <!-- </label> -->
+			  <!-- </div> -->
+			  <!-- <div class="form-check"> -->
+				  <!-- <input class="form-check-input" type="radio" name="buy_or_sell" id="" > -->
+				  <!-- <label class="form-check-label" for="buy_or_sell"> -->
+					<!-- Sell -->
+				  <!-- </label> -->
+			  <!-- </div> -->
 <!-- <div class="form-check"> -->
 <!--   <input class="form-check-input" type="checkbox" value="" id="checkbox" name="buy_or_sell"> -->
 <!--   <label class="form-check-label" for="flexCheckDefault"> -->
 <!--     Default checkbox -->
 <!--   </label> -->
 <!-- </div> -->
-			  <div class="col-12 input-group-sm text-center">
+			  <div class="col-12 input-group-sm text-center mt-2">
 				<button type="submit" class="btn btn-outline-secondary btn-sm">Set</button>
 			  </div>
 

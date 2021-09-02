@@ -40,7 +40,7 @@ class Withdrawal(models.Model):
     objects = DataFrameManager()
 
 
-BOOL_CHOICES = ((True, 'Yes'), (False, 'No'))
+# BOOL_CHOICES = ((True, 'Yes'), (False, 'No'))
 # BOOL_CHOICES = ((True, 'Buy'), (False, 'Sell'))
 
 
@@ -55,7 +55,7 @@ class Notesdb(models.Model):
     tp_buy = models.IntegerField(null=True, blank=True)
     tp_sell = models.IntegerField(null=True, blank=True)
     # buy_or_sell = models.BooleanField(default=False, null=True)
-    buy_or_sell = models.BooleanField(choices=BOOL_CHOICES, null=True)
+    buy_or_sell = models.CharField(max_length=255, null=True, blank=True)
     # buy_or_sell = models.ChoiceField(choices=BOOL_CHOICES, null=True)
     
 
