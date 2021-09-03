@@ -4,8 +4,8 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Statement, Deposit, Withdrawal, Notesdb, Buy_calc
-from .forms import DepositForm, WithdrawalForm, NotesdbForm, Buy_calcForm
+from .models import Statement, Deposit, Withdrawal, Notesdb, Buy_calc, Quarter
+from .forms import DepositForm, WithdrawalForm, NotesdbForm, Buy_calcForm, QuarterForm
 import pandas as pd
 import json
 from datetime import datetime
@@ -379,3 +379,49 @@ def calc_buy_delete(request, buy_id):
         return redirect('cfd:calc')
     cbd.delete()
     return HttpResponseRedirect(reverse('cfd:calc'))
+
+
+def quarter(request):
+    per = Notesdb.objects.all().values()
+    df = pd.DataFrame(per)
+    if not len(df.columns) == 0:
+        filt = (df['id'] == 1)
+        percent = float(df.loc[filt, 'percent_year'])
+        amount_base = int(df.loc[filt, 'amount_year'])
+    else:
+        percent = 1
+        amount_base = 1000
+    l1, l2, l3, lper, lsum = [], [], [], [], []
+    amount = amount_base
+    for i in range(264):
+        l1.append(amount)
+        numb = (amount * percent) / 100
+        amount += numb
+        l2.append(numb)
+        l3.append(amount)
+        lper.append(((amount - amount_base) / amount_base) * 100)
+    for i in range(1, 13):
+        lsum.append(l3[(i*22)-1] - l1[(i*22)-22])
+    lists = list(zip(l1, l2, l3, lper))
+    context = {'percent': percent, 'amount_base': amount_base, 'lists': lists,
+               'lsum': lsum}
+    return render(request, 'cfd/quarter.html', context)
+
+
+def quarter_set(request):
+    try:
+        qrt = Quarter.objects.get(id=request.POST.get('id'))
+        if request.method != 'POST':
+          form = QuarterForm(instance=qrt)
+        else:
+          form = QuarterForm(instance=qrt, data=request.POST)
+          if form.is_valid():
+            form.save()
+            return redirect('cfd:calc')
+    except:
+        form = QuarterForm(data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('cfd:calc')
+    return render(request, 'cfd/quarter.html')
+

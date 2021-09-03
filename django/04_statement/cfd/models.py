@@ -50,6 +50,10 @@ class Notesdb(models.Model):
     lot = models.FloatField(null=True, blank=True)
     tp = models.IntegerField(null=True, blank=True)
     buy_or_sell = models.CharField(max_length=255, null=True, blank=True)
+    amount_quarter = models.IntegerField(null=True, blank=True)
+    percent_1 = models.FloatField(null=True, blank=True)
+    percent_2 = models.FloatField(null=True, blank=True)
+    percent_3 = models.FloatField(null=True, blank=True)
 
     objects = DataFrameManager()
 
@@ -60,7 +64,25 @@ class Buy_calc(models.Model):
     objects = DataFrameManager()
 
 
-# class Sell_calc(models.Model):
-#     sell_level = models.IntegerField()
+class Quarter(models.Model):
+    date = models.DateTimeField(auto_now=False, auto_now_add=False)
+    profit = models.IntegerField(null=True, blank=True)
 
-#     objects = DataFrameManager()
+    objects = DataFrameManager()
+
+'''
+Quarter
+-------
+id
+date - DateTimeField
+profit - FloatField
+
+
+Notesdb
+-------
+amount_quarter - IntegerField
+percent_1 - FloatField
+percent_2 - FloatField
+percent_3 - FloatField
+
+'''
