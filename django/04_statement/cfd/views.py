@@ -383,27 +383,59 @@ def calc_buy_delete(request, buy_id):
 
 def quarter(request):
     per = Notesdb.objects.all().values()
-    df = pd.DataFrame(per)
-    if not len(df.columns) == 0:
-        filt = (df['id'] == 1)
-        percent = float(df.loc[filt, 'percent_year'])
-        amount_base = int(df.loc[filt, 'amount_year'])
+    qrt = Quarter.objects.all().values()
+    df_notes = pd.DataFrame(per)
+    df_qrt = pd.DataFrame(qrt).sort_index()
+    qrt_row_number = df_qrt.shape[0]
+    if not len(df_notes.columns) == 0:
+        filt = (df_notes['id'] == 3)
+        percent_1 = float(df_notes.loc[filt, 'percent_1'])
+        percent_2 = float(df_notes.loc[filt, 'percent_2'])
+        percent_3 = float(df_notes.loc[filt, 'percent_3'])
+        amount_base = int(df_notes.loc[filt, 'amount_quarter'])
     else:
-        percent = 1
+        percent_1 = 1
         amount_base = 1000
     l1, l2, l3, lper, lsum = [], [], [], [], []
+    ldate, lprof, lperc, ldayprof = [], [], [], []
     amount = amount_base
-    for i in range(264):
+    for i in range(66):
         l1.append(amount)
-        numb = (amount * percent) / 100
+        numb = (amount * percent_1) / 100
         amount += numb
         l2.append(numb)
         l3.append(amount)
         lper.append(((amount - amount_base) / amount_base) * 100)
-    for i in range(1, 13):
+        if qrt_row_number > i:
+            # ldat.append(df_qrt.loc[df_qrt['id'] == i+1, 'date'])
+            lprof.append(int(df_qrt.loc[df_qrt['id'] == i+1, 'profit']))
+            if i == 0:
+                lperc.append(((lprof[i] - amount_base) / amount_base) * 100)
+                ldayprof.append(lprof[i] - amount_base)
+            else:
+                lperc.append(((lprof[i] - lprof[i-1]) / lprof[i-1]) * 100)
+                ldayprof.append(lprof[i] - lprof[i-1])
+        else:
+            # ldat.append(0)
+            lprof.append(0)
+            lperc.append(0)
+            ldayprof.append(0)
+
+    for i in range(1, 4):
         lsum.append(l3[(i*22)-1] - l1[(i*22)-22])
-    lists = list(zip(l1, l2, l3, lper))
-    context = {'percent': percent, 'amount_base': amount_base, 'lists': lists,
+
+    df_qrt['date'] = pd.to_datetime(df_qrt['date']).dt.date
+    dtd = list(set(df_qrt['date']))
+    for url_stat in dtd:
+        ldate.append(url_stat.strftime('%d-%b'))
+    for i in range(66):
+        if i >= len(ldate):
+            ldate.append(0)
+
+    lists = list(zip(l1, l2, l3, lper, ldate, lprof, lperc, ldayprof))
+    context = {'percent_1': percent_1, 'percent_2': percent_2,
+               'percent_3': percent_3,
+               'amount_base': amount_base, 'lists': lists,
                'lsum': lsum}
     return render(request, 'cfd/quarter.html', context)
 
@@ -412,16 +444,34 @@ def quarter_set(request):
     try:
         qrt = Quarter.objects.get(id=request.POST.get('id'))
         if request.method != 'POST':
-          form = QuarterForm(instance=qrt)
+            form = QuarterForm(instance=qrt)
         else:
-          form = QuarterForm(instance=qrt, data=request.POST)
-          if form.is_valid():
-            form.save()
-            return redirect('cfd:calc')
-    except:
+            form = QuarterForm(instance=qrt, data=request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('cfd:quarter')
+    except Exception:
         form = QuarterForm(data=request.POST)
         if form.is_valid():
             form.save()
-            return redirect('cfd:calc')
+            return redirect('cfd:quarter')
+    return render(request, 'cfd/quarter.html')
+
+
+def quarter_set_percent(request):
+    try:
+        notes = Notesdb.objects.get(id=3)
+        if request.method != 'POST':
+            form = NotesdbForm(instance=notes)
+        else:
+            form = NotesdbForm(instance=notes, data=request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('cfd:quarter')
+    except Exception:
+        form = NotesdbForm(data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('cfd:quarter')
     return render(request, 'cfd/quarter.html')
 

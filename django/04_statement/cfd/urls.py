@@ -23,5 +23,5 @@ urlpatterns = [
     path('calc/buy_delete/<int:buy_id>/', views.calc_buy_delete, name='calc_buy_delete'),
     path('quarter/', views.quarter, name='quarter'),
     path('quarter/set/', views.quarter_set, name='quarter_set'),
-    # path('quarter/set/<int:id>/', views.quarter_set, name='quarter_set'),
+    path('quarter/set_percent/', views.quarter_set_percent, name='quarter_set_percent'),
     ]

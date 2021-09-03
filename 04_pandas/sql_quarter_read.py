@@ -7,13 +7,32 @@ from sqlalchemy import create_engine
 engine = create_engine('mysql+pymysql://root@localhost:3306/statement')
 
 # --- read from database ---
-# df = pd.read_sql_table("cfd_statement", engine)
-# df = pd.read_sql("cfd_statement", engine)
 df = pd.read_sql("cfd_quarter", engine)
-print(df.shape[0])
+# print(df)
 # print(df.info())
-# print(df.loc[0:10, ['Profit', 'Size']])
+# filt = df['id'] == 1
+# print(df.loc[filt, 'profit'])
+qrt_row_number = df.shape[0]
+lprof = []
+for i in range(6):
+    if qrt_row_number > i:
+        lprof.append(int(df.loc[df['id'] == i+1, 'profit']))
 
+print(lprof)
+
+# df['date'] = pd.to_datetime(df['date']).dt.date
+# dtd = list(set(df['date']))
+# ldate = []
+# for url_stat in dtd:
+#     ldate.append(url_stat.strftime('%d-%b'))
+
+# for i in range(6):
+#     if i >= len(ldate):
+#         ldate.append(0)
+# print(ldate)
+
+
+# print(df.loc[0:10, ['Profit', 'Size']])
 # --- Format Date. Cut Time from date ---
 # df['open_time'] = pd.to_datetime(df['open_time']).dt.date
 # df['close_time'] = pd.to_datetime(df['close_time']).dt.date

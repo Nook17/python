@@ -8,12 +8,21 @@ engine = create_engine('mysql+pymysql://root@localhost:3306/statement')
 
 # --- read from database ---
 # df = pd.read_sql_table("cfd_statement", engine)
-# df = pd.read_sql("cfd_statement", engine)
-df = pd.read_sql("cfd_quarter", engine)
-print(df.shape[0])
+df = pd.read_sql("cfd_notesdb", engine)
+# print(df)
 # print(df.info())
-# print(df.loc[0:10, ['Profit', 'Size']])
+# filt = (df['id'] == 2)
+# select = df.loc[filt, 'buy_or_sell']
+# print(select)
 
+# --- Access a Single Value ---
+# value = df.at[2, 'amount_quarter']
+value = df.iat[2, 10]
+print(value)
+
+
+
+# print(df.loc[0:10, ['Profit', 'Size']])
 # --- Format Date. Cut Time from date ---
 # df['open_time'] = pd.to_datetime(df['open_time']).dt.date
 # df['close_time'] = pd.to_datetime(df['close_time']).dt.date

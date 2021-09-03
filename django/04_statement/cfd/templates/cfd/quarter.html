@@ -9,7 +9,7 @@
     <div class="p-5 rounded">
 	  <p class="lead">Quarterly statement</p>
       <div class="row">
-		  <div class="col-md-4">
+		  <div class="col-md-5">
 			<form action="{% url 'cfd:quarter_set' %}" method="post">
 				{% csrf_token %}
 				  <div class="col-auto">
@@ -34,9 +34,8 @@
 				  </div>
 			</form>
 		  </div> <!-- col-md -->
-	  </div>
+	  </div> <!-- row -->
       <div class="row">
-		  {{ nook }}
         <div class="col-md-4 col-margin-10">
 			<table class="tg">
 				<thead>
@@ -49,12 +48,12 @@
 				    {% if forloop.counter <= 22 %}
 					  <tr>
 						  <td class="tg-no">{{ forloop.counter }}</td>
-						  <td class="tg-amount">{{ l.0|floatformat:"0" }}</td>
+						  <td class="tg-amount">{{ l.4 }}</td>
 						  <td class="tg-profit">{{ l.1|floatformat:"0" }}</td>
 						  <td class="tg-sumday">{{ l.2|floatformat:"0" }}</td>
-						  <td class="tg-sumday">{{ l.2|floatformat:"0" }}</td>
-						  <td class="tg-no">{{ forloop.counter }}</td>
-						  <td class="tg-profit">{{ l.1|floatformat:"0" }}</td>
+						  <td class="tg-sumday">{{ l.5|floatformat:"0" }}</td>
+						  <td class="tg-no">{{ l.6|floatformat:"1" }}</td>
+						  <td class="tg-profit">{{ l.7 }}</td>
 					  </tr>
 					{% endif %}
 				  {% endfor %}
@@ -89,12 +88,12 @@
 				    {% if forloop.counter > 22 and forloop.counter <= 44 %}
 					  <tr>
 						  <td class="tg-no">{{ forloop.counter }}</td>
-						  <td class="tg-amount">{{ l.0|floatformat:"0" }}</td>
+						  <td class="tg-amount">{{ l.4 }}</td>
 						  <td class="tg-profit">{{ l.1|floatformat:"0" }}</td>
 						  <td class="tg-sumday">{{ l.2|floatformat:"0" }}</td>
-						  <td class="tg-sumday">{{ l.2|floatformat:"0" }}</td>
-						  <td class="tg-no">{{ forloop.counter }}</td>
-						  <td class="tg-profit">{{ l.1|floatformat:"0" }}</td>
+						  <td class="tg-sumday">{{ l.5|floatformat:"0" }}</td>
+						  <td class="tg-no">{{ l.6|floatformat:"1" }}</td>
+						  <td class="tg-profit">{{ l.7 }}</td>
 					  </tr>
 					{% endif %}
 				  {% endfor %}
@@ -132,9 +131,9 @@
 						  <td class="tg-amount">{{ l.0|floatformat:"0" }}</td>
 						  <td class="tg-profit">{{ l.1|floatformat:"0" }}</td>
 						  <td class="tg-sumday">{{ l.2|floatformat:"0" }}</td>
-						  <td class="tg-sumday">{{ l.2|floatformat:"0" }}</td>
-						  <td class="tg-no">{{ forloop.counter }}</td>
-						  <td class="tg-profit">{{ l.1|floatformat:"0" }}</td>
+						  <td class="tg-sumday">{{ l.5|floatformat:"0" }}</td>
+						  <td class="tg-no">{{ l.6|floatformat:"1" }}</td>
+						  <td class="tg-profit">{{ l.7 }}</td>
 					  </tr>
 					{% endif %}
 				  {% endfor %}
@@ -157,7 +156,40 @@
 				</tbody>
 			</table>
 		</div> <!-- col-md -->
-    </div>
+      </div> <!-- row -->
+      <div class="row mt-3">
+		  <div class="col-md-5">
+			<form action="{% url 'cfd:quarter_set_percent' %}" method="post">
+				{% csrf_token %}
+				  <div class="col-auto">
+					<div class="input-group input-group-sm">
+					  <button class="btn btn-outline-secondary btn-sm"
+							  type="submit">Set</button>
+				      <input type="number" step="0.1" name="percent_1" 
+					  value="{{ percent_1|floatformat:"1" }}" class="form-control">
+				      <input type="number" step="0.1" name="percent_2" 
+					  value="{{ percent_2|floatformat:"1" }}" class="form-control">
+				      <input type="number" step="0.1" name="percent_3" 
+					  value="{{ percent_3|floatformat:"1" }}" class="form-control">
+					  <input type="number" step="100" name="amount_quarter" 
+					  value="{{ amount_base|safe }}" class="form-control">
+					</div>
+						<span class="year-sm-text">
+						  Set:  percent Q1 
+						    <i class="bi bi-arrow-right text-secondary" 
+							  data-bs-toggle="tooltip" 
+							  data-bs-placement="top"></i> percent Q2
+						    <i class="bi bi-arrow-right text-secondary" 
+							  data-bs-toggle="tooltip" 
+							  data-bs-placement="top"></i> percent Q3  
+						    <i class="bi bi-arrow-right text-secondary" 
+							  data-bs-toggle="tooltip" 
+							  data-bs-placement="top"></i> Amount.  
+						</span>
+				  </div>
+			</form>
+		  </div> <!-- col-md -->
+	  </div> <!-- row -->
 	</main>
 <script>
     $(document).ready(function(){
