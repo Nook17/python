@@ -467,6 +467,7 @@ def quarter(request):
     return render(request, 'cfd/quarter.html', context)
 # ALTER TABLE `cfd_quarter` AUTO_INCREMENT=5
 
+
 def quarter_set(request):
     try:
         qrt = Quarter.objects.get(id=request.POST.get('id'))
