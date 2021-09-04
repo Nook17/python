@@ -15,149 +15,26 @@
 				  <div class="col-auto">
 					<div class="input-group input-group-sm">
 					  <button class="btn btn-outline-secondary btn-sm"
-							  type="submit">Set</button>
+					  type="submit">Set</button>
 				      <input type="number" step="1" name="id" 
-					  value="{{ percent|floatformat:"0" }}" class="form-control">
+					  value="{{ last_id|floatformat:"0" }}" class="form-control">
 					  <input type="text" name="date" class="form-control" 
-							  id="date" placeholder="21-02">
+					  id="date" value="{{ last_dt }}">
 					  <input type="number" step="1" name="profit" 
-					  value="{{ amount_base|safe }}" class="form-control">
+					  value="{{ last_pr|safe }}" class="form-control">
 					</div>
 						<span class="year-sm-text">
 						  Set:  ID <i class="bi bi-arrow-right text-secondary" 
-									  data-bs-toggle="tooltip" 
-									  data-bs-placement="top"></i> Date 
-						  	       <i class="bi bi-arrow-right text-secondary" 
-									  data-bs-toggle="tooltip" 
-									  data-bs-placement="top"></i> Amount.  
+						  data-bs-toggle="tooltip" 
+						  data-bs-placement="top"></i> Date 
+						  <i class="bi bi-arrow-right text-secondary" 
+						  data-bs-toggle="tooltip" 
+						  data-bs-placement="top"></i> Amount.  
 						</span>
 				  </div>
 			</form>
 		  </div> <!-- col-md -->
-	  </div> <!-- row -->
-      <div class="row">
-        <div class="col-md-4 col-margin-10">
-			<table class="tg">
-				<thead>
-				  <tr>
-					<th class="tg-month" colspan="7">MONTH 1</th>
-				  </tr>
-				</thead>
-				<tbody>
-				  {% for l in lists %}
-				    {% if forloop.counter <= 22 %}
-					  <tr>
-						  <td class="tg-no">{{ forloop.counter }}</td>
-						  <td class="tg-amount">{{ l.4 }}</td>
-						  <td class="tg-profit">{{ l.1|floatformat:"0" }}</td>
-						  <td class="tg-sumday">{{ l.2|floatformat:"0" }}</td>
-						  <td class="tg-sumday">{{ l.5|floatformat:"0" }}</td>
-						  <td class="tg-no">{{ l.6|floatformat:"1" }}</td>
-						  <td class="tg-profit">{{ l.7 }}</td>
-					  </tr>
-					{% endif %}
-				  {% endfor %}
-				  <tr>
-					<td class="tg-percent" colspan="2">
-						<span class="text-temp">%M: </span>
-						  {% for l in lists %}
-						    {% if forloop.counter == 22 %}
-						      {{ l.3|floatformat:"0" }}</td>
-							{% endif %}
-						  {% endfor %}
-					<td class="tg-summonth" colspan="2">
-						<span class="text-temp">sum: </span>
-						  {% for l in lsum %}
-						    {% if forloop.counter == 1 %}
-						      {{ l|floatformat:"0" }}</td>
-					        {% endif %}
-						  {% endfor %}
-				  </tr>
-				</tbody>
-			</table>
-		</div> <!-- col-md -->
-        <div class="col-md-4 col-margin-10">
-			<table class="tg">
-				<thead>
-				  <tr>
-					<th class="tg-month" colspan="7">MONTH 2</th>
-				  </tr>
-				</thead>
-				<tbody>
-				  {% for l in lists %}
-				    {% if forloop.counter > 22 and forloop.counter <= 44 %}
-					  <tr>
-						  <td class="tg-no">{{ forloop.counter }}</td>
-						  <td class="tg-amount">{{ l.4 }}</td>
-						  <td class="tg-profit">{{ l.1|floatformat:"0" }}</td>
-						  <td class="tg-sumday">{{ l.2|floatformat:"0" }}</td>
-						  <td class="tg-sumday">{{ l.5|floatformat:"0" }}</td>
-						  <td class="tg-no">{{ l.6|floatformat:"1" }}</td>
-						  <td class="tg-profit">{{ l.7 }}</td>
-					  </tr>
-					{% endif %}
-				  {% endfor %}
-				  <tr>
-					<td class="tg-percent" colspan="2">
-						<span class="text-temp">%M: </span>
-						  {% for l in lists %}
-						    {% if forloop.counter == 44 %}
-						      {{ l.3|floatformat:"0" }}</td>
-							{% endif %}
-						  {% endfor %}
-					<td class="tg-summonth" colspan="2">
-						<span class="text-temp">sum: </span>
-						  {% for l in lsum %}
-						    {% if forloop.counter == 2 %}
-						      {{ l|floatformat:"0" }}</td>
-					        {% endif %}
-						  {% endfor %}
-				  </tr>
-				</tbody>
-			</table>
-		</div> <!-- col-md -->
-        <div class="col-md-4 col-margin-10">
-			<table class="tg">
-				<thead>
-				  <tr>
-					<th class="tg-month" colspan="7">MONTH 3</th>
-				  </tr>
-				</thead>
-				<tbody>
-				  {% for l in lists %}
-				    {% if forloop.counter > 44 and forloop.counter <= 66 %}
-					  <tr>
-						  <td class="tg-no">{{ forloop.counter }}</td>
-						  <td class="tg-amount">{{ l.0|floatformat:"0" }}</td>
-						  <td class="tg-profit">{{ l.1|floatformat:"0" }}</td>
-						  <td class="tg-sumday">{{ l.2|floatformat:"0" }}</td>
-						  <td class="tg-sumday">{{ l.5|floatformat:"0" }}</td>
-						  <td class="tg-no">{{ l.6|floatformat:"1" }}</td>
-						  <td class="tg-profit">{{ l.7 }}</td>
-					  </tr>
-					{% endif %}
-				  {% endfor %}
-				  <tr>
-					<td class="tg-percent" colspan="2">
-						<span class="text-temp">%M: </span>
-						  {% for l in lists %}
-						    {% if forloop.counter == 66 %}
-						      {{ l.3|floatformat:"0" }}</td>
-							{% endif %}
-						  {% endfor %}
-					<td class="tg-summonth" colspan="2">
-						<span class="text-temp">sum: </span>
-						  {% for l in lsum %}
-						    {% if forloop.counter == 3 %}
-						      {{ l|floatformat:"0" }}</td>
-					        {% endif %}
-						  {% endfor %}
-				  </tr>
-				</tbody>
-			</table>
-		</div> <!-- col-md -->
-      </div> <!-- row -->
-      <div class="row mt-3">
+		  <div class="col-md-1"></div>
 		  <div class="col-md-5">
 			<form action="{% url 'cfd:quarter_set_percent' %}" method="post">
 				{% csrf_token %}
@@ -190,6 +67,467 @@
 			</form>
 		  </div> <!-- col-md -->
 	  </div> <!-- row -->
+
+		<div class="row mt-3">
+			<div class="col-md-12">
+				<p class="lead mt-4">Avg % : 
+				  <span class="text-info ">
+					  {{ avg_perc|floatformat:"1" }}</span>
+				  <span class=" ml-4">Avg prof : </span>
+				  <span class="text-success ">
+					  {{ avg_prof|floatformat:"0" }}</span>
+				  <span class=" ml-5">Max % : </span>
+				  <span class="text-info ">
+					  {{ max_perc|floatformat:"1" }}</span>
+				  <span class=" ml-4">Max prof : </span>
+				  <span class="text-success ">
+					  {{ max_prof|floatformat:"0" }}</span>
+				</p>
+			</div>
+		</div>
+
+	<div class="row"> <!-- Q1 row -->
+        <div class="col-md-4 col-margin-10">
+			<table class="tg">
+				<thead>
+				  <tr>
+					<th class="tg-month" colspan="7">MONTH 1</th>
+				  </tr>
+				</thead>
+				<tbody>
+				  {% for l in lists_1 %}
+				    {% if forloop.counter <= 22 %}
+					  <tr>
+						  <td class="tg-no">{{ forloop.counter }}</td>
+						  <td class="tg-date">{{ l.4 }}</td>
+						  <td class="tg-profit">{{ l.1|floatformat:"0" }}</td>
+						  <td class="tg-sumday">{{ l.2|floatformat:"0" }}</td>
+						  {% if l.5 >= l.2 or l.5 == 0 %}
+						  <td class="tg-qamount">{{ l.5|floatformat:"0" }}</td>
+						  {% else %}
+						  <td class="tg-minus">{{ l.5|floatformat:"0" }}</td>
+						  {% endif %}
+						  <td class="tg-qpercent">{{ l.6|floatformat:"1" }}</td>
+						  {% if l.7 >= 0 %}
+						  <td class="tg-qdayprofit">{{ l.7 }}</td>
+						  {% else %}
+						  <td class="tg-minus">{{ l.7 }}</td>
+						  {% endif %}
+					  </tr>
+					{% endif %}
+				  {% endfor %}
+				  <tr>
+					<td class="tg-percent" colspan="2">
+						<span class="text-temp">%M: </span>
+						  {% for l in lists_1 %}
+						    {% if forloop.counter == 22 %}
+						      {{ l.3|floatformat:"0" }}</td>
+							{% endif %}
+						  {% endfor %}
+					<td class="tg-summonth" colspan="2">
+						<span class="text-temp">sum: </span>
+						  {% for l in lsum %}
+						    {% if forloop.counter == 1 %}
+						      {{ l.0|floatformat:"0" }}</td>
+					        {% endif %}
+						  {% endfor %}
+				  </tr>
+				</tbody>
+			</table>
+		</div> <!-- col-md -->
+        <div class="col-md-4 col-margin-10">
+			<table class="tg">
+				<thead>
+				  <tr>
+					<th class="tg-month" colspan="7">MONTH 2</th>
+				  </tr>
+				</thead>
+				<tbody>
+				  {% for l in lists_1 %}
+				    {% if forloop.counter > 22 and forloop.counter <= 44 %}
+					  <tr>
+						  <td class="tg-no">{{ forloop.counter }}</td>
+						  <td class="tg-date">{{ l.4 }}</td>
+						  <td class="tg-profit">{{ l.1|floatformat:"0" }}</td>
+						  <td class="tg-sumday">{{ l.2|floatformat:"0" }}</td>
+						  {% if l.5 >= l.2 or l.5 == 0 %}
+						  <td class="tg-qamount">{{ l.5|floatformat:"0" }}</td>
+						  {% else %}
+						  <td class="tg-minus">{{ l.5|floatformat:"0" }}</td>
+						  {% endif %}
+						  <td class="tg-qpercent">{{ l.6|floatformat:"1" }}</td>
+						  {% if l.7 >= 0 %}
+						  <td class="tg-qdayprofit">{{ l.7 }}</td>
+						  {% else %}
+						  <td class="tg-minus">{{ l.7 }}</td>
+						  {% endif %}
+					  </tr>
+					{% endif %}
+				  {% endfor %}
+				  <tr>
+					<td class="tg-percent" colspan="2">
+						<span class="text-temp">%M: </span>
+						  {% for l in lists_1 %}
+						    {% if forloop.counter == 44 %}
+						      {{ l.3|floatformat:"0" }}</td>
+							{% endif %}
+						  {% endfor %}
+					<td class="tg-summonth" colspan="2">
+						<span class="text-temp">sum: </span>
+						  {% for l in lsum %}
+						    {% if forloop.counter == 2 %}
+						      {{ l.0|floatformat:"0" }}</td>
+					        {% endif %}
+						  {% endfor %}
+				  </tr>
+				</tbody>
+			</table>
+		</div> <!-- col-md -->
+        <div class="col-md-4 col-margin-10">
+			<table class="tg">
+				<thead>
+				  <tr>
+					<th class="tg-month" colspan="7">MONTH 3</th>
+				  </tr>
+				</thead>
+				<tbody>
+				  {% for l in lists_1 %}
+				    {% if forloop.counter > 44 and forloop.counter <= 66 %}
+					  <tr>
+						  <td class="tg-no">{{ forloop.counter }}</td>
+						  <td class="tg-date">{{ l.4 }}</td>
+						  <td class="tg-profit">{{ l.1|floatformat:"0" }}</td>
+						  <td class="tg-sumday">{{ l.2|floatformat:"0" }}</td>
+						  {% if l.5 >= l.2 or l.5 == 0 %}
+						  <td class="tg-qamount">{{ l.5|floatformat:"0" }}</td>
+						  {% else %}
+						  <td class="tg-minus">{{ l.5|floatformat:"0" }}</td>
+						  {% endif %}
+						  <td class="tg-qpercent">{{ l.6|floatformat:"1" }}</td>
+						  {% if l.7 >= 0 %}
+						  <td class="tg-qdayprofit">{{ l.7 }}</td>
+						  {% else %}
+						  <td class="tg-minus">{{ l.7 }}</td>
+						  {% endif %}
+					  </tr>
+					{% endif %}
+				  {% endfor %}
+				  <tr>
+					<td class="tg-percent" colspan="2">
+						<span class="text-temp">%M: </span>
+						  {% for l in lists_1 %}
+						    {% if forloop.counter == 66 %}
+						      {{ l.3|floatformat:"0" }}</td>
+							{% endif %}
+						  {% endfor %}
+					<td class="tg-summonth" colspan="2">
+						<span class="text-temp">sum: </span>
+						  {% for l in lsum %}
+						    {% if forloop.counter == 3 %}
+						      {{ l.0|floatformat:"0" }}</td>
+					        {% endif %}
+						  {% endfor %}
+				  </tr>
+				</tbody>
+			</table>
+		</div> <!-- col-md -->
+      </div> <!-- row -->
+
+      <div class="row"> <!-- Q2 row -->
+        <div class="col-md-4 col-margin-10">
+			<table class="tg">
+				<thead>
+				  <tr>
+					<th class="tg-month" colspan="7">MONTH 1</th>
+				  </tr>
+				</thead>
+				<tbody>
+				  {% for l in lists_2 %}
+				    {% if forloop.counter <= 22 %}
+					  <tr>
+						  <td class="tg-no">{{ forloop.counter }}</td>
+						  <td class="tg-date">{{ l.4 }}</td>
+						  <td class="tg-profit">{{ l.1|floatformat:"0" }}</td>
+						  <td class="tg-sumday">{{ l.2|floatformat:"0" }}</td>
+						  {% if l.5 >= l.2 or l.5 == 0 %}
+						  <td class="tg-qamount">{{ l.5|floatformat:"0" }}</td>
+						  {% else %}
+						  <td class="tg-minus">{{ l.5|floatformat:"0" }}</td>
+						  {% endif %}
+						  <td class="tg-qpercent">{{ l.6|floatformat:"1" }}</td>
+						  {% if l.7 >= 0 %}
+						  <td class="tg-qdayprofit">{{ l.7 }}</td>
+						  {% else %}
+						  <td class="tg-minus">{{ l.7 }}</td>
+						  {% endif %}
+					  </tr>
+					{% endif %}
+				  {% endfor %}
+				  <tr>
+					<td class="tg-percent" colspan="2">
+						<span class="text-temp">%M: </span>
+						  {% for l in lists_1 %}
+						    {% if forloop.counter == 22 %}
+						      {{ l.3|floatformat:"0" }}</td>
+							{% endif %}
+						  {% endfor %}
+					<td class="tg-summonth" colspan="2">
+						<span class="text-temp">sum: </span>
+						  {% for l in lsum %}
+						    {% if forloop.counter == 1 %}
+						      {{ l.1|floatformat:"0" }}</td>
+					        {% endif %}
+						  {% endfor %}
+				  </tr>
+				</tbody>
+			</table>
+		</div> <!-- col-md -->
+        <div class="col-md-4 col-margin-10">
+			<table class="tg">
+				<thead>
+				  <tr>
+					<th class="tg-month" colspan="7">MONTH 2</th>
+				  </tr>
+				</thead>
+				<tbody>
+				  {% for l in lists_2 %}
+				    {% if forloop.counter > 22 and forloop.counter <= 44 %}
+					  <tr>
+						  <td class="tg-no">{{ forloop.counter }}</td>
+						  <td class="tg-date">{{ l.4 }}</td>
+						  <td class="tg-profit">{{ l.1|floatformat:"0" }}</td>
+						  <td class="tg-sumday">{{ l.2|floatformat:"0" }}</td>
+						  {% if l.5 >= l.2 or l.5 == 0 %}
+						  <td class="tg-qamount">{{ l.5|floatformat:"0" }}</td>
+						  {% else %}
+						  <td class="tg-minus">{{ l.5|floatformat:"0" }}</td>
+						  {% endif %}
+						  <td class="tg-qpercent">{{ l.6|floatformat:"1" }}</td>
+						  {% if l.7 >= 0 %}
+						  <td class="tg-qdayprofit">{{ l.7 }}</td>
+						  {% else %}
+						  <td class="tg-minus">{{ l.7 }}</td>
+						  {% endif %}
+					  </tr>
+					{% endif %}
+				  {% endfor %}
+				  <tr>
+					<td class="tg-percent" colspan="2">
+						<span class="text-temp">%M: </span>
+						  {% for l in lists_1 %}
+						    {% if forloop.counter == 44 %}
+						      {{ l.3|floatformat:"0" }}</td>
+							{% endif %}
+						  {% endfor %}
+					<td class="tg-summonth" colspan="2">
+						<span class="text-temp">sum: </span>
+						  {% for l in lsum %}
+						    {% if forloop.counter == 2 %}
+						      {{ l.1|floatformat:"0" }}</td>
+					        {% endif %}
+						  {% endfor %}
+				  </tr>
+				</tbody>
+			</table>
+		</div> <!-- col-md -->
+        <div class="col-md-4 col-margin-10">
+			<table class="tg">
+				<thead>
+				  <tr>
+					<th class="tg-month" colspan="7">MONTH 3</th>
+				  </tr>
+				</thead>
+				<tbody>
+				  {% for l in lists_2 %}
+				    {% if forloop.counter > 44 and forloop.counter <= 66 %}
+					  <tr>
+						  <td class="tg-no">{{ forloop.counter }}</td>
+						  <td class="tg-date">{{ l.4 }}</td>
+						  <td class="tg-profit">{{ l.1|floatformat:"0" }}</td>
+						  <td class="tg-sumday">{{ l.2|floatformat:"0" }}</td>
+						  {% if l.5 >= l.2 or l.5 == 0 %}
+						  <td class="tg-qamount">{{ l.5|floatformat:"0" }}</td>
+						  {% else %}
+						  <td class="tg-minus">{{ l.5|floatformat:"0" }}</td>
+						  {% endif %}
+						  <td class="tg-qpercent">{{ l.6|floatformat:"1" }}</td>
+						  {% if l.7 >= 0 %}
+						  <td class="tg-qdayprofit">{{ l.7 }}</td>
+						  {% else %}
+						  <td class="tg-minus">{{ l.7 }}</td>
+						  {% endif %}
+					  </tr>
+					{% endif %}
+				  {% endfor %}
+				  <tr>
+					<td class="tg-percent" colspan="2">
+						<span class="text-temp">%M: </span>
+						  {% for l in lists_1 %}
+						    {% if forloop.counter == 66 %}
+						      {{ l.3|floatformat:"0" }}</td>
+							{% endif %}
+						  {% endfor %}
+					<td class="tg-summonth" colspan="2">
+						<span class="text-temp">sum: </span>
+						  {% for l in lsum %}
+						    {% if forloop.counter == 3 %}
+						      {{ l.1|floatformat:"0" }}</td>
+					        {% endif %}
+						  {% endfor %}
+				  </tr>
+				</tbody>
+			</table>
+		</div> <!-- col-md -->
+      </div> <!-- row -->
+
+      <div class="row"> <!-- Q3 row -->
+        <div class="col-md-4 col-margin-10">
+			<table class="tg">
+				<thead>
+				  <tr>
+					<th class="tg-month" colspan="7">MONTH 1</th>
+				  </tr>
+				</thead>
+				<tbody>
+				  {% for l in lists_3 %}
+				    {% if forloop.counter <= 22 %}
+					  <tr>
+						  <td class="tg-no">{{ forloop.counter }}</td>
+						  <td class="tg-date">{{ l.4 }}</td>
+						  <td class="tg-profit">{{ l.1|floatformat:"0" }}</td>
+						  <td class="tg-sumday">{{ l.2|floatformat:"0" }}</td>
+						  {% if l.5 >= l.2 or l.5 == 0 %}
+						  <td class="tg-qamount">{{ l.5|floatformat:"0" }}</td>
+						  {% else %}
+						  <td class="tg-minus">{{ l.5|floatformat:"0" }}</td>
+						  {% endif %}
+						  <td class="tg-qpercent">{{ l.6|floatformat:"1" }}</td>
+						  {% if l.7 >= 0 %}
+						  <td class="tg-qdayprofit">{{ l.7 }}</td>
+						  {% else %}
+						  <td class="tg-minus">{{ l.7 }}</td>
+						  {% endif %}
+					  </tr>
+					{% endif %}
+				  {% endfor %}
+				  <tr>
+					<td class="tg-percent" colspan="2">
+						<span class="text-temp">%M: </span>
+						  {% for l in lists_1 %}
+						    {% if forloop.counter == 22 %}
+						      {{ l.3|floatformat:"0" }}</td>
+							{% endif %}
+						  {% endfor %}
+					<td class="tg-summonth" colspan="2">
+						<span class="text-temp">sum: </span>
+						  {% for l in lsum %}
+						    {% if forloop.counter == 1 %}
+						      {{ l.2|floatformat:"0" }}</td>
+					        {% endif %}
+						  {% endfor %}
+				  </tr>
+				</tbody>
+			</table>
+		</div> <!-- col-md -->
+        <div class="col-md-4 col-margin-10">
+			<table class="tg">
+				<thead>
+				  <tr>
+					<th class="tg-month" colspan="7">MONTH 2</th>
+				  </tr>
+				</thead>
+				<tbody>
+				  {% for l in lists_3 %}
+				    {% if forloop.counter > 22 and forloop.counter <= 44 %}
+					  <tr>
+						  <td class="tg-no">{{ forloop.counter }}</td>
+						  <td class="tg-date">{{ l.4 }}</td>
+						  <td class="tg-profit">{{ l.1|floatformat:"0" }}</td>
+						  <td class="tg-sumday">{{ l.2|floatformat:"0" }}</td>
+						  {% if l.5 >= l.2 or l.5 == 0 %}
+						  <td class="tg-qamount">{{ l.5|floatformat:"0" }}</td>
+						  {% else %}
+						  <td class="tg-minus">{{ l.5|floatformat:"0" }}</td>
+						  {% endif %}
+						  <td class="tg-qpercent">{{ l.6|floatformat:"1" }}</td>
+						  {% if l.7 >= 0 %}
+						  <td class="tg-qdayprofit">{{ l.7 }}</td>
+						  {% else %}
+						  <td class="tg-minus">{{ l.7 }}</td>
+						  {% endif %}
+					  </tr>
+					{% endif %}
+				  {% endfor %}
+				  <tr>
+					<td class="tg-percent" colspan="2">
+						<span class="text-temp">%M: </span>
+						  {% for l in lists_1 %}
+						    {% if forloop.counter == 44 %}
+						      {{ l.3|floatformat:"0" }}</td>
+							{% endif %}
+						  {% endfor %}
+					<td class="tg-summonth" colspan="2">
+						<span class="text-temp">sum: </span>
+						  {% for l in lsum %}
+						    {% if forloop.counter == 2 %}
+						      {{ l.2|floatformat:"0" }}</td>
+					        {% endif %}
+						  {% endfor %}
+				  </tr>
+				</tbody>
+			</table>
+		</div> <!-- col-md -->
+        <div class="col-md-4 col-margin-10">
+			<table class="tg">
+				<thead>
+				  <tr>
+					<th class="tg-month" colspan="7">MONTH 3</th>
+				  </tr>
+				</thead>
+				<tbody>
+				  {% for l in lists_3 %}
+				    {% if forloop.counter > 44 and forloop.counter <= 66 %}
+					  <tr>
+						  <td class="tg-no">{{ forloop.counter }}</td>
+						  <td class="tg-date">{{ l.4 }}</td>
+						  <td class="tg-profit">{{ l.1|floatformat:"0" }}</td>
+						  <td class="tg-sumday">{{ l.2|floatformat:"0" }}</td>
+						  {% if l.5 >= l.2 or l.5 == 0 %}
+						  <td class="tg-qamount">{{ l.5|floatformat:"0" }}</td>
+						  {% else %}
+						  <td class="tg-minus">{{ l.5|floatformat:"0" }}</td>
+						  {% endif %}
+						  <td class="tg-qpercent">{{ l.6|floatformat:"1" }}</td>
+						  {% if l.7 >= 0 %}
+						  <td class="tg-qdayprofit">{{ l.7 }}</td>
+						  {% else %}
+						  <td class="tg-minus">{{ l.7 }}</td>
+						  {% endif %}
+					  </tr>
+					{% endif %}
+				  {% endfor %}
+				  <tr>
+					<td class="tg-percent" colspan="2">
+						<span class="text-temp">%M: </span>
+						  {% for l in lists_1 %}
+						    {% if forloop.counter == 66 %}
+						      {{ l.3|floatformat:"0" }}</td>
+							{% endif %}
+						  {% endfor %}
+					<td class="tg-summonth" colspan="2">
+						<span class="text-temp">sum: </span>
+						  {% for l in lsum %}
+						    {% if forloop.counter == 3 %}
+						      {{ l.2|floatformat:"0" }}</td>
+					        {% endif %}
+						  {% endfor %}
+				  </tr>
+				</tbody>
+			</table>
+		</div> <!-- col-md -->
+      </div> <!-- row -->
+
+
 	</main>
 <script>
     $(document).ready(function(){

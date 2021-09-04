@@ -12,25 +12,27 @@ df = pd.read_sql("cfd_quarter", engine)
 # print(df.info())
 # filt = df['id'] == 1
 # print(df.loc[filt, 'profit'])
-qrt_row_number = df.shape[0]
-lprof = []
-for i in range(6):
-    if qrt_row_number > i:
-        lprof.append(int(df.loc[df['id'] == i+1, 'profit']))
-
-print(lprof)
-
-# df['date'] = pd.to_datetime(df['date']).dt.date
-# dtd = list(set(df['date']))
-# ldate = []
-# for url_stat in dtd:
-#     ldate.append(url_stat.strftime('%d-%b'))
-
+# qrt_row_number = df.shape[0]
+# lprof = []
 # for i in range(6):
-#     if i >= len(ldate):
-#         ldate.append(0)
-# print(ldate)
+#     if qrt_row_number > i:
+#         lprof.append(int(df.loc[df['id'] == i+1, 'profit']))
 
+# print(lprof)
+
+df['date'] = pd.to_datetime(df['date']).dt.date
+dtd = df['date'].tolist()
+ldate = []
+for url_stat in dtd:
+    ldate.append(url_stat.strftime('%d-%b'))
+
+for i in range(6):
+    if i >= len(ldate):
+        ldate.append(0)
+print(ldate)
+
+# -- last value ---
+print(df['id'].iloc[-1])
 
 # print(df.loc[0:10, ['Profit', 'Size']])
 # --- Format Date. Cut Time from date ---

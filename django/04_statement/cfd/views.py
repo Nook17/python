@@ -385,7 +385,7 @@ def quarter(request):
     per = Notesdb.objects.all().values()
     qrt = Quarter.objects.all().values()
     df_notes = pd.DataFrame(per)
-    df_qrt = pd.DataFrame(qrt).sort_index()
+    df_qrt = pd.DataFrame(qrt)
     qrt_row_number = df_qrt.shape[0]
     if not len(df_notes.columns) == 0:
         filt = (df_notes['id'] == 3)
@@ -393,52 +393,79 @@ def quarter(request):
         percent_2 = float(df_notes.loc[filt, 'percent_2'])
         percent_3 = float(df_notes.loc[filt, 'percent_3'])
         amount_base = int(df_notes.loc[filt, 'amount_quarter'])
+        perc = [percent_1, percent_2, percent_3]
     else:
         percent_1 = 1
         amount_base = 1000
-    l1, l2, l3, lper, lsum = [], [], [], [], []
-    ldate, lprof, lperc, ldayprof = [], [], [], []
-    amount = amount_base
-    for i in range(66):
-        l1.append(amount)
-        numb = (amount * percent_1) / 100
-        amount += numb
-        l2.append(numb)
-        l3.append(amount)
-        lper.append(((amount - amount_base) / amount_base) * 100)
-        if qrt_row_number > i:
-            # ldat.append(df_qrt.loc[df_qrt['id'] == i+1, 'date'])
-            lprof.append(int(df_qrt.loc[df_qrt['id'] == i+1, 'profit']))
-            if i == 0:
-                lperc.append(((lprof[i] - amount_base) / amount_base) * 100)
-                ldayprof.append(lprof[i] - amount_base)
+    lsum_1, lsum_2, lsum_3 = [], [], []
+    flag = 0
+    for per in perc:
+        amount = amount_base
+        l1, l2, l3, lper, lsum = [], [], [], [], []
+        ldate, lprof, lperc, ldayprof = [], [], [], []
+        flag += 1
+        for i in range(66):
+            l1.append(amount)
+            numb = (amount * per) / 100
+            amount += numb
+            l2.append(numb)
+            l3.append(amount)
+            lper.append(((amount - amount_base) / amount_base) * 100)
+            if qrt_row_number > i:
+                lprof.append(int(df_qrt.loc[df_qrt['id'] == i+1, 'profit']))
+                if i == 0:
+                    lperc.append(((lprof[i] - amount_base) / amount_base) * 100)
+                    ldayprof.append(lprof[i] - amount_base)
+                else:
+                    lperc.append(((lprof[i] - lprof[i-1]) / lprof[i-1]) * 100)
+                    ldayprof.append(lprof[i] - lprof[i-1])
             else:
-                lperc.append(((lprof[i] - lprof[i-1]) / lprof[i-1]) * 100)
-                ldayprof.append(lprof[i] - lprof[i-1])
-        else:
-            # ldat.append(0)
-            lprof.append(0)
-            lperc.append(0)
-            ldayprof.append(0)
+                lprof.append(0)
+                lperc.append(0)
+                ldayprof.append(0)
 
-    for i in range(1, 4):
-        lsum.append(l3[(i*22)-1] - l1[(i*22)-22])
-
-    df_qrt['date'] = pd.to_datetime(df_qrt['date']).dt.date
-    dtd = list(set(df_qrt['date']))
-    for url_stat in dtd:
-        ldate.append(url_stat.strftime('%d-%b'))
-    for i in range(66):
-        if i >= len(ldate):
-            ldate.append(0)
-
-    lists = list(zip(l1, l2, l3, lper, ldate, lprof, lperc, ldayprof))
+        # --- Make Date list ---
+        df_qrt['date'] = pd.to_datetime(df_qrt['date']).dt.date
+        dtd = df_qrt['date'].tolist()
+        for url_stat in dtd:
+            ldate.append(url_stat.strftime('%d-%b'))
+        for i in range(66):
+            if i >= len(ldate):
+                ldate.append(0)
+        # --- Last value in batabase ---
+        last_id = df_qrt['id'].iloc[-1]
+        last_dt = df_qrt['date'].iloc[-1].strftime('%Y-%m-%d')
+        last_pr = df_qrt['profit'].iloc[-1]
+        # --- AVG, MAX - perc & prof ---
+        avg_perc = sum(lperc) / qrt_row_number
+        avg_prof = sum(ldayprof) / qrt_row_number 
+        max_perc = ((last_pr - amount_base) / amount_base) * 100 
+        max_prof = sum(ldayprof)
+        # --- zip list ---
+        if flag == 1:
+            # --- Sum Q1 profit per month ---
+            for i in range(1, 4):
+                lsum_1.append(l3[(i*22)-1] - l1[(i*22)-22])
+            lists_1 = list(zip(l1, l2, l3, lper, ldate, lprof, lperc, ldayprof))
+        elif flag == 2:
+            # --- Sum Q2 profit per month ---
+            for i in range(1, 4):
+                lsum_2.append(l3[(i*22)-1] - l1[(i*22)-22])
+            lists_2 = list(zip(l1, l2, l3, lper, ldate, lprof, lperc, ldayprof))
+        elif flag == 3:
+            # --- Sum Q3 profit per month ---
+            for i in range(1, 4):
+                lsum_3.append(l3[(i*22)-1] - l1[(i*22)-22])
+            lists_3 = list(zip(l1, l2, l3, lper, ldate, lprof, lperc, ldayprof))
+    lsum = list(zip(lsum_1, lsum_2, lsum_3))
     context = {'percent_1': percent_1, 'percent_2': percent_2,
-               'percent_3': percent_3,
-               'amount_base': amount_base, 'lists': lists,
-               'lsum': lsum}
+               'percent_3': percent_3, 'amount_base': amount_base,
+               'lists_1': lists_1, 'lists_2': lists_2, 'lists_3': lists_3,
+               'lsum': lsum, 'last_id': last_id,
+               'last_dt': last_dt, 'last_pr': last_pr, 'avg_perc': avg_perc,
+               'avg_prof': avg_prof, 'max_perc': max_perc, 'max_prof': max_prof}
     return render(request, 'cfd/quarter.html', context)
-
+# ALTER TABLE `cfd_quarter` AUTO_INCREMENT=5
 
 def quarter_set(request):
     try:
