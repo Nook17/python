@@ -1,7 +1,7 @@
 # import form class from django
 from django import forms
 # import GeeksModel from models.py
-from .models import Deposit, Withdrawal, Notesdb, Buy_calc, Quarter
+from .models import Deposit, Withdrawal, Notesdb, Buy_calc, Quarter, Pipmargin
 
 
 # create a ModelForm
@@ -38,4 +38,10 @@ class Buy_calcForm(forms.ModelForm):
 class QuarterForm(forms.ModelForm):
     class Meta:
         model = Quarter
+        fields = "__all__"
+
+
+class PipmarginForm(forms.ModelForm):
+    class Meta:
+        model = Pipmargin
         fields = "__all__"

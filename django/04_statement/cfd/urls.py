@@ -4,9 +4,9 @@ from . import views
 app_name = 'cfd'
 urlpatterns = [
     path('', views.index, name='index'),
+    path('api', views.ChartData.as_view()),
     path('statement/', views.statement, name='statement'),
     path('statement/<str:url_statement>/', views.statements, name='statements'),
-    path('api', views.ChartData.as_view()),
     path('deposit/', views.deposit, name='deposit'),
     path('new_deposit/', views.new_deposit, name='new_deposit'),
     path('update_deposit/<int:deposit_id>/', views.update_deposit, name='update_deposit'),
@@ -24,4 +24,9 @@ urlpatterns = [
     path('quarter/', views.quarter, name='quarter'),
     path('quarter/set/', views.quarter_set, name='quarter_set'),
     path('quarter/set_percent/', views.quarter_set_percent, name='quarter_set_percent'),
+    path('pipmargin/', views.pipmargin, name='pipmargin'),
+    path('pipmargin/set/', views.pipmargin_set, name='pipmargin_set'),
+    path('daily/', views.daily, name='daily'),
+    path('point/', views.point, name='point'),
+    path('point/set/', views.point_set, name='point_set'),
     ]

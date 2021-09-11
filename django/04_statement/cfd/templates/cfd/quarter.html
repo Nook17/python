@@ -70,24 +70,38 @@
 
 		<div class="row mt-3">
 			<div class="col-md-12">
-				<p class="lead mt-4">Avg % : 
+				<p class="lead mt-4">Avg: 
 				  <span class="text-info ">
-					  {{ avg_perc|floatformat:"1" }}</span>
+					  {{ avg_perc|floatformat:"1" }}</span> %
 				  <span class=" ml-4">Avg prof : </span>
 				  <span class="text-success ">
-					  {{ avg_prof|floatformat:"0" }}</span>
-				  <span class=" ml-5">Max % : </span>
+					  {{ avg_prof|floatformat:"0" }}</span> zł
+				  <span class=" ml-5">Sum: </span>
 				  <span class="text-info ">
-					  {{ max_perc|floatformat:"1" }}</span>
-				  <span class=" ml-4">Max prof : </span>
+					  {{ max_perc|floatformat:"1" }}</span> %
+				  <span class=" ml-4">Sum prof : </span>
 				  <span class="text-success ">
-					  {{ max_prof|floatformat:"0" }}</span>
+					  {{ max_prof|floatformat:"0" }}</span> zł
+				  <span class=" ml-4">Wallet : </span>
+				  <span class="text-success ">
+					  {{ wallet|floatformat:"0" }}</span> zł
 				</p>
-			</div>
-		</div>
+			</div> <!-- col-md -->
+		</div> <!-- row -->
+
+		<div class="row mt-1">
+			<div class="col-md-12 text-center">
+				<p class="lead">Quarter 1
+				 <i class="bi bi-arrow-right text-secondary" 
+				   data-bs-toggle="tooltip" data-bs-placement="top"></i>
+				  <span class="text-danger">
+					  {{ percent_1|floatformat:"1" }}</span> %
+				</p>
+			</div> <!-- col-md -->
+		</div> <!-- row -->
 
 	<div class="row"> <!-- Q1 row -->
-        <div class="col-md-4 col-margin-10">
+        <div class="col-lg-4 col-md-6 col-margin-10">
 			<table class="tg">
 				<thead>
 				  <tr>
@@ -135,7 +149,7 @@
 				</tbody>
 			</table>
 		</div> <!-- col-md -->
-        <div class="col-md-4 col-margin-10">
+        <div class="col-lg-4 col-md-6 col-margin-10">
 			<table class="tg">
 				<thead>
 				  <tr>
@@ -183,7 +197,7 @@
 				</tbody>
 			</table>
 		</div> <!-- col-md -->
-        <div class="col-md-4 col-margin-10">
+        <div class="col-lg-4 col-md-6 col-margin-10">
 			<table class="tg">
 				<thead>
 				  <tr>
@@ -232,9 +246,20 @@
 			</table>
 		</div> <!-- col-md -->
       </div> <!-- row -->
+
+		<div class="row mt-3">
+			<div class="col-md-12 text-center">
+				<p class="lead">Quarter 2
+				 <i class="bi bi-arrow-right text-secondary" 
+				   data-bs-toggle="tooltip" data-bs-placement="top"></i>
+				  <span class="text-danger">
+					  {{ percent_2|floatformat:"1" }}</span> %
+				</p>
+			</div> <!-- col-md -->
+		</div> <!-- row -->
 
       <div class="row"> <!-- Q2 row -->
-        <div class="col-md-4 col-margin-10">
+        <div class="col-lg-4 col-md-6 col-margin-10">
 			<table class="tg">
 				<thead>
 				  <tr>
@@ -282,7 +307,7 @@
 				</tbody>
 			</table>
 		</div> <!-- col-md -->
-        <div class="col-md-4 col-margin-10">
+        <div class="col-lg-4 col-md-6 col-margin-10">
 			<table class="tg">
 				<thead>
 				  <tr>
@@ -330,7 +355,7 @@
 				</tbody>
 			</table>
 		</div> <!-- col-md -->
-        <div class="col-md-4 col-margin-10">
+        <div class="col-lg-4 col-md-6 col-margin-10">
 			<table class="tg">
 				<thead>
 				  <tr>
@@ -380,8 +405,19 @@
 		</div> <!-- col-md -->
       </div> <!-- row -->
 
+		<div class="row mt-3">
+			<div class="col-md-12 text-center">
+				<p class="lead">Quarter 3
+				 <i class="bi bi-arrow-right text-secondary" 
+				   data-bs-toggle="tooltip" data-bs-placement="top"></i>
+				  <span class="text-danger">
+					  {{ percent_3|floatformat:"1" }}</span> %
+				</p>
+			</div> <!-- col-md -->
+		</div> <!-- row -->
+
       <div class="row"> <!-- Q3 row -->
-        <div class="col-md-4 col-margin-10">
+        <div class="col-lg-4 col-md-6 col-margin-10">
 			<table class="tg">
 				<thead>
 				  <tr>
@@ -429,7 +465,7 @@
 				</tbody>
 			</table>
 		</div> <!-- col-md -->
-        <div class="col-md-4 col-margin-10">
+        <div class="col-lg-4 col-md-6 col-margin-10">
 			<table class="tg">
 				<thead>
 				  <tr>
@@ -477,7 +513,7 @@
 				</tbody>
 			</table>
 		</div> <!-- col-md -->
-        <div class="col-md-4 col-margin-10">
+        <div class="col-lg-4 col-md-6 col-margin-10">
 			<table class="tg">
 				<thead>
 				  <tr>

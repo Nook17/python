@@ -54,6 +54,8 @@ class Notesdb(models.Model):
     percent_1 = models.FloatField(null=True, blank=True)
     percent_2 = models.FloatField(null=True, blank=True)
     percent_3 = models.FloatField(null=True, blank=True)
+    daily_point = models.IntegerField(null=True, blank=True)
+    lot_value = models.FloatField(null=True, blank=True)
 
     objects = DataFrameManager()
 
@@ -69,6 +71,17 @@ class Quarter(models.Model):
     profit = models.IntegerField(null=True, blank=True)
 
     objects = DataFrameManager()
+
+
+class Pipmargin(models.Model):
+    market = models.CharField(max_length=255)
+    margin = models.IntegerField()
+    pip = models.FloatField()
+    updated_at = models.DateTimeField(auto_now=True)
+
+    objects = DataFrameManager()
+
+
 
 '''
 Quarter

@@ -5,7 +5,7 @@
     <div class="p-5 rounded">
 	  <p class="lead">Statement</p>
       <div class="row">
-        <div class="col-md-7">
+        <div class="col-lg-7 col-md-12 mt-2">
 		  <table class="table table-striped">
 			  <thead>
 				<tr>
@@ -13,6 +13,7 @@
 				  <th scope="col">Profit</th>
 				  <th scope="col">Loss</th>
 				  <th scope="col">Balance</th>
+				  <th scope="col">Wallet</th>
 				</tr>
 			  </thead>
 			  <tbody>
@@ -22,12 +23,13 @@
 				  <td>{{ dic_items.1|floatformat:2 }}</td>
 				  <td>{{ dic_items.2|floatformat:2 }}</td>
 				  <td>{{ dic_items.3|floatformat:2 }}</td>
+				  <td>{{ dic_items.4|floatformat:2 }}</td>
 				</tr>
 				{% endfor %}
 			  </tbody>
 		  </table>
-	    </div>
-		<div class="col-md-5">
+		</div> <!-- col -->
+		<div class="col-lg-5 col-md-12 mt-2">
 			<table class="table table-striped">
 			  <thead>
 				<tr>
@@ -48,8 +50,8 @@
 				</tr>
 			  </tbody>
 			</table>
-		</div>
-      </div>
+		</div> <!-- col -->
+      </div> <!-- row -->
     </div>
 	</main>
   {% include "cfd/footer.html" %}

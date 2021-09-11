@@ -47,12 +47,12 @@ factory['Suzuki'] = 1900
 print(factory)
 del factory['Suzuki']
 print(factory)
-car = input('Enter car name: ')
-date_production = int(input('Enter date production: '))
-factory[car] = date_production
-print(factory.get('Honda', "\033[91mYou can't have this car in Dictionery\033[0m"))
-for i in factory.items():       # .values()  .keys()
-    print(i)
+# car = input('Enter car name: ')
+# date_production = int(input('Enter date production: '))
+# factory[car] = date_production
+# print(factory.get('Honda', "\033[91mYou can't have this car in Dictionery\033[0m"))
+# for i in factory.items():       # .values()  .keys()
+    # print(i)
 print("-------------------- END Dictionaries ------------------------\n")
 
 # --- Splitting & Joining Strings ---

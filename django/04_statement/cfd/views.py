@@ -4,10 +4,10 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Statement, Deposit, Withdrawal, Notesdb, Buy_calc, Quarter
-from .forms import DepositForm, WithdrawalForm, NotesdbForm, Buy_calcForm, QuarterForm
+from .models import Statement, Deposit, Withdrawal, Notesdb, Buy_calc, Quarter, Pipmargin
+from .forms import DepositForm, WithdrawalForm, NotesdbForm, Buy_calcForm, QuarterForm, PipmarginForm
 import pandas as pd
-import json
+import json, time
 from datetime import datetime
 
 
@@ -39,17 +39,66 @@ def wd_db_pandas():
     return wd
 
 
+def pipmargin_db_pandas():
+    pipmarg = Pipmargin.objects.all().values()
+    pm = pd.DataFrame(pipmarg)
+    return pm
+
+
+def deposit_sum():
+    depo_sum = depo_db_pandas()
+    if not depo_sum.empty:
+        deposit_sum = depo_sum.amount_dep.sum()
+    else:
+        deposit_sum = 0
+    return deposit_sum
+
+
+def withdrawal_sum():
+    wd_sum = wd_db_pandas()
+    if not wd_sum.empty:
+        withdrawal_sum = wd_sum.amount_wd.sum()
+    else:
+        withdrawal_sum = 0
+    return withdrawal_sum
+
+
+def wallet():
+    df = df_db()
+    commission_sum = df.commission.sum()
+    swap_sum = df.swap.sum()
+    filter_profit = (df['profit'] > 0)
+    filter_loss = (df['profit'] < 0)
+    profit = df.loc[filter_profit, 'profit'].sum()
+    loss_sum = df.loc[filter_loss, 'profit'].sum()
+    profit_sum = profit + loss_sum + commission_sum + swap_sum
+    wall = profit_sum + deposit_sum()
+    return wall
+
+def days_count():
+    df = df_db()
+    return df['close_time'].dt.date.nunique()
+
+
+def transactions():
+    df = df_db()
+    return df.shape[0]
+
+
 def index(request):
-    return render(request, 'cfd/index.html')
+    deposit = deposit_sum()
+    withdrawal = withdrawal_sum()
+    wallet_all = wallet()
+    days = days_count()
+    trade_count = transactions()
+    context = {'deposit': deposit, 'withdrawal': withdrawal,
+            'wallet_all': wallet_all, 'days': days, 'trade_count': trade_count}
+    return render(request, 'cfd/index.html', context)
 
 
 def deposit(request):
     depo = depo_db()
-    depo_sum = depo_db_pandas()
-    if not depo_sum.empty:
-        sum = depo_sum.amount_dep.sum()
-    else:
-        sum = 0
+    sum = deposit_sum()
     context = {'depo': depo, 'sum': sum}
     return render(request, 'cfd/deposit.html', context)
 
@@ -93,11 +142,7 @@ def delete_deposit(request, deposit_id):
 
 def withdrawal(request):
     wdd = wd_db()
-    wd_sum = wd_db_pandas()
-    if not wd_sum.empty:
-        sum = wd_sum.amount_wd.sum()
-    else:
-        sum = 0
+    sum = withdrawal_sum()
     context = {'wdd': wdd, 'sum': sum}
     return render(request, 'cfd/withdrawal.html', context)
 
@@ -141,6 +186,7 @@ def delete_withdrawal(request, withdrawal_id):
 
 def statement(request):
     df = df_db()
+    depo_sum = deposit_sum()
     commission_sum = df.commission.sum()
     swap_sum = df.swap.sum()
     filter_profit = (df['profit'] > 0)
@@ -152,15 +198,14 @@ def statement(request):
     df['close_time'] = pd.to_datetime(df['close_time']).dt.date
     url_statements = list(set(df['close_time']))
     url_statements.sort()
-    format_days = []
-    profit_per_day = []
-    loss_per_day = []
-    balance_per_day = []
+    format_days, profit_per_day, loss_per_day, balance_per_day =  [], [], [], [] 
+    swap_day, wallet = [], []
     for url_stat in url_statements:
         day_st = df.loc[df['close_time'] == url_stat]
         format_days.append(url_stat.strftime('%A - %d %B %Y'))
         # --- commision ---
         commission_day = day_st.commission.sum()
+        swap_day.append(day_st.swap.sum())
         # --- Profit ----
         sum_profit = 0
         for i in day_st.profit:
@@ -176,7 +221,10 @@ def statement(request):
         # --- Balance ---
         day_sum = sum_profit + commission_day + loss_profit
         balance_per_day.append(day_sum)
-    lists = list(zip(format_days, profit_per_day, loss_per_day, balance_per_day))
+        # --- Sum Profit & Amount ---
+        wallet.append(depo_sum + sum(balance_per_day) + sum(swap_day))
+    lists = list(zip(format_days, profit_per_day, loss_per_day,
+            balance_per_day, wallet))
     dicts = dict(zip(url_statements, lists))
     context = {'dicts': dicts,
                'profit_sum': round(profit_sum, 2),
@@ -185,10 +233,6 @@ def statement(request):
                'commission_sum': round(commission_sum, 2),
                'swap_sum': round(swap_sum, 2)}
     return render(request, 'cfd/statement.html', context)
-
-
-url_from_request = ''
-format_day_from_request = ''
 
 
 def statements(request, url_statement):
@@ -230,30 +274,35 @@ def statements(request, url_statement):
     # -------------------
     day_st['open_time'] = pd.to_datetime(day_st['open_time']).dt.date
     day_st['close_time'] = pd.to_datetime(day_st['close_time']).dt.date
+    # --- Data to chart ---
+    day_ste = df[df['close_time'].dt.strftime('%Y-%m-%d') == url_statement]
+    chartx = list(day_ste.index.values)
+    charty = list(day_ste.profit)
+    day_st.rename(columns={
+        'ticket': 'Ticket',
+        'open_time': 'Open Time',
+        'type_st': 'Type',
+        'size_st': 'Size',
+        'item_st': 'Item',
+        'open_price': 'Open Price',
+        's_l': 'Stop Loss',
+        't_p': 'Take Profit',
+        'close_time': 'Close Time',
+        'close_price': 'Close Price',
+        'commission': 'Commission',
+        'taxes': 'Taxes',
+        'swap': 'Swap',
+        'profit': 'Profit'
+        }, inplace=True)
     context = {
             'format_day': format_day, 'day_st': day_st.to_html(index=False),
             'day_sum': round(day_sum, 2), 'sum_profit': round(sum_profit, 2),
             'loss_profit': round(loss_profit, 2), 'pkt_sum': round(pkt_sum, 2),
-            'commission_sum': round(commission_sum, 2),
-            'swap_sum': round(swap_sum, 2), 'url_from_request': url_from_request}
-    return render(request, 'cfd/statements.html', context)
-
-
-class ChartData(APIView):
-    def get(self, request, format=None):
-        global url_from_request
-        global format_day_from_request
-        chartLabel = format_day_from_request
-        df = df_db()
-        day_st = df[df['close_time'].dt.strftime('%Y-%m-%d') == url_from_request]
-        labels = day_st.index.values
-        chartdata = list(day_st.profit)
-        data = {
-                "labels": labels,
-                "chartLabel": chartLabel,
-                "chartdata": chartdata,
+            'commission_sum': round(commission_sum, 2), 
+            'swap_sum': round(swap_sum, 2), 'url_from_request': url_from_request,
+            'chartx': chartx, 'charty': charty
             }
-        return Response(data)
+    return render(request, 'cfd/statements.html', context)
 
 
 def year(request):
@@ -309,6 +358,7 @@ def calc(request):
     buy_level = Buy_calc.objects.all().values().order_by('-buy_level')
     df_cal = pd.DataFrame(cal)
     df_buy = pd.DataFrame(buy_level)
+    wall = wallet()
     try:
         df_buy.sort_values('buy_level', ascending=False, inplace=True)
         buy_levels = df_buy.values.tolist()
@@ -324,8 +374,8 @@ def calc(request):
         select = df_cal.at[1, 'buy_or_sell']
     else:
         variables = 'default'   # temporary values
-
     profit_levels = []
+    percent_by_wallet = ((df_buy.shape[0] * lot * margin_value * 100)/wall*100)
     for lev in Buy_calc.objects.values_list('buy_level', flat=True).order_by('-buy_level'):
         if select == 'Long':
             profit_levels.append((tp-lev)*(pip_value*lot*100))
@@ -336,7 +386,8 @@ def calc(request):
     sum_profit = sum(profit_levels)
     context = {'gap': gap, 'lot': lot, 'margin_value': margin_value,
                'pip_value': pip_value, 'tp': tp, 'select': select,
-               'sum_profit': sum_profit, 'buy_zip': buy_zip}
+               'sum_profit': sum_profit, 'buy_zip': buy_zip,
+               'percent_by_wallet': percent_by_wallet}
     return render(request, 'cfd/calc.html', context)
 
 
@@ -381,7 +432,120 @@ def calc_buy_delete(request, buy_id):
     return HttpResponseRedirect(reverse('cfd:calc'))
 
 
+def pipmargin(request):
+    df = pipmargin_db_pandas()
+    last_margin = df.resample('D', on='updated_at')['margin'].max()
+    last_pip = df.resample('D', on='updated_at')['pip'].max()
+    lvol = []
+    lmargin1, lpip1, lmargin2, lpip2, lmargin3, lpip3, = [], [], [], [], [], []
+    lmargin4, lpip4, lmargin5, lpip5, lmargin6, lpip6, = [], [], [], [], [], []
+    for i in range(6):
+        i += 1
+        filt = df['id'] == i
+        margin = int(df.loc[filt, 'margin'])
+        pip = float(df.loc[filt, 'pip'])
+        for l in range(100):
+            locals()['lpip%s' % i].append(pip*(l+1))
+            locals()['lmargin%s' % i].append(margin*(l+1))
+    for i in range(100):
+        i += 1
+        lvol.append(i/100)
+    lists = list(zip(lmargin1, lpip1, lmargin2, lpip2, lmargin3, lpip3,
+                     lmargin4, lpip4, lmargin5, lpip5, lmargin6, lpip6))
+    dicts = dict(zip(lvol, lists))
+    context = {'last_pip': float(last_pip), 'last_margin': int(last_margin),
+               'dicts': dicts}    
+    return render(request, 'cfd/pipmargin.html', context)
+
+
+def pipmargin_set(request):
+    try:
+        marketdb = Pipmargin.objects.get(market=request.POST.get('market'))
+        if request.method != 'POST':
+            form = PipmarginForm(instance=marketdb)
+        else:
+            form = PipmarginForm(instance=marketdb, data=request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('cfd:pipmargin')
+    except Exception:
+        form = PipmarginForm(data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('cfd:pipmargin')
+    return render(request, 'cfd/pipmargin.html')
+
+
+def daily(request):
+    today_is = time.strftime("%A - %d %B %Y")
+    wall = wallet()
+    divide_by = [0.5, 0.33, 0.25, 0.20, 0.1, 0.05, 0.02]
+    percent_by = [0.5, 0.7, 1, 1.5, 2, 2.5, 3]
+    threshold, margin, percent, profit = [], [], [], []
+    for m in divide_by:
+        threshold.append(m*100)
+        margin.append(m*wall)
+    for p in percent_by:
+        percent.append(p)
+        profit.append(p*wall/100)
+    margin_by = list(zip(threshold, margin))
+    profit_by = list(zip(percent, profit))
+    context = {'today_is': today_is, 'wall': wall, 'margin_by': margin_by,
+               'profit_by': profit_by}
+    return render(request, 'cfd/daily.html', context)
+
+
+def point(request):
+    df = pipmargin_db_pandas()
+    per = Notesdb.objects.all().values()
+    df_notes = pd.DataFrame(per)
+    pip_val_markets = df['pip'].tolist()
+    filt = (df_notes['id'] == 4)
+    daily_p = int(df_notes.loc[filt, 'daily_point'])
+    lot_v = float(df_notes.loc[filt, 'lot_value'])
+    l_description = ['day', 'week', 'month', 'quarter', 'year']
+    l_multiplier = [1, 5, 22, 64, 253]
+    l_points, l_profit = [], []
+    lpoint1, lpoint2, lpoint3, lpoint4, lpoint5, lpoint6=[],[],[],[],[],[] 
+    lprofit1, lprofit2, lprofit3, lprofit4, lprofit5, lprofit6=[],[],[],[],[],[] 
+    for p in range(1, 7):
+        for i in l_multiplier:
+            locals()['lpoint%s' % p].append(daily_p*i)
+            locals()['lprofit%s' % p].append(lot_v*pip_val_markets[p-1]*daily_p*i*100)
+            # l_points.append(daily_p*i)
+            # l_profit.append(lot_v * daily_p*i)
+    lists = list(zip(l_description, l_multiplier, lpoint1, lprofit1,
+                     lpoint2, lprofit2, lpoint3, lprofit3, lpoint4,
+                     lprofit4, lpoint5, lprofit5, lpoint6, lprofit6))
+    context = {'lists': lists, 'daily_p': daily_p,
+            'lot_v': lot_v, 'pip_val_markets': pip_val_markets}
+    return render(request, 'cfd/point.html', context)
+
+
+def point_set(request):
+    try:
+        notes = Notesdb.objects.get(id=4)
+        if request.method != 'POST':
+            form = NotesdbForm(instance=notes)
+        else:
+            form = NotesdbForm(instance=notes, data=request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('cfd:point')
+    except Exception:
+        form = NotesdbForm(data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('cfd:point')
+    return render(request, 'cfd/point.html')
+
+
 def quarter(request):
+    depo_sum = depo_db_pandas()
+    if not depo_sum.empty:
+        deposit_sum = depo_sum.amount_dep.sum()
+    else:
+        deposit_sum = 0
     per = Notesdb.objects.all().values()
     qrt = Quarter.objects.all().values()
     df_notes = pd.DataFrame(per)
@@ -441,6 +605,7 @@ def quarter(request):
         avg_prof = sum(ldayprof) / qrt_row_number 
         max_perc = ((last_pr - amount_base) / amount_base) * 100 
         max_prof = sum(ldayprof)
+        wallet = max_prof + deposit_sum
         # --- zip list ---
         if flag == 1:
             # --- Sum Q1 profit per month ---
@@ -461,11 +626,12 @@ def quarter(request):
     context = {'percent_1': percent_1, 'percent_2': percent_2,
                'percent_3': percent_3, 'amount_base': amount_base,
                'lists_1': lists_1, 'lists_2': lists_2, 'lists_3': lists_3,
-               'lsum': lsum, 'last_id': last_id,
-               'last_dt': last_dt, 'last_pr': last_pr, 'avg_perc': avg_perc,
-               'avg_prof': avg_prof, 'max_perc': max_perc, 'max_prof': max_prof}
+               'lsum': lsum, 'last_id': last_id, 'last_dt': last_dt,
+               'last_pr': last_pr, 'avg_perc': avg_perc, 'avg_prof': avg_prof,
+               'max_perc': max_perc, 'max_prof': max_prof, 'wallet': wallet}
     return render(request, 'cfd/quarter.html', context)
 # ALTER TABLE `cfd_quarter` AUTO_INCREMENT=5
+
 
 def quarter_set(request):
     try:
@@ -502,3 +668,34 @@ def quarter_set_percent(request):
             return redirect('cfd:quarter')
     return render(request, 'cfd/quarter.html')
 
+
+class ChartData(APIView):
+    def get(self, request, format = None):
+        df = df_db()
+        df['close_time'] = pd.to_datetime(df['close_time']).dt.date
+        url_statements = list(set(df['close_time']))
+        url_statements.sort()
+        labels, chartdata = [], []
+        for url_stat in url_statements:
+            day_st = df.loc[df['close_time'] == url_stat]
+            commission_day = day_st.commission.sum()
+            swap_day = day_st.swap.sum()
+            sum_profit = 0
+            for i in day_st.profit:
+                if i > 0:
+                    sum_profit += i
+            loss_profit = 0
+            for i in day_st.profit:
+                if i < 0:
+                    loss_profit += i
+            day_sum = sum_profit + commission_day + loss_profit
+            labels.append(url_stat.strftime('%d-%m'))
+            chartdata.append(int(day_sum) + int(swap_day))
+
+        chartLabel = "Daily transactions"
+        data ={
+                    "labels":labels,
+                    "chartLabel":chartLabel,
+                    "chartdata":chartdata,
+            }
+        return Response(data)

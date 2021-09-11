@@ -5,7 +5,7 @@ from sqlalchemy import create_engine
 
 
 # --- Read data from Excel file ---
-df = pd.read_excel('statements/statement_long.xlsx')
+df = pd.read_excel('statements/statement_7k.xlsx')
 
 # --- Rename columns name ---
 df.rename(columns={

@@ -29,7 +29,7 @@
 body .year-sm-text { font-size: 0.7rem; color: #686868; }
 
 .ncard {
-    position: relative;
+	position: relative;
     display: -ms-flexbox;
     display: flex;
     -ms-flex-direction: column;
@@ -40,4 +40,19 @@ body .year-sm-text { font-size: 0.7rem; color: #686868; }
     background-clip: border-box;
     border: 1px solid rgba(0,0,0,.125);
     border-radius: .25rem;
+	margin: 0 auto; 
+	float: none;
+	margin-bottom: 10px;
+}
+.center {
+    margin: 0 auto;
+    width: 80%;
+}
+table th {
+   text-align: center; 
+}
+
+.table {
+   margin: auto;
+   width: 50% !important; 
 }

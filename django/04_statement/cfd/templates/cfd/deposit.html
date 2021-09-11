@@ -5,7 +5,7 @@
 	  <div class="p-5 rounded">
 		<p class="lead">Deposit</p>
 		<div class="row">
-			<div class="col-md-7">
+			<div class="col-lg-7 col-md-12">
 				<table class="table table-striped">
 				  <thead>
 					<tr>
@@ -37,15 +37,14 @@
 					{% endfor %}
 				  </tbody>
 				</table>
-
 				<div class='text-center'>
 				  <form>
 					<button type="submit" formaction="{% url 'cfd:new_deposit' %}" 
 					  class="btn btn-outline-dark btn-sm">New depo</button>
 				  </form>
 				</div>
-			</div>
-			<div class="col-md-5">
+			</div> <!-- col -->
+			<div class="col-lg-5 col-md-12">
 				<table class="table table-striped">
 				  <thead>
 					<tr>
@@ -64,8 +63,8 @@
 					</tr>
 				  </tbody>
 				</table>
-			</div>
-		</div>
+			</div> <!-- col -->
+		</div> <!-- row -->
 	  </div>
 	</main>
   {% include "cfd/footer.html" %}

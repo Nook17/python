@@ -26,10 +26,19 @@
 				  Quarter
 			  </a>
 		  </li>
-		  <li class="nav-item">
-			  <a href="{% url 'cfd:calc' %}" class="nav-link px-2 text-muted">
-				  Calc
-			  </a>
+		  <li class="nav-item dropup">
+		    <a class="nav-link dropdown-toggle text-muted" href="#"
+				data-bs-toggle="dropdown" aria-expanded="false">Calculator</a>
+			<ul class="dropdown-menu" aria-labelledby="dropdown10">
+			  <li><a class="dropdown-item" href="{% url 'cfd:calc' %}">
+					  Take Profit</a></li>
+			  <li><a class="dropdown-item" href="{% url 'cfd:pipmargin' %}">
+					  Margin & Pip Value</a></li>
+			  <li><a class="dropdown-item" href="{% url 'cfd:daily' %}">
+					  Daily Calculations</a></li>
+			  <li><a class="dropdown-item" href="{% url 'cfd:point' %}">
+					  Daily Point</a></li>
+			</ul>
 		  </li>
 		  <li class="nav-item">
 			  <a href="{% url 'cfd:year' %}" class="nav-link px-2 text-muted">

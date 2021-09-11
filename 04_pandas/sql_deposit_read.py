@@ -10,9 +10,9 @@ engine = create_engine('mysql+pymysql://root@localhost:3306/statement')
 df = pd.read_sql("cfd_deposit", engine)
 print(df)
 # print(df.info())
-filt = df['id'] == 17
-print(df.loc[filt, 'amount_dep'])
-
+# filt = df['id'] == 17
+# print(df.loc[filt, 'amount_dep'])
+print(df.shape[0])
 # print(df.loc[0:10, ['Profit', 'Size']])
 
 # --- Format Date. Cut Time from date ---

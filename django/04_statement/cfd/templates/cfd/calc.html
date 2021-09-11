@@ -56,24 +56,38 @@
 				<button type="submit" class="btn btn-outline-secondary btn-sm">
 					Set</button>
 			  </div>
-
 			</form>
-			<div class="row">
-				<div class="col-md-12">
-					<p class="lead mt-4">Profit: 
-					{% if sum_profit > 0 %}
-					  <span class="text-success">
-						  {{ sum_profit|floatformat:"2" }}</span>
-					{% else %}
-					  <span class="text-danger">
-						  {{ sum_profit|floatformat:"2" }}</span>
-					{% endif %}
-					</p>
-				</div>
-			</div>
-		  </div> <!-- col-md -->
-		  <div class="col-md-8">
+			
+		  <div class="row mt-3">
+			  <div class="col-md-6">
+				<div class="ncard border-warning mb-3" style="max-width: 18rem;">
+				  <div class="card-header text-center">Engagement</div>
+					<div class="card-body text-secondary">
+					  <h5 class="card-title text-center">
+						  {{ percent_by_wallet|floatformat:"0" }} %</h5>
+					</div>
+				</div>		
+			  </div> <!-- col -->
+			  <div class="col-md-6">
+				<div class="ncard border-info mb-3" style="max-width: 18rem;">
+				  <div class="card-header text-center">Profit</div>
+					<div class="card-body text-secondary">
+						{% if sum_profit > 0 %}
+						  <span class="text-success">
+						  <h5 class="card-title text-success text-center">
+							  {{ sum_profit|floatformat:"2" }} zł</h5>
+						{% else %}
+						  <span class="text-danger">
+						  <h5 class="card-title text-danger text-center">
+							  {{ sum_profit|floatformat:"2" }} zł</h5>
+						{% endif %}
+					</div>
+				</div>		
+			  </div> <!-- col -->
+		  </div> <!-- row -->
 
+		  </div> <!-- col-md -->
+		  <div class="col-md-6">
 			<form action="{% url 'cfd:calc_buy_create' %}" method="post">
 			  {% csrf_token %}
 			 {% if select == 'Long' %}
@@ -81,7 +95,6 @@
 			 {% elif select == 'Short' %}
 			  <div class="ncard border-danger mb-1" style="max-width: 18rem;">
 			 {% endif %}
-			  
 				<div class="card-header">Set trade levels for: 
 				 {% if select == 'Long' %}
 				   <span class="text-success"> Long</span>
@@ -122,7 +135,6 @@
 						  </tbody>
 						</table>
 					  </div>
-
 					  <div class="col-md-12 input-group-sm">
 						<input type="number" step="1" name="buy_level" value=""
 						class="form-control">
@@ -142,10 +154,8 @@
 				</div>
 			  </div>
 			</form>
-		  
 		  </div> <!-- col-md -->
       </div> <!-- row -->
-
 	</div><!-- p-5 rounded -->
   </main>
 {% include "cfd/footer.html" %}
