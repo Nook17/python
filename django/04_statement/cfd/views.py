@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import View
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Statement, Deposit, Withdrawal, Notesdb, Buy_calc, Quarter, Pipmargin
@@ -85,6 +86,7 @@ def transactions():
     return df.shape[0]
 
 
+@login_required
 def index(request):
     deposit = deposit_sum()
     withdrawal = withdrawal_sum()
@@ -96,6 +98,7 @@ def index(request):
     return render(request, 'cfd/index.html', context)
 
 
+@login_required
 def deposit(request):
     depo = depo_db()
     sum = deposit_sum()
@@ -103,6 +106,7 @@ def deposit(request):
     return render(request, 'cfd/deposit.html', context)
 
 
+@login_required
 def new_deposit(request):
     if request.method != 'POST':    # if 'GET'
         form = DepositForm()
@@ -115,6 +119,7 @@ def new_deposit(request):
     return render(request, 'cfd/new_deposit.html', context)
 
 
+@login_required
 def update_deposit(request, deposit_id):
     updepo = Deposit.objects.get(id=deposit_id)
     if request.method != 'POST':
@@ -128,6 +133,7 @@ def update_deposit(request, deposit_id):
     return render(request, 'cfd/update_deposit.html', context)
 
 
+@login_required
 def delete_deposit(request, deposit_id):
     depo = depo_db()
     try:
@@ -140,6 +146,7 @@ def delete_deposit(request, deposit_id):
     return render(request, 'cfd/deposit.html', context)
 
 
+@login_required
 def withdrawal(request):
     wdd = wd_db()
     sum = withdrawal_sum()
@@ -147,6 +154,7 @@ def withdrawal(request):
     return render(request, 'cfd/withdrawal.html', context)
 
 
+@login_required
 def new_withdrawal(request):
     if request.method != 'POST':    # if 'GET'
         form = WithdrawalForm()
@@ -159,6 +167,7 @@ def new_withdrawal(request):
     return render(request, 'cfd/new_withdrawal.html', context)
 
 
+@login_required
 def update_withdrawal(request, withdrawal_id):
     upwd = Withdrawal.objects.get(id=withdrawal_id)
     if request.method != 'POST':
@@ -172,6 +181,7 @@ def update_withdrawal(request, withdrawal_id):
     return render(request, 'cfd/update_withdrawal.html', context)
 
 
+@login_required
 def delete_withdrawal(request, withdrawal_id):
     wdd = wd_db()
     try:
@@ -184,6 +194,7 @@ def delete_withdrawal(request, withdrawal_id):
     return render(request, 'cfd/withdrawal.html', context)
 
 
+@login_required
 def statement(request):
     df = df_db()
     depo_sum = deposit_sum()
@@ -235,6 +246,7 @@ def statement(request):
     return render(request, 'cfd/statement.html', context)
 
 
+@login_required
 def statements(request, url_statement):
     df = df_db()
     global url_from_request
@@ -305,6 +317,7 @@ def statements(request, url_statement):
     return render(request, 'cfd/statements.html', context)
 
 
+@login_required
 def year(request):
     per = Notesdb.objects.all().values()
     df = pd.DataFrame(per)
@@ -332,6 +345,7 @@ def year(request):
     return render(request, 'cfd/year.html', context)
 
 
+@login_required
 def new_percent(request):
     per = Notesdb.objects.all().values()
     df = pd.DataFrame(per)
@@ -353,6 +367,7 @@ def new_percent(request):
     return redirect('cfd:year')
 
 
+@login_required
 def calc(request):
     cal = Notesdb.objects.all().values()
     buy_level = Buy_calc.objects.all().values().order_by('-buy_level')
@@ -391,6 +406,7 @@ def calc(request):
     return render(request, 'cfd/calc.html', context)
 
 
+@login_required
 def calc_set(request):
     cal = Notesdb.objects.all().values()
     df = pd.DataFrame(cal)
@@ -412,6 +428,7 @@ def calc_set(request):
     return render(request, 'cfd/calc.html')
 
 
+@login_required
 def calc_buy_create(request):
     if request.method != 'POST':
         form = Buy_calcForm()
@@ -423,6 +440,7 @@ def calc_buy_create(request):
     return render(request, 'cfd/calc.html')
 
 
+@login_required
 def calc_buy_delete(request, buy_id):
     try:
         cbd = Buy_calc.objects.get(id=buy_id)
@@ -432,6 +450,7 @@ def calc_buy_delete(request, buy_id):
     return HttpResponseRedirect(reverse('cfd:calc'))
 
 
+@login_required
 def pipmargin(request):
     df = pipmargin_db_pandas()
     last_margin = df.resample('D', on='updated_at')['margin'].max()
@@ -458,6 +477,7 @@ def pipmargin(request):
     return render(request, 'cfd/pipmargin.html', context)
 
 
+@login_required
 def pipmargin_set(request):
     try:
         marketdb = Pipmargin.objects.get(market=request.POST.get('market'))
@@ -476,6 +496,7 @@ def pipmargin_set(request):
     return render(request, 'cfd/pipmargin.html')
 
 
+@login_required
 def daily(request):
     today_is = time.strftime("%A - %d %B %Y")
     wall = wallet()
@@ -495,6 +516,7 @@ def daily(request):
     return render(request, 'cfd/daily.html', context)
 
 
+@login_required
 def point(request):
     df = pipmargin_db_pandas()
     per = Notesdb.objects.all().values()
@@ -522,6 +544,7 @@ def point(request):
     return render(request, 'cfd/point.html', context)
 
 
+@login_required
 def point_set(request):
     try:
         notes = Notesdb.objects.get(id=4)
@@ -540,6 +563,7 @@ def point_set(request):
     return render(request, 'cfd/point.html')
 
 
+@login_required
 def quarter(request):
     depo_sum = depo_db_pandas()
     if not depo_sum.empty:
@@ -633,6 +657,7 @@ def quarter(request):
 # ALTER TABLE `cfd_quarter` AUTO_INCREMENT=5
 
 
+@login_required
 def quarter_set(request):
     try:
         qrt = Quarter.objects.get(id=request.POST.get('id'))
@@ -651,6 +676,7 @@ def quarter_set(request):
     return render(request, 'cfd/quarter.html')
 
 
+@login_required
 def quarter_set_percent(request):
     try:
         notes = Notesdb.objects.get(id=3)
