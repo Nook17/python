@@ -1,0 +1,83 @@
+{% extends "cfd/base.html" %}
+{% load static %}
+{% block link %}
+	<link rel="stylesheet" href="{% static 'cfd/style/table.css' %}" type="text/css">
+{% endblock link %}
+
+{% block content %}
+  <main class="container flex-shrink-0">
+    <div class="p-5 rounded">
+	  <p class="lead">Daily Point</p>
+      <div class="row">
+		  <div class="col-md-5">
+			<form action="{% url 'cfd:point_set' %}" method="post">
+				{% csrf_token %}
+				  <div class="col-auto">
+					<div class="input-group input-group-sm">
+					  <button class="btn btn-outline-secondary btn-sm"
+							  type="submit">Set</button>
+				      <input type="number" step="1" name="daily_point" 
+					  value="{{ daily_p|floatformat:"0" }}" class="form-control">
+				      <input type="number" step="0.01" name="lot_value" 
+					  value="{{ lot_v|floatformat:"2" }}" class="form-control">
+					</div>
+						<span class="year-sm-text">
+						  Set:  Point value 
+						    <i class="bi bi-arrow-right text-secondary" 
+							  data-bs-toggle="tooltip" 
+							  data-bs-placement="top"></i> Lot value
+						    <i class="bi bi-arrow-right text-secondary" 
+							  data-bs-toggle="tooltip" 
+							  data-bs-placement="top"></i>
+						</span>
+				  </div>
+			</form>
+		  </div> <!-- col-md -->
+	  </div> <!-- row -->
+	  <div class="row text-center mt-2">
+	 	<div class="col-md-2"></div>
+	 	  <div class="col-md-8">
+			<div class="ncard border-warning mb-3" style="max-width: 42rem;">
+			  <div class="card-header">Daily profit by point</div>
+		 	    <div class="card-body text-secondary justify-content-center">
+					<div class="col-auto">
+					  <table class="tg table table-bordered table-striped text-center">
+						<thead>
+						  <tr>
+							  <td class="tg-month text-center">Time</th>
+							  <td class="tg-month text-center">Multiplier</th>
+							  <td class="tg-month text-center">Points</th>
+							  <td class="tg-month text-center"><b>US100</b></th>
+							  <td class="tg-month text-center"><b>US500</b></th>
+							  <td class="tg-month text-center"><b>DE30</b></th>
+							  <td class="tg-month text-center"><b>US30</b></th>
+							  <td class="tg-month text-center"><b>EUR/USD</b></th>
+							  <td class="tg-month text-center"><b>GOLD</b></th>
+						  </tr>
+						</thead>
+						<tbody>
+						  {% for list in lists %}
+						  <tr>
+							<td class="tg-amount text-center">{{ list.0 }}</td>
+							<td class="tg-no text-center">{{ list.1 }}</td>
+							<td class="tg-profit text-center">{{ list.2 }}</td>
+							<td class="tg-sumday text-center">{{ list.3|floatformat:"0" }}</td>
+							<td class="tg-sumday text-center">{{ list.5|floatformat:"0" }}</td>
+							<td class="tg-sumday text-center">{{ list.7|floatformat:"0" }}</td>
+							<td class="tg-sumday text-center">{{ list.9|floatformat:"0" }}</td>
+							<td class="tg-sumday text-center">{{ list.11|floatformat:"0" }}</td>
+							<td class="tg-sumday text-center">{{ list.13|floatformat:"0" }}</td>
+						  </tr>
+						  {% endfor %}
+						</tbody>
+					  </table>
+					</div>	
+				</div>
+			  </div>		
+			</div> <!-- col -->
+		  <div class="col-md-2"></div>
+		</div> <!-- row -->
+	</div><!-- p-5 rounded -->
+  </main>
+{% include "cfd/footer.html" %}
+{% endblock content %}

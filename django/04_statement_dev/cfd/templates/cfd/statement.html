@@ -1,0 +1,58 @@
+{% extends "cfd/base.html" %}
+
+{% block content %}
+  <main class="container flex-shrink-0">
+    <div class="p-5 rounded">
+	  <p class="lead">Statement</p>
+      <div class="row">
+        <div class="col-lg-7 col-md-12 mt-2">
+		  <table class="table table-striped">
+			  <thead>
+				<tr>
+				  <th scope="col">Date</th>
+				  <th scope="col">Profit</th>
+				  <th scope="col">Loss</th>
+				  <th scope="col">Balance</th>
+				  <th scope="col">Wallet</th>
+				</tr>
+			  </thead>
+			  <tbody>
+				{% for dic_date, dic_items in dicts.items %}
+				<tr>
+				  <td><a href="{% url 'cfd:statements' dic_date %}">{{ dic_items.0 }}</a></td>
+				  <td>{{ dic_items.1|floatformat:2 }}</td>
+				  <td>{{ dic_items.2|floatformat:2 }}</td>
+				  <td>{{ dic_items.3|floatformat:2 }}</td>
+				  <td>{{ dic_items.4|floatformat:2 }}</td>
+				</tr>
+				{% endfor %}
+			  </tbody>
+		  </table>
+		</div> <!-- col -->
+		<div class="col-lg-5 col-md-12 mt-2">
+			<table class="table table-striped">
+			  <thead>
+				<tr>
+				  <th scope="col">Profit</th>
+				  <th scope="col">Loss</th>
+				  <th scope="col">Ballance</th>
+				  <th scope="col">Commission</th>
+				  <th scope="col">Swap</th>
+				</tr>
+			  </thead>
+			  <tbody>
+				<tr>
+				  <td>{{ profit_sum }}</td>
+				  <td>{{ loss_sum }}</td>
+				  <td>{{ ballance_sum }}</td>
+				  <td>{{ commission_sum }}</td>
+				  <td>{{ swap_sum }}</td>
+				</tr>
+			  </tbody>
+			</table>
+		</div> <!-- col -->
+      </div> <!-- row -->
+    </div>
+	</main>
+  {% include "cfd/footer.html" %}
+{% endblock content %}

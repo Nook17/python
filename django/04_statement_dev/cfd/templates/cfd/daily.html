@@ -1,0 +1,77 @@
+{% extends "cfd/base.html" %}
+{% load static %}
+{% block link %}
+	<link rel="stylesheet" href="{% static 'cfd/style/table.css' %}" type="text/css">
+{% endblock link %}
+
+{% block content %}
+  <main class="container flex-shrink-0">
+    <div class="p-5 rounded">
+	  <p class="lead">Daily Calculations</p>
+      <div class="row">
+	    <div class="col-md-12 text-center">
+		  <p class="lead mt-4">Date: 
+		    <span class="text-info">{{ today_is }}</span>
+		    <span class=" ml-4">Wallet: </span>
+			<span class="text-success">{{ wall }}</span> zł
+		  </p>
+	    </div> <!-- col-md -->
+	  </div> <!-- row -->
+	  <div class="row text-center mt-2">
+	 	<div class="col-md-1"></div>
+	 	  <div class="col-lg-5 col-md-10">
+			<div class="ncard border-warning mb-3" style="max-width: 25rem;">
+			  <div class="card-header">Profit by % - Wallet</div>
+		 	    <div class="card-body text-secondary justify-content-center">
+					<div class="col-auto">
+					  <table class="tg table table-bordered table-striped text-center">
+						<thead>
+						  <tr>
+							  <td class="tg-amount text-center"><b>Percent</b></th>
+							  <td class="tg-profit text-center"><b>Profit</b></th>
+						  </tr>
+						</thead>
+						<tbody>
+						  {% for list in profit_by %}
+						  <tr>
+							<td class="tg-amount text-center">{{ list.0|floatformat:"1" }} %</td>
+							<td class="tg-sumday">{{ list.1|floatformat:"0" }} zł</td>
+						  </tr>
+						  {% endfor %}
+						</tbody>
+					  </table>
+					</div>	
+				</div>
+			  </div>		
+			</div> <!-- col -->
+			<div class="col-lg-5 col-md-10">
+			  <div class="ncard border-warning mb-3" style="max-width: 25rem;">
+			    <div class="card-header">Margin by % - Wallet</div>
+				  <div class="card-body text-secondary justify-content-center">
+					<div class="col-auto">
+					  <table class="tg table table-bordered table-striped text-center">
+						<thead>
+						  <tr>
+							<td class="tg-amount text-center"><b>Threshold</b></th>
+							<td class="tg-profit text-center"><b>Margin</b></th>
+						  </tr>
+						</thead>
+						<tbody>
+						  {% for list in margin_by %}
+						  <tr>
+							<td class="tg-amount text-center">{{ list.0|floatformat:"0" }} %</td>
+							<td class="tg-sumday">{{ list.1|floatformat:"0" }} zł</td>
+						  </tr>
+						  {% endfor %}
+						</tbody>
+					  </table>
+					</div>	
+				  </div>
+				</div>		
+			</div> <!-- col -->
+		  <div class="col-md-1"></div>
+		</div> <!-- row -->
+	</div><!-- p-5 rounded -->
+  </main>
+{% include "cfd/footer.html" %}
+{% endblock content %}
