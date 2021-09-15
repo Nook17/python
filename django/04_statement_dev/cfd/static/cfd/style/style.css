@@ -6,7 +6,7 @@ body {
     margin-bottom: 60px;
 	background-attachment: fixed;
     background-position: center center;
-    background-image: url("/static/cfd/assets/paper.png");
+    background-image: url("../assets/paper.png");
 }
 
 main > .container {

@@ -243,7 +243,7 @@ def statement(request):
                'ballance_sum': round(ballance_sum, 2),
                'commission_sum': round(commission_sum, 2),
                'swap_sum': round(swap_sum, 2)}
-    return render(request, 'cfd/statement.html', context)
+    return render(request, 'cfd/statementt.html', context)
 
 
 @login_required
@@ -314,7 +314,7 @@ def statements(request, url_statement):
             'swap_sum': round(swap_sum, 2), 'url_from_request': url_from_request,
             'chartx': chartx, 'charty': charty
             }
-    return render(request, 'cfd/statements.html', context)
+    return render(request, 'cfd/statementts.html', context)
 
 
 @login_required
