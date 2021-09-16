@@ -1,0 +1,42 @@
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+    margin-bottom: 60px;
+	background-attachment: fixed;
+    background-position: center center;
+    background-image: url("/static/cfd/assets/paper.png");
+}
+
+main > .container {
+  padding: 60px 15px 0;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  /* line-height: 60px; /1* Vertically center the text there *1/ */
+}
+
+
+body > .container {
+  padding: 70px 15px 0;
+}
+/* @media (max-width:767px) { */
+/*   .navbar-nav .open .dropdown-menu { */
+/*     background-color:#fff; */
+/*   } */
+/* } */
+
+.footer > .container {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+code {
+  font-size: 80%;
+}

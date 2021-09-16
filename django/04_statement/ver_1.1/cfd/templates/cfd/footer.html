@@ -1,0 +1,75 @@
+	<footer class="footer mt-auto py-3 ">
+	  <div class="container">
+		<ul class="nav justify-content-center border-bottom ">
+		  <li class="nav-item">
+			  <a href="{% url 'cfd:index' %}" class="nav-link px-2 text-muted">
+				  Home
+			  </a>
+		  </li>
+		  <li class="nav-item">
+			  <a href="{% url 'cfd:deposit' %}" class="nav-link px-2 text-muted">
+				  Deposit
+			  </a>
+		  </li>
+		  <li class="nav-item">
+			  <a href="{% url 'cfd:withdrawal' %}" class="nav-link px-2 text-muted">
+				  Withdrawal
+			  </a>
+		  </li>
+		  <li class="nav-item">
+			  <a href="{% url 'cfd:statement' %}" class="nav-link px-2 text-muted">
+				  Statement
+			  </a>
+		  </li>
+		  <li class="nav-item">
+			  <a href="{% url 'cfd:quarter' %}" class="nav-link px-3 text-muted">
+				  Quarter
+			  </a>
+		  </li>
+		  <li class="nav-item dropup">
+		    <a class="nav-link dropdown-toggle text-muted" href="#"
+				data-bs-toggle="dropdown" aria-expanded="false">Calculator</a>
+			<ul class="dropdown-menu" aria-labelledby="dropdown10">
+			  <li><a class="dropdown-item" href="{% url 'cfd:calc' %}">
+					  Take Profit</a></li>
+			  <li><a class="dropdown-item" href="{% url 'cfd:pipmargin' %}">
+					  Margin & Pip Value</a></li>
+			  <li><a class="dropdown-item" href="{% url 'cfd:daily' %}">
+					  Daily Calculations</a></li>
+			  <li><a class="dropdown-item" href="{% url 'cfd:point' %}">
+					  Daily Point</a></li>
+			</ul>
+		  </li>
+		  <li class="nav-item">
+			  <a href="{% url 'cfd:year' %}" class="nav-link px-2 text-muted">
+				  Year
+			  </a>
+		  </li>
+		  <li class="nav-item">
+			  <a href="http://localhost/phpmyadmin/index.php" 
+				  target="_blank" class="nav-link px-2 text-muted">
+				  phpMyAdmin
+			  </a>
+		  </li>
+		  <li class="nav-item">
+			  <a href="https://getbootstrap.com/docs/5.1/"
+				  target="_blank" class="nav-link px-2 text-muted">
+				  Bootstrap
+			  </a>
+		  </li>
+		  <li class="nav-item">
+			  <a href="https://docs.djangoproject.com/en/3.2/"
+				  target="_blank" class="nav-link px-2 text-muted">
+				  FAQs
+			  </a>
+		  </li>
+		  <li class="nav-item">
+			  <a href="http://nook17.pl/about" target="_blank" 
+				  class="nav-link px-2 text-muted">
+				  About
+			  </a>
+		  </li>
+		</ul>
+		<p class="text-center text-muted">&copy; 2021 - Nook Web Developer</p>
+	  </div>
+	</footer>

@@ -1,0 +1,21 @@
+{% extends "cfd/base.html" %}
+{% load static %}
+{% block link %}
+	<link rel="stylesheet" href="{% static 'cfd/style/table.css' %}" type="text/css">
+{% endblock link %}
+
+{% load bootstrap %}
+
+{% block content %}
+
+<div class="container">
+  <form method="post" action="{% url 'users:register' %}">
+    {% csrf_token %}
+    {{ form|bootstrap }}
+    <div class='text-center p-4'>
+      <button name="submit" class="btn btn-outline-primary">Register</button>
+      <input type="hidden" name="next" value="{% url 'cfd:index' %}"/>
+	</div>  
+  </form>
+</div>    
+{% endblock content %}

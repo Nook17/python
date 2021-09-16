@@ -1,0 +1,190 @@
+{% extends "cfd/base.html" %}
+{% load static %}
+{% block link %}
+	<link rel="stylesheet" href="{% static 'cfd/style/table.css' %}" type="text/css">
+{% endblock link %}
+
+{% block content %}
+  <main class="container flex-shrink-0">
+    <div class="p-5 rounded">
+	  <p class="lead">Pip & Margin values</p>
+      <div class="row">
+		  <div class="col-md-8">
+			<form action="{% url 'cfd:pipmargin_set' %}" method="post" class="row g-3">
+			  {% csrf_token %}
+			  <div class="col-4 input-group-sm">
+				<select class="form-select form-control" name="market">
+				    <option selected>US100</option>
+				    <option value="US500">US500</option>
+				    <option value="DE30">DE30</option>
+				    <option value="US30">US30</option>
+				    <option value="EUR/USD">EUR/USD</option>
+				    <option value="GOLD">GOLD</option>
+				</select>
+				  <label for="buy_or_sell" class="year-sm-text">
+					  Select the Market to be set</label>
+			  </div>
+			  <div class="col-md-4 input-group-sm">
+				  <input type="number" step="1" name="margin"
+				   value="{{ last_margin }}" class="form-control">
+				  <label for="margin" class="year-sm-text">
+					  Margin value</label>
+			  </div>
+			  <div class="col-md-4 input-group-sm">
+				<input type="number" step="0.01" name="pip" 
+				 value="{{ last_pip }}" class="form-control">
+				<label for="pip" class="year-sm-text">Pip value</label>
+			  </div>
+			  <div class="col-12 input-group-sm text-center mt-2">
+				<button type="submit" class="btn btn-outline-secondary btn-sm">
+					Set</button>
+			  </div>
+			</form>
+		  </div> <!-- col-md -->
+		</div> <!-- row -->
+
+      <div class="row">
+        <div class="col-xl-2 col-lg-4 col-md-6 col-margin-10">
+			<table class="tg">
+				<thead>
+				  <tr>
+					<th class="tg-month" colspan="3">US 100</th>
+				  </tr>
+				</thead>
+				<tbody>
+				  <tr>
+					  <td class="tg-no"><b>Vol</b></th>
+					  <td class="tg-amount"><b>Margin</b></th>
+					  <td class="tg-profit"><b>Pip</b></th>
+				  </tr>
+				  {% for vol, list in dicts.items %}
+				  <tr>
+				    <td class="tg-no">{{ vol }}</td>
+				    <td class="tg-amount">{{ list.0 }}</td>
+				    <td class="tg-profit">{{ list.1|floatformat:"2" }}</td>
+				  </tr>
+				  {% endfor %}
+				</tbody>
+			</table>
+		</div> <!-- col-md -->
+        <div class="col-xl-2 col-lg-4 col-md-6 col-margin-10">
+			<table class="tg">
+				<thead>
+				  <tr>
+					<th class="tg-month" colspan="3">US 500</th>
+				  </tr>
+				</thead>
+				<tbody>
+				  <tr>
+					  <td class="tg-no"><b>Vol</b></th>
+					  <td class="tg-amount"><b>Margin</b></th>
+					  <td class="tg-profit"><b>Pip</b></th>
+				  </tr>
+				  {% for vol, list in dicts.items %}
+				  <tr>
+				    <td class="tg-no">{{ vol }}</td>
+				    <td class="tg-amount">{{ list.2 }}</td>
+				    <td class="tg-profit">{{ list.3|floatformat:"2" }}</td>
+				  </tr>
+				  {% endfor %}
+				</tbody>
+			</table>
+		</div> <!-- col-md -->
+        <div class="col-xl-2 col-lg-4 col-md-6 col-margin-10">
+			<table class="tg">
+				<thead>
+				  <tr>
+					<th class="tg-month" colspan="3">DE 30</th>
+				  </tr>
+				</thead>
+				<tbody>
+				  <tr>
+					  <td class="tg-no"><b>Vol</b></th>
+					  <td class="tg-amount"><b>Margin</b></th>
+					  <td class="tg-profit"><b>Pip</b></th>
+				  </tr>
+				  {% for vol, list in dicts.items %}
+				  <tr>
+				    <td class="tg-no">{{ vol }}</td>
+				    <td class="tg-amount">{{ list.4 }}</td>
+				    <td class="tg-profit">{{ list.5|floatformat:"2" }}</td>
+				  </tr>
+				  {% endfor %}
+				</tbody>
+			</table>
+		</div> <!-- col-md -->
+        <div class="col-xl-2 col-lg-4 col-md-6 col-margin-10">
+			<table class="tg">
+				<thead>
+				  <tr>
+					<th class="tg-month" colspan="3">US 30</th>
+				  </tr>
+				</thead>
+				<tbody>
+				  <tr>
+					  <td class="tg-no"><b>Vol</b></th>
+					  <td class="tg-amount"><b>Margin</b></th>
+					  <td class="tg-profit"><b>Pip</b></th>
+				  </tr>
+				  {% for vol, list in dicts.items %}
+				  <tr>
+				    <td class="tg-no">{{ vol }}</td>
+				    <td class="tg-amount">{{ list.6 }}</td>
+				    <td class="tg-profit">{{ list.7|floatformat:"2" }}</td>
+				  </tr>
+				  {% endfor %}
+				</tbody>
+			</table>
+		</div> <!-- col-md -->
+        <div class="col-xl-2 col-lg-4 col-md-6 col-margin-10">
+			<table class="tg">
+				<thead>
+				  <tr>
+					<th class="tg-month" colspan="3">EUR/USD</th>
+				  </tr>
+				</thead>
+				<tbody>
+				  <tr>
+					  <td class="tg-no"><b>Vol</b></th>
+					  <td class="tg-amount"><b>Margin</b></th>
+					  <td class="tg-profit"><b>Pip</b></th>
+				  </tr>
+				  {% for vol, list in dicts.items %}
+				  <tr>
+				    <td class="tg-no">{{ vol }}</td>
+				    <td class="tg-amount">{{ list.8 }}</td>
+				    <td class="tg-profit">{{ list.9|floatformat:"2" }}</td>
+				  </tr>
+				  {% endfor %}
+				</tbody>
+			</table>
+		</div> <!-- col-md -->
+        <div class="col-xl-2 col-lg-4 col-md-6 col-margin-10">
+			<table class="tg">
+				<thead>
+				  <tr>
+					<th class="tg-month" colspan="3">GOLD</th>
+				  </tr>
+				</thead>
+				<tbody>
+				  <tr>
+					  <td class="tg-no"><b>Vol</b></th>
+					  <td class="tg-amount"><b>Margin</b></th>
+					  <td class="tg-profit"><b>Pip</b></th>
+				  </tr>
+				  {% for vol, list in dicts.items %}
+				  <tr>
+				    <td class="tg-no">{{ vol }}</td>
+				    <td class="tg-amount">{{ list.10 }}</td>
+				    <td class="tg-profit">{{ list.11|floatformat:"2" }}</td>
+				  </tr>
+				  {% endfor %}
+				</tbody>
+			</table>
+		</div> <!-- col-md -->
+	  </div> <!-- row -->
+
+	</div><!-- p-5 rounded -->
+  </main>
+{% include "cfd/footer.html" %}
+{% endblock content %}
