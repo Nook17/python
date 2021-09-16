@@ -32,25 +32,32 @@
 				  <tbody>
 					{% for i, day in day_st.iterrows %}
 					<tr>
-					  <td>{{ day.0 }}</td> <!-- Open Time -->
-					  <td>{{ day.1 }}</td> <!-- Type -->
-					  <td>{{ day.2 }}</td> <!-- Size -->
-					  <td>{{ day.3 }}</td> <!-- Item -->
-					  <td>{{ day.4 }}</td> <!-- Open Price -->
-					  {% if day.5 == day8 %}
-					  	  <td class="slcolor">{{ day.5 }}</td> <!-- Stop Loss -->
+					  <td>{{ day.1 }}</td> <!-- Open Time -->
+					  <td>{{ day.2 }}</td> <!-- Type -->
+					  <td>{{ day.3 }}</td> <!-- Size -->
+					  <td>{{ day.4 }}</td> <!-- Item -->
+					  <td>{{ day.5 }}</td> <!-- Open Price -->
+					  {% if day.6 == day9 %}
+					  	  <td class="slcolor">{{ day.6 }}</td> <!-- Stop Loss -->
 					  {% else %}
-					  	  <td>{{ day.5 }}</td> <!-- Stop Loss -->
+					  	  <td>{{ day.6 }}</td> <!-- Stop Loss -->
 					  {% endif %}
-					  {% if day.6 == day.8 %}
-						  <td class="tpcolor">{{ day.6 }}</td> <!-- Take Profit -->
+					  {% if day.7 == day.9 %}
+						  <td class="tpcolor">{{ day.7 }}</td> <!-- Take Profit -->
 					  {% else %}
-						  <td>{{ day.6 }}</td> <!-- Take Profit -->
+						  <td>{{ day.7 }}</td> <!-- Take Profit -->
 					  {% endif %}
-					  <td>{{ day.8 }}</td> <!-- Close Price -->
-					  <td>{{ day.9 }}</td> <!-- Commission -->
-					  <td>{{ day.10 }}</td> <!-- Swap -->
-					  <td>{{ day.11 }}</td> <!-- Profit -->
+					  <td>{{ day.9 }}</td> <!-- Close Price -->
+					  <td>{{ day.10 }}</td> <!-- Commission -->
+					  <td>{{ day.11 }}</td> <!-- Swap -->
+					  <td>{{ day.12 }}</td> <!-- Profit -->
+					  <td>
+						  <a href="{% url 'cfd:delete_statement' day.0 url_statement %}">
+							  <i class="bi bi-trash text-danger ml-4" 
+								  data-bs-toggle="tooltip" 
+								  data-bs-placement="top" title="Delete"></i>
+						  </a>
+					  </td>
 					</tr>
 					{% endfor %}
 				  </tbody>

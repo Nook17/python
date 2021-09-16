@@ -17,6 +17,10 @@ def df_db():
     df = pd.DataFrame(statements)
     return df
 
+def stat_db():
+    statement = Statement.objects.all().values()
+    return statement
+
 
 def depo_db():
     deposits = Deposit.objects.all().values().order_by('date_dep')
@@ -85,6 +89,72 @@ def days_count():
 def transactions():
     df = df_db()
     return df.shape[0]
+
+
+def f_stat(url_statement):
+    df = df_db()
+    day_st = df[df['close_time'].dt.strftime('%Y-%m-%d') == url_statement]
+    df = df.drop(['id', 'ticket', 'taxes'], axis=1)
+    day_st = day_st.drop(['id', 'taxes'], axis=1)
+    day_real = datetime.strptime(url_statement, '%Y-%m-%d')
+    format_day = day_real.strftime('%A - %d %B %Y')
+    format_day_from_request = day_st
+    # --- commision ---
+    commission_sum = day_st.commission.sum()
+    # --- Profit ----
+    sum_profit = 0
+    for i in day_st.profit:
+        if i > 0:
+            sum_profit += i
+    sum_profit += commission_sum
+    # --- Loss ---
+    loss_profit = 0
+    for i in day_st.profit:
+        if i < 0:
+            loss_profit += i
+    # --- Balance ---
+    day_sum = sum_profit + loss_profit
+    # --- pkt ---
+    pkt_buy, pkt_sell = 0, 0
+    for index, row in day_st.iterrows():
+        if row['type_st'] == 'buy':
+            pkt_buy += (row['close_price'] - row['open_price'])
+        elif row['type_st'] == 'sell':
+            pkt_sell += (row['open_price'] - row['close_price'])
+    pkt_sum = pkt_buy + pkt_sell
+    # --- Swap ---
+    swap_sum = day_st.swap.sum()
+    # -------------------
+    day_st['open_time'] = pd.to_datetime(day_st['open_time']).dt.date
+    day_st['close_time'] = pd.to_datetime(day_st['close_time']).dt.date
+    # --- Data to chart ---
+    day_ste = df[df['close_time'].dt.strftime('%Y-%m-%d') == url_statement]
+    chartx = list(day_ste.index.values)
+    charty = list(day_ste.profit)
+    day_st.rename(columns={
+        'ticket': 'Ticket',
+        'open_time': 'Open Time',
+        'type_st': 'Type',
+        'size_st': 'Size',
+        'item_st': 'Item',
+        'open_price': 'Open Price',
+        's_l': 'Stop Loss',
+        't_p': 'Take Profit',
+        'close_time': 'Close Time',
+        'close_price': 'Close Price',
+        'commission': 'Commission',
+        'taxes': 'Taxes',
+        'swap': 'Swap',
+        'profit': 'Profit'
+        }, inplace=True)
+    context = {
+            'format_day': format_day, 'chartx': chartx, 'charty': charty,
+            'day_sum': round(day_sum, 2), 'sum_profit': round(sum_profit, 2),
+            'loss_profit': round(loss_profit, 2), 'pkt_sum': round(pkt_sum, 2),
+            'commission_sum': round(commission_sum, 2), 'day_st': day_st,
+            'swap_sum': round(swap_sum, 2), 'url_statement': url_statement,
+            }
+    return context
 
 
 @login_required
@@ -275,70 +345,19 @@ def statement(request):
 
 @login_required
 def statements(request, url_statement):
-    df = df_db()
-    day_st = df[df['close_time'].dt.strftime('%Y-%m-%d') == url_statement]
-    df = df.drop(['id', 'ticket', 'taxes'], axis=1)
-    day_st = day_st.drop(['id', 'ticket', 'taxes'], axis=1)
-    day_real = datetime.strptime(url_statement, '%Y-%m-%d')
-    format_day = day_real.strftime('%A - %d %B %Y')
-    format_day_from_request = day_st
-    # --- commision ---
-    commission_sum = day_st.commission.sum()
-    # --- Profit ----
-    sum_profit = 0
-    for i in day_st.profit:
-        if i > 0:
-            sum_profit += i
-    sum_profit += commission_sum
-    # --- Loss ---
-    loss_profit = 0
-    for i in day_st.profit:
-        if i < 0:
-            loss_profit += i
-    # --- Balance ---
-    day_sum = sum_profit + loss_profit
-    # --- pkt ---
-    pkt_buy, pkt_sell = 0, 0
-    for index, row in day_st.iterrows():
-        if row['type_st'] == 'buy':
-            pkt_buy += (row['close_price'] - row['open_price'])
-        elif row['type_st'] == 'sell':
-            pkt_sell += (row['open_price'] - row['close_price'])
-    pkt_sum = pkt_buy + pkt_sell
-    # --- Swap ---
-    swap_sum = day_st.swap.sum()
-    # -------------------
-    day_st['open_time'] = pd.to_datetime(day_st['open_time']).dt.date
-    day_st['close_time'] = pd.to_datetime(day_st['close_time']).dt.date
-    # --- Data to chart ---
-    day_ste = df[df['close_time'].dt.strftime('%Y-%m-%d') == url_statement]
-    chartx = list(day_ste.index.values)
-    charty = list(day_ste.profit)
-    day_st.rename(columns={
-        'ticket': 'Ticket',
-        'open_time': 'Open Time',
-        'type_st': 'Type',
-        'size_st': 'Size',
-        'item_st': 'Item',
-        'open_price': 'Open Price',
-        's_l': 'Stop Loss',
-        't_p': 'Take Profit',
-        'close_time': 'Close Time',
-        'close_price': 'Close Price',
-        'commission': 'Commission',
-        'taxes': 'Taxes',
-        'swap': 'Swap',
-        'profit': 'Profit'
-        }, inplace=True)
-    context = {
-            # 'format_day': format_day, 'day_st': day_st.to_html(index=False),
-            'format_day': format_day, 'day_st': day_st,
-            'day_sum': round(day_sum, 2), 'sum_profit': round(sum_profit, 2),
-            'loss_profit': round(loss_profit, 2), 'pkt_sum': round(pkt_sum, 2),
-            'commission_sum': round(commission_sum, 2),
-            'swap_sum': round(swap_sum, 2),
-            'chartx': chartx, 'charty': charty
-            }
+    context = f_stat(url_statement)
+    return render(request, 'cfd/statements.html', context)
+
+
+@login_required
+def delete_statement(request, ticket_id, url_statement):
+    stat = stat_db()
+    try:
+        delstat = Statement.objects.get(ticket=ticket_id)
+    except Statement.DoesNotExist:
+        return redirect('cfd:statements')
+    delstat.delete()
+    context = f_stat(url_statement)
     return render(request, 'cfd/statements.html', context)
 
 
