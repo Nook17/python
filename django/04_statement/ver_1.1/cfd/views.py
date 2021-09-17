@@ -91,7 +91,58 @@ def transactions():
     return df.shape[0]
 
 
-def f_stat(url_statement):
+def f_stat():
+    df = df_db()
+    depo_sum = deposit_sum()
+    commission_sum = df.commission.sum()
+    swap_sum = df.swap.sum()
+    filter_profit = (df['profit'] > 0)
+    filter_loss = (df['profit'] < 0)
+    profit_sum = df.loc[filter_profit, 'profit'].sum()
+    loss_sum = df.loc[filter_loss, 'profit'].sum()
+    ballance_sum = profit_sum + loss_sum + commission_sum + swap_sum
+    df['open_time'] = pd.to_datetime(df['open_time']).dt.date
+    df['close_time'] = pd.to_datetime(df['close_time']).dt.date
+    url_statements = list(set(df['close_time']))
+    url_statements.sort()
+    format_days, profit_per_day, loss_per_day, balance_per_day = [], [], [], [] 
+    swap_day, wallet = [], []
+    for url_stat in url_statements:
+        day_st = df.loc[df['close_time'] == url_stat]
+        format_days.append(url_stat.strftime('%A - %d %B %Y'))
+        # --- commision ---
+        commission_day = day_st.commission.sum()
+        swap_day.append(day_st.swap.sum())
+        # --- Profit ----
+        sum_profit = 0
+        for i in day_st.profit:
+            if i > 0:
+                sum_profit += i
+        profit_per_day.append(sum_profit + commission_day)
+        # --- Loss ---
+        loss_profit = 0
+        for i in day_st.profit:
+            if i < 0:
+                loss_profit += i
+        loss_per_day.append(loss_profit)
+        # --- Balance ---
+        day_sum = sum_profit + commission_day + loss_profit
+        balance_per_day.append(day_sum)
+        # --- Sum Profit & Amount ---
+        wallet.append(depo_sum + sum(balance_per_day) + sum(swap_day))
+    lists = list(zip(format_days, profit_per_day, loss_per_day,
+            balance_per_day, wallet))
+    dicts = dict(zip(url_statements, lists))
+    context = {'dicts': dicts,
+               'profit_sum': round(profit_sum, 2),
+               'loss_sum': round(loss_sum, 2),
+               'ballance_sum': round(ballance_sum, 2),
+               'commission_sum': round(commission_sum, 2),
+               'swap_sum': round(swap_sum, 2)}
+    return context
+
+
+def f_stats(url_statement):
     df = df_db()
     day_st = df[df['close_time'].dt.strftime('%Y-%m-%d') == url_statement]
     df = df.drop(['id', 'ticket', 'taxes'], axis=1)
@@ -293,59 +344,18 @@ def delete_withdrawal(request, withdrawal_id):
 
 @login_required
 def statement(request):
-    df = df_db()
-    depo_sum = deposit_sum()
-    commission_sum = df.commission.sum()
-    swap_sum = df.swap.sum()
-    filter_profit = (df['profit'] > 0)
-    filter_loss = (df['profit'] < 0)
-    profit_sum = df.loc[filter_profit, 'profit'].sum()
-    loss_sum = df.loc[filter_loss, 'profit'].sum()
-    ballance_sum = profit_sum + loss_sum + commission_sum + swap_sum
-    df['open_time'] = pd.to_datetime(df['open_time']).dt.date
-    df['close_time'] = pd.to_datetime(df['close_time']).dt.date
-    url_statements = list(set(df['close_time']))
-    url_statements.sort()
-    format_days, profit_per_day, loss_per_day, balance_per_day = [], [], [], [] 
-    swap_day, wallet = [], []
-    for url_stat in url_statements:
-        day_st = df.loc[df['close_time'] == url_stat]
-        format_days.append(url_stat.strftime('%A - %d %B %Y'))
-        # --- commision ---
-        commission_day = day_st.commission.sum()
-        swap_day.append(day_st.swap.sum())
-        # --- Profit ----
-        sum_profit = 0
-        for i in day_st.profit:
-            if i > 0:
-                sum_profit += i
-        profit_per_day.append(sum_profit + commission_day)
-        # --- Loss ---
-        loss_profit = 0
-        for i in day_st.profit:
-            if i < 0:
-                loss_profit += i
-        loss_per_day.append(loss_profit)
-        # --- Balance ---
-        day_sum = sum_profit + commission_day + loss_profit
-        balance_per_day.append(day_sum)
-        # --- Sum Profit & Amount ---
-        wallet.append(depo_sum + sum(balance_per_day) + sum(swap_day))
-    lists = list(zip(format_days, profit_per_day, loss_per_day,
-            balance_per_day, wallet))
-    dicts = dict(zip(url_statements, lists))
-    context = {'dicts': dicts,
-               'profit_sum': round(profit_sum, 2),
-               'loss_sum': round(loss_sum, 2),
-               'ballance_sum': round(ballance_sum, 2),
-               'commission_sum': round(commission_sum, 2),
-               'swap_sum': round(swap_sum, 2)}
+    context = f_stat()
     return render(request, 'cfd/statement.html', context)
 
 
 @login_required
+def new_statement(request):
+    return render(request, 'cfd/statement.html')
+
+
+@login_required
 def statements(request, url_statement):
-    context = f_stat(url_statement)
+    context = f_stats(url_statement)
     return render(request, 'cfd/statements.html', context)
 
 

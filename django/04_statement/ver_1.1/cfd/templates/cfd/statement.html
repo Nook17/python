@@ -1,5 +1,8 @@
 {% extends "cfd/base.html" %}
-
+{% load static %}
+{% block link %}
+	<link rel="stylesheet" href="{% static 'cfd/style/stat_choose_file.css' %}" type="text/css">
+{% endblock link %}
 {% block content %}
   <main class="container flex-shrink-0">
     <div class="p-5 rounded">
@@ -50,6 +53,21 @@
 				</tr>
 			  </tbody>
 			</table>
+			<div class="mt-4">
+			  <form action="{% url 'cfd:new_statement' %}" method="post">
+				{% csrf_token %}
+				  <div class="mb-3">
+					<label for="formFileSm" class="form-label">
+						Upload an Excel file with your daily statement</label>
+					<input class="form-control nform-control-sm" id="formFileSm" type="file">
+				  </div>						
+				  <div class="col-auto text-center">
+					<button type="submit" 
+						class="btn btn-outline-dark btn-sm">Send
+					</button>
+				  </div>					
+			  </form>
+			</div>
 		</div> <!-- col -->
       </div> <!-- row -->
     </div>
