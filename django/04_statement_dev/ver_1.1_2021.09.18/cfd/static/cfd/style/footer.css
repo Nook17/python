@@ -1,0 +1,42 @@
+.nookico {
+    width: 60px;
+    height: 60px;
+}
+.nmodal-header {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: start;
+    -ms-flex-pack: justify;
+    padding: 1rem 1rem;
+    border-bottom: 1px solid #dee2e6;
+    border-top-left-radius: calc(.3rem - 1px);
+    border-top-right-radius: calc(.3rem - 1px);
+    justify-content: flex-start;
+}
+.nmodal-content {
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    width: 100%;
+    pointer-events: auto;
+    background-color: rgb(224 224 224 / 79%);
+    background-clip: padding-box;
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: .3rem;
+    outline: 0;
+}
+.nlink {
+	color: #0f6d24;
+	transition: .5s all;
+}
+.nlink:hover {
+	color: #0f6d24;
+	text-decoration: none;
+	text-shadow: 0 0 5px #2C9833;
+	transform: scale(1.2);
+}
+/* .nlink:focus { */
+/* 	color: #1e4e6d; */
+/* } */

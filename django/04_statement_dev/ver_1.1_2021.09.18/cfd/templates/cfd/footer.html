@@ -1,0 +1,137 @@
+{% load static %}
+{% block link %}
+	<link rel="stylesheet" href="{% static 'cfd/style/footer.css' %}" type="text/css">
+{% endblock link %}
+	<footer class="footer mt-auto py-3 ">
+	  <div class="container">
+		<ul class="nav justify-content-center border-bottom ">
+		  <li class="nav-item">
+			  <a href="{% url 'cfd:index' %}" class="nav-link px-2 text-muted">
+				  Home
+			  </a>
+		  </li>
+		  <li class="nav-item">
+			  <a href="{% url 'cfd:deposit' %}" class="nav-link px-2 text-muted">
+				  Deposit
+			  </a>
+		  </li>
+		  <li class="nav-item">
+			  <a href="{% url 'cfd:withdrawal' %}" class="nav-link px-2 text-muted">
+				  Withdrawal
+			  </a>
+		  </li>
+		  <li class="nav-item">
+			  <a href="{% url 'cfd:statement' %}" class="nav-link px-2 text-muted">
+				  Statement
+			  </a>
+		  </li>
+		  <li class="nav-item">
+			  <a href="{% url 'cfd:quarter' %}" class="nav-link px-3 text-muted">
+				  Quarter
+			  </a>
+		  </li>
+		  <li class="nav-item dropup">
+		    <a class="nav-link dropdown-toggle text-muted" href="#"
+				data-bs-toggle="dropdown" aria-expanded="false">Calculator</a>
+			<ul class="dropdown-menu" aria-labelledby="dropdown10">
+			  <li><a class="dropdown-item" href="{% url 'cfd:calc' %}">
+					  Take Profit</a></li>
+			  <li><a class="dropdown-item" href="{% url 'cfd:pipmargin' %}">
+					  Margin & Pip Value</a></li>
+			  <li><a class="dropdown-item" href="{% url 'cfd:daily' %}">
+					  Daily Calculations</a></li>
+			  <li><a class="dropdown-item" href="{% url 'cfd:point' %}">
+					  Daily Point</a></li>
+			</ul>
+		  </li>
+		  <li class="nav-item">
+			  <a href="{% url 'cfd:year' %}" class="nav-link px-2 text-muted">
+				  Year
+			  </a>
+		  </li>
+		  <li class="nav-item">
+			  <a href="http://s38.vdl.pl/phpmyadmin/index.php" 
+				  target="_blank" class="nav-link px-2 text-muted">
+				  phpMyAdmin
+			  </a>
+		  </li>
+		  <li class="nav-item">
+			<a href="#" data-bs-toggle="modal" data-bs-target="#Modal"
+				class="nav-link px-2 text-muted">About</a>
+		  </li>
+		</ul>
+		<p class="text-center text-muted">&copy; 2021 - Nook Web Developer</p>
+	  </div>
+	</footer>
+
+<!-- Modal -->
+<div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="ModalLabel" 
+	aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="nmodal-content shadow mb-5 bg-body rounded">
+      <div class="nmodal-header">
+		<img class="nookico" alt="nook icon" 
+		  src="{% static 'cfd/assets/logo_nook.png' %}">
+		  <div class="ml-3">
+			<h4 class="modal-title" id="ModalLabel">Statement</h4>
+			<p class="">Version 1.1</p>
+		  </div>
+      </div>
+      <div class="modal-body">
+		<div class="panel-group" id="accordion" role="tablist"
+			aria-multiselectable="true">
+		<p class="lead">Release:</p>
+
+		  <div class="panel panel-default">
+			<div class="panel-heading" role="tab" id="headingOne">
+			  <h5 class="panel-title">
+				<a role="button" data-toggle="collapse" class="nlink" 
+					data-parent="#accordion" href="#collapseOne" 
+					aria-expanded="true" aria-controls="collapseOne">
+				  Version 1.0
+				</a>
+			  </h5>
+			</div>
+			<div id="collapseOne" class="panel-collapse collapse in" 
+				role="tabpanel" aria-labelledby="headingOne">
+			  <div class="panel-body">
+				The basic functionality of the 'Statement Application' deploy to the production server 
+			  </div>
+			</div>
+		  </div> <!-- Panel -->
+
+		  <div class="panel panel-default">
+			<div class="panel-heading" role="tab" id="headingTwo">
+			  <h5 class="panel-title">
+				<a class="collapsed nlink" role="button" data-toggle="collapse"
+					data-parent="#accordion" href="#collapseTwo" 
+					aria-expanded="false" aria-controls="collapseTwo">
+					Version 1.1
+				</a>
+			  </h5>
+			</div>
+			<div id="collapseTwo" class="panel-collapse collapse" 
+				role="tabpanel"	aria-labelledby="headingTwo">
+			  <div class="panel-body">
+				Major changes:
+				<ul>
+					<li>added second chart 'return by trade' on index site</li>
+					<li>highlighted all trades finished 'take profit' or 'stop loss'</li>
+					<li>possibility to delete the single statement from the database</li>
+					<li>added site about in modal window</li>
+					<li>The ability to upload a statement of files to databases</li>
+				</ul>
+			  </div>
+			</div>
+		  </div> <!-- Panel -->
+
+		</div> <!-- accordion -->
+	  </div> <!-- modal-body -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary btn-sm" 
+			data-bs-dismiss="modal">Close
+		</button>
+	  </div> <!-- modal-footer -->
+    </div>
+  </div>
+</div>

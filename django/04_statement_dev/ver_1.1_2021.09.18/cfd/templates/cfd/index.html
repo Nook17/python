@@ -1,0 +1,152 @@
+{% extends "cfd/base.html" %}
+{% load static %}
+{% block link %}
+	<link rel="stylesheet" href="{% static 'cfd/style/table.css' %}" type="text/css">
+{% endblock link %}
+
+{% block content %}
+	<main class="container">
+	  <div class=" p-2 rounded">
+		<h3>Nook transaction statement</h3>
+	  </div>
+		<div class="row text-center mt-3">
+			<div class="col-md-4 ">
+				<div class="ncard border-secondary mb-3" style="max-width: 18rem;">
+				  <div class="card-header">Deposit</div>
+					  <div class="card-body text-secondary">
+						<h5 class="card-title">{{ deposit|floatformat:"0" }} zł</h5>
+					  </div>
+				</div>		
+			</div> <!-- col -->
+			<div class="col-md-4 ">
+				<div class="ncard border-secondary mb-3" style="max-width: 18rem;">
+				  <div class="card-header">Withdrawal</div>
+					  <div class="card-body text-secondary">
+						<h5 class="card-title">{{ withdrawal|floatformat:"0" }} zł</h5>
+					  </div>
+				</div>		
+			</div> <!-- col -->
+			<div class="col-md-4 ">
+				<div class="ncard border-info mb-3" style="max-width: 18rem;">
+				  <div class="card-header">Wallet</div>
+					  <div class="card-body text-secondary">
+						<h5 class="card-title">{{ wallet_all|floatformat:"2" }} zł</h5>
+					  </div>
+				</div>		
+			</div> <!-- col -->
+		</div> <!-- row -->
+
+		<div class="row text-center mt-2">
+			<div class="col-md-2"></div>
+			<div class="col-md-4">
+				<div class="ncard border-warning mb-3" style="max-width: 18rem;">
+				  <div class="card-header">The number of days</div>
+					  <div class="card-body text-secondary">
+						<h5 class="card-title">{{ days }}</h5>
+					  </div>
+				</div>		
+			</div> <!-- col -->
+			<div class="col-md-4">
+				<div class="ncard border-warning mb-3" style="max-width: 18rem;">
+				  <div class="card-header">The number of transactions</div>
+					  <div class="card-body text-secondary">
+						<h5 class="card-title">{{ trade_count }}</h5>
+					  </div>
+				</div>		
+			</div> <!-- col -->
+			<div class="col-md-2"></div>
+		</div> <!-- row -->
+
+	<div class="row text-center mt-2">
+		<div class="col-md-2"></div>
+			<div class="col-md-8">
+				<canvas id="myChartline"></canvas>
+			</div>
+		<div class="col-md-2"></div>
+	</div>
+	<div class="row text-center mt-2">
+		<div class="col-md-2"></div>
+			<div class="col-md-8">
+				<canvas id="myChart"></canvas>
+			</div>
+		<div class="col-md-2"></div>
+	</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script>
+	var endpoint = '/api';
+	$.ajax({
+	method: "GET",
+	url: endpoint,
+	success: function(data) {
+		drawLineGraph(data, 'myChartline');
+		console.log("drawing");
+	},
+	error: function(error_data) {
+		console.log(error_data);
+	}
+	})
+
+	function drawLineGraph(data, id) {
+	var labels = data.labels;
+	var chartLabel = data.chartLabel;
+	var chartdata = data.chartdata;
+	var ctx = document.getElementById(id).getContext('2d');
+	var chart = new Chart(ctx, {
+		// The type of chart we want to create
+		type: 'line',
+
+		// The data for our dataset
+		data: {
+		labels: labels,
+		datasets: [{
+			label: chartLabel,
+			backgroundColor: 'rgba(255, 100, 200, 0.2)',
+			borderColor: 'rgba(55, 99, 132, 1)',
+            borderWidth: 1,
+			data: chartdata,
+		}]
+		},
+
+		// Configuration options go here
+		options: {
+		scales: {
+			xAxes: [{
+			display: true
+			}],
+			yAxes: [{
+			ticks: {
+				beginAtZero: true
+			}
+			}]
+		}
+		}
+
+	});
+	}
+</script>
+<script>
+var ctx = document.getElementById('myChart').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: {{labels}},
+        datasets: [{
+            label: 'Return by Trade',
+            data: {{chartdata}},
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+</script>
+	</main>
+  {% include "cfd/footer.html" %}
+{% endblock content %}

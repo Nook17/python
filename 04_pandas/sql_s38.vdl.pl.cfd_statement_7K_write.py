@@ -5,7 +5,9 @@ from sqlalchemy import create_engine
 
 
 # --- Read data from Excel file ---
-df = pd.read_excel('~/Documents/statement.xlsx')
+# df = pd.read_excel('~/Documents/statement.xlsx')
+df = pd.read_excel('statements/statement_7k.xlsx')
+
 
 # --- Rename columns name ---
 df.rename(columns={
@@ -42,6 +44,6 @@ df.to_sql(
         con=engine,
         index=True,
         index_label='id',
-        if_exists='append',
-        # if_exists='replace',
+        # if_exists='append',
+        if_exists='replace',
         )

@@ -346,7 +346,7 @@ def delete_withdrawal(request, withdrawal_id):
 @login_required
 def statement(request):
     context = f_stat()
-    return render(request, 'cfd/statement.html', context)
+    return render(request, 'cfd/statementt.html', context)
 
 
 @login_required
@@ -374,7 +374,7 @@ def new_statement(request):
     df['open_time'] = pd.to_datetime(df['open_time'])
     df['close_time'] = pd.to_datetime(df['close_time'])
     # --- conect to SQL database ---
-    engine = create_engine('mysql+pymysql://root@localhost:3306/statement')
+    engine = create_engine('mysql+pymysql://nook17_nook17:Nook,1771@localhost:3306/nook17_statement')
     # --- Write to database ---
     df.to_sql(
             name='cfd_statement',
@@ -390,7 +390,7 @@ def new_statement(request):
 @login_required
 def statements(request, url_statement):
     context = f_stats(url_statement)
-    return render(request, 'cfd/statements.html', context)
+    return render(request, 'cfd/statementts.html', context)
 
 
 @login_required
@@ -402,7 +402,7 @@ def delete_statement(request, ticket_id, url_statement):
         return redirect('cfd:statements')
     delstat.delete()
     context = f_stats(url_statement)
-    return render(request, 'cfd/statements.html', context)
+    return render(request, 'cfd/statementts.html', context)
 
 
 @login_required
