@@ -5,3 +5,5 @@ __pycache__
 /picture
 /04_pandas/survey
 /04_pandas/guipsamora_pandas_exercises
+/django/07_contact_form/contact_form/settings.py
+/django/08_demko.it/demko/settings.py
