@@ -56,27 +56,27 @@
   <header id="header" class="fixed-top d-flex align-items-cente">
     <div class="container-fluid container-xl d-flex align-items-center justify-content-lg-between">
 
-		<h1 class="logo me-auto me-lg-0"><a href="{% url 'service:index' %}">Serwis laptopów</a></h1>
+		<h1 class="logo me-auto me-lg-0"><a href="#hero">Serwis laptopów</a></h1>
       <!-- Uncomment below if you prefer to use an image logo -->
       <!-- <a href="index.html" class="logo me-auto me-lg-0"><img src="/img/Demko.IT_2n.png" alt="" class="img-fluid"></a> -->
 
       <nav id="navbar" class="navbar order-last order-lg-0">
         <ul>
-          <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
+          <li><a class="nav-link scrollto active" href="#hero"></a></li>
           <li><a class="nav-link scrollto" href="#about">Dlaczego my</a></li>
-          <li><a class="nav-link scrollto" href="#menu">Oferta</a></li>
+          <li><a class="nav-link scrollto" href="#offer">Oferta</a></li>
           <li><a class="nav-link scrollto" href="#specials">Specjalizacja</a></li>
-          <li><a class="nav-link scrollto" href="#events">Promocje</a></li>
+          <li><a class="nav-link scrollto" href="#promotion">Promocje</a></li>
           <li><a class="nav-link scrollto" href="#contact">Kontakt</a></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
-      <a href="#book-a-table" class="book-a-table-btn scrollto d-none d-lg-flex">Zgłoś naprawę</a>
+      <a href="#notify" class="book-a-table-btn scrollto d-none d-lg-flex">Zgłoś naprawę</a>
 
     </div>
   </header><!-- End Header -->
 
-  <!-- ======= Hero Section ======= -->
+  <!-- ======= Home Section ======= -->
   <section id="hero" class="d-flex align-items-center">
     <div class="container position-relative text-center text-lg-start" data-aos="zoom-in" data-aos-delay="100">
       <div class="row">
@@ -85,8 +85,8 @@
           <h2>Nowo otwarty i bardzo konkurencyjny serwis komputerów przenośnych</h2>
 
           <div class="btns">
-            <a href="#menu" class="btn-menu animated fadeInUp scrollto">Oferta</a>
-            <a href="#book-a-table" class="btn-book animated fadeInUp scrollto">Zgłoś naprawę</a>
+            <a href="#offer" class="btn-menu animated fadeInUp scrollto">Oferta</a>
+            <a href="#notify" class="btn-book animated fadeInUp scrollto">Zgłoś naprawę</a>
           </div>
         </div>
         <div class="col-lg-4 d-flex align-items-center justify-content-center position-relative" data-aos="zoom-in" data-aos-delay="200">
@@ -170,8 +170,8 @@
       </div>
     </section><!-- End Why Us Section -->
 
-    <!-- ======= Menu Section ======= -->
-    <section id="menu" class="menu section-bg">
+    <!-- ======= Offer Section ======= -->
+    <section id="offer" class="menu section-bg">
       <div class="container" data-aos="fade-up">
 
         <div class="section-title">
@@ -365,7 +365,7 @@
         </div>
 
       </div>
-    </section><!-- End Menu Section -->
+    </section><!-- End Offer Section -->
 
     <!-- ======= Specials Section ======= -->
     <section id="specials" class="specials">
@@ -465,8 +465,8 @@
       </div>
     </section><!-- End Specials Section -->
 
-    <!-- ======= Events Section ======= -->
-    <section id="events" class="events">
+    <!-- ======= Current Propmotion Section ======= -->
+    <section id="promotion" class="events">
       <div class="container" data-aos="fade-up">
 
         <div class="section-title">
@@ -563,10 +563,10 @@
         </div>
 
       </div>
-    </section><!-- End Events Section -->
+    </section><!-- End Promotion Section -->
 
-    <!-- ======= Book A Table Section ======= -->
-    <section id="book-a-table" class="book-a-table">
+    <!-- ======= Notify Section ======= -->
+    <section id="notify" class="book-a-table">
       <div class="container" data-aos="fade-up">
 
         <div class="section-title">
@@ -575,7 +575,19 @@
         </div>
 
 		<h4>Na czym polega zgłoszenie usterki</h4>
-		<p>Nostrum ipsam necessitatibus aliquam fugiat debitis quis velit. Eum ex maxime error in consequatur corporis atque.</p>
+          <div class="col-lg-10 pt-2 pt-lg-0 order-2 order-lg-1 list-nk">
+            <ul>
+              <li><i class="bi bi-arrow-right"></i> Wypełniasz i wysyłasz formularz zgłoszeniowy z krótkim opisem usterki.</li>
+              <li><i class="bi bi-arrow-right"></i> Czekasz na kontakt z naszej strony.</li>
+              <li><i class="bi bi-arrow-right"></i> Otrzymasz etykietę z InPost którą przyklejasz na karton z uszkodzonym laptopem i odnosisz paczkę do paczkomatu.</li>
+              <li><i class="bi bi-arrow-right"></i> Po otrzymaniu przesyłki wysyłamy potwierdzenie przyjęcia komputera do serwisu.</li>
+              <li><i class="bi bi-arrow-right"></i> Czekasz na diagnozę i ewentualną wycenę naprawy.</li>
+              <li><i class="bi bi-arrow-right"></i> Podejmujesz decyzję o naprawie lub rezygnujesz z usługi.</li>
+              <li><i class="bi bi-arrow-right"></i> W zależności od decyzji odsyłamy Ci naprawiony lub nienaprawiony komputer.</li>
+              <li><i class="bi bi-arrow-right"></i> Rozliczamy się z wykonanej usługi.</li>
+              <li><i class="bi bi-arrow-right"></i> UWAGA - płacisz tylko za naprawę.</li>
+            </ul>
+          </div>
 
 		<form action="{% url 'service:notify' %}" method="post" role="form" class="php-email-form" data-aos="fade-up" data-aos-delay="100">
 		  {% csrf_token %}
@@ -605,7 +617,7 @@
         </form>
 
       </div>
-    </section><!-- End Book A Table Section -->
+    </section><!-- End Notify Section -->
 
     <!-- ======= Testimonials Section ======= -->
     <section id="testimonials" class="testimonials section-bg">
@@ -786,10 +798,12 @@
                 <strong>Email:</strong> serwis@demko.it<br>
               </p>
               <div class="social-links mt-3">
-                <a href="https://twitter.com/Nook17_pl" class="twitter"><i class="bx bxl-twitter"></i></a>
-                <a href="https://www.facebook.com/Arek.Demko" class="facebook"><i class="bx bxl-facebook"></i></a>
-                <a href="https://www.instagram.com/arekdemko" class="instagram"><i class="bx bxl-instagram"></i></a>
-                <a href="https://join.skype.com/invite/Lridifl9SZAU" class="google-plus"><i class="bx bxl-skype"></i></a>
+                <a href="https://www.facebook.com/Arek.Demko" target="_blank" class="facebook">
+					<i class="bx bxl-facebook"></i></a>
+                <a href="https://twitter.com/Nook17_pl" target="_blank" class="twitter">
+					<i class="bx bxl-twitter"></i></a>
+                <a href="https://www.instagram.com/arekdemko" target="_blank" class="instagram">
+					<i class="bx bxl-instagram"></i></a>
               </div>
             </div>
           </div>
@@ -797,22 +811,37 @@
           <div class="col-lg-2 col-md-6 footer-links">
             <h4>Warto odwiedzić</h4>
             <ul>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Home</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">About us</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Services</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Terms of service</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Privacy policy</a></li>
+              <li><i class="bx bx-chevron-right"></i>
+				  <a href="https://www.tme.eu/pl/" target="_blank">TME
+				  </a></li>
+              <li><i class="bx bx-chevron-right"></i>
+				  <a href="https://sklep.avt.pl/" target="_blank">AVT
+				  </a></li>
+              <li><i class="bx bx-chevron-right"></i>
+				  <a href="https://www.gotronik.pl/" target="_blank">GOTRONIC
+				  </a></li>
+              <li><i class="bx bx-chevron-right"></i>
+				  <a href="https://abc-rc.pl/" target="_blank">ABC-RC
+				  </a></li>
+              <li><i class="bx bx-chevron-right"></i>
+				  <a href="https://sklep.atnel.pl/" target="_blank">ATNEL
+				  </a></li>
             </ul>
           </div>
 
           <div class="col-lg-3 col-md-6 footer-links">
             <h4>Nasz Serwis</h4>
             <ul>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Web Design</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Web Development</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Product Management</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Marketing</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Graphic Design</a></li>
+              <li><i class="bx bx-chevron-right"></i>
+				  <a href="#notify">Formularz zgłoszenia usterki</a></li>
+              <li><i class="bx bx-chevron-right"></i>
+				  <a href="#offer">Aktualna oferta promocyjna</a></li>
+              <li><i class="bx bx-chevron-right"></i>
+				  <a href="#specials">W czym się specjalizujemy</a></li>
+              <li><i class="bx bx-chevron-right"></i>
+				  <a href="#about">Dlaczego warto wybrać ten serwis</a></li>
+              <li><i class="bx bx-chevron-right"></i>
+				  <a href="#testimonials">Oni już tu byli</a></li>
             </ul>
           </div>
 
@@ -825,17 +854,14 @@
         &copy; Copyright <strong><span>demko.it</span></strong>. All Rights Reserved
       </div>
       <div class="credits">
-        <!-- All the links in the footer should remain intact. -->
-        <!-- You can delete the links only if you purchased the pro version. -->
-        <!-- Licensing information: https://bootstrapmade.com/license/ -->
-        <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/restaurantly-restaurant-template/ -->
         Designed by <a href="http://nook17.pl" target="_blank">Nook17</a>
       </div>
     </div>
   </footer><!-- End Footer -->
 
   <div id="preloader"></div>
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center">
+	  <i class="bi bi-arrow-up-short"></i></a>
 
   <!-- Vendor JS Files -->
   <script src="{% static 'service/vendor/aos/aos.js' %}"></script>

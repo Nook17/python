@@ -1239,6 +1239,20 @@ section {
   background: #d3af71;
 }
 
+.list-nk ul {
+  list-style: none;
+  padding: 0;
+}
+
+.list-nk ul li {
+  padding-bottom: 10px;
+}
+
+.list-nk ul i {
+  font-size: 20px;
+  padding-right: 4px;
+  color: #cda45e;
+}
 /*--------------------------------------------------------------
 # Testimonials
 --------------------------------------------------------------*/
