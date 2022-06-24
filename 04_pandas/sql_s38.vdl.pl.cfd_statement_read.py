@@ -5,10 +5,11 @@ import pandas as pd
 from sqlalchemy import create_engine
 
 # --- conect to SQL database -> create_engine ---
-engine = create_engine('mysql+pymysql://nook17_nook17:Nook,1771@136.243.46.32:3306/nook17_statement')
-
+# engine = create_engine('mysql+pymysql://nook17_nook17:Nook,1771@136.243.46.32:3306/nook17_statement')
+engine = create_engine('mysql+pymysql://nook17_nook17:Nook,1771@s171.cyber-folks.pl/phpmyadmin:3306/nook17_statement')
+# https://s171.cyber-folks.pl/phpmyadmin/index.php
 # --- conect to SQL database -> mysql.connector.connect ---
-# engine = mysql.connector.connect(
+# engine = mysql.connector.connect( 
 #       host="136.243.46.32",
 #       user="nook17_nook17",
 #       passwd="Nook,1771",
