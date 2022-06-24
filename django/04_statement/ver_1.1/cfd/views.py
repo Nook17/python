@@ -126,7 +126,7 @@ def f_stat():
             if i < 0:
                 loss_profit += i
         loss_per_day.append(loss_profit)
-        # --- Balance ---
+        # --- Balance ----
         day_sum = sum_profit + commission_day + loss_profit
         balance_per_day.append(day_sum)
         # --- Sum Profit & Amount ---
