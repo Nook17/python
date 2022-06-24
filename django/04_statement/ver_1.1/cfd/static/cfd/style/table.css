@@ -8,13 +8,13 @@
 .tg .tg-amount{background-color:transparent;border-color:#c1c1c1;color:#3d3d3d;text-align:left;vertical-align:top}
 .tg .tg-no{background-color:transparent;border-color:#c1c1c1;color:#9b9b9b;text-align:center;vertical-align:top;font-size:13px;padding:5px 2px}
 .tg .tg-month{background-color:transparent;border-color:#c1c1c1;color:#cb0000;text-align:center;vertical-align:top}
-.tg .tg-profit{background-color:transparent;border-color:#c1c1c1;color:#FF8000;text-align:left;vertical-align:top}
-.tg .tg-sumday{background-color:transparent;border-color:#c1c1c1;color:#158466;text-align:left;vertical-align:top}
+.tg .tg-profit{background-color:transparent;border-color:#c1c1c1;color:#FF8000;text-align:left;vertical-align:top;padding:5px 3px}
+.tg .tg-sumday{background-color:transparent;border-color:#c1c1c1;color:#158466;text-align:left;vertical-align:top;padding:5px 3px}
 .tg .tg-date{background-color:transparent;border-color:#c1c1c1;color:#5D6D7E;text-align:center;vertical-align:top;font-size:13px;padding:5px 1px}
 .tg .tg-qamount{background-color:transparent;border-color:#c1c1c1;color:#28B463;text-align:left;vertical-align:top}
-.tg .tg-qpercent{background-color:transparent;border-color:#c1c1c1;color:#5DADE2;text-align:left;vertical-align:top}
-.tg .tg-qdayprofit{background-color:transparent;border-color:#c1c1c1;color:#229954;text-align:left;vertical-align:top}
-.tg .tg-minus{background-color:transparent;border-color:#c1c1c1;color:#E74C3C;text-align:left;vertical-align:top}
+.tg .tg-qpercent{background-color:transparent;border-color:#c1c1c1;color:#5DADE2;text-align:left;vertical-align:top;padding:5px 3px}
+.tg .tg-qdayprofit{background-color:transparent;border-color:#c1c1c1;color:#229954;text-align:left;vertical-align:top;padding:5px 3px}
+.tg .tg-minus{background-color:transparent;border-color:#c1c1c1;color:#E74C3C;text-align:left;vertical-align:top;padding:5px 3px}
 .text-temp{color:#9b9b9b}
 .form-control{background-color: rgb(0 0 0 / 8%)}
 .form-control:focus{background-color: rgb(0 0 0 / 25%)}
