@@ -41,11 +41,15 @@ factory = {
         'Mercedes': 1905,
         'Toyota': 1978
         }
-print(factory)
+print(factory) 
 print(factory['opel'])
 factory['Suzuki'] = 1900
 print(factory)
 del factory['Suzuki']
+print(factory)
+print(list(factory.keys()))
+print('fiat' in factory)
+factory.clear()
 print(factory)
 # car = input('Enter car name: ')
 # date_production = int(input('Enter date production: '))
