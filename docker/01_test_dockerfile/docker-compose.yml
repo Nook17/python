@@ -1,0 +1,25 @@
+version: '3'
+services:
+  baza:
+    image: postgres
+    volumes:
+      - dane_bazy:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: nook
+      POSTGRES_DB:  mojabaza
+      POSTGRES_PASSWORD: 1771
+    networks:
+      - baza-net
+      
+  panel:
+    image: adminer
+    networks:
+      - baza-net
+    ports:
+      - 8080:8080
+
+  networks:
+    baza-net:
+
+  volumes:
+    dane_bazy:
