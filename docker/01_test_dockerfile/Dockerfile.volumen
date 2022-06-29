@@ -1,0 +1,6 @@
+FROM ubuntu
+
+WORKDIR /dir_test
+
+CMD ls -al && echo 'nook test' > file_container.txt && ls -al
+
