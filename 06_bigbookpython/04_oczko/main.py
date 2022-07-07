@@ -53,8 +53,8 @@ def main():
                 displayHands(playerHand, dealerHand, False)
                 if getHandValue(dealerHand) > 21:
                     break
-                print(getHandValue(playerHand))
-                print(playerHand)
+                # print(getHandValue(playerHand))
+                # print(playerHand)
                 input('Please press any key to continue...')
                 print('\n\n')
 
