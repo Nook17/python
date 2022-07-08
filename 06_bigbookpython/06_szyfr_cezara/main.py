@@ -33,5 +33,3 @@ try:
 except:
     pass
 
-def kojo():
-    pass
