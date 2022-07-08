@@ -29,9 +29,10 @@ if message == '':
     sys.exit()
 
 nook = '''The 
-splitting
+splitting sfsdf  sdfsdfgsdg sdgfghdf
 is 
-done 
+done  fgdfgdf dfgdfgdfg dfg     fdgdfgfd
+gdfgdf       fdgfg    dfgfgdf    fdgfgdf
 at 
 line 
 breaks.'''
