@@ -33,6 +33,9 @@ print(f"Fiola favorite language is {language}.")
 for key, value in favorite_languages.items():
     print(f"{key} -> {value}")
 
+for kind in favorite_languages.items():
+    print('{} ---- {}'.format(kind[0], kind[1]))
+
 user_0 = {
         'username': 'President',
         'fname': 'Joe',
