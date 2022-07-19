@@ -5,10 +5,10 @@ def main():
     # gettingHelp()
     # unicodeStrings()
     # sequenceOperations()
-    # typeSpecificOperations()
+    typeSpecificOperations()
     # nesting()
     # comprehensions()
-    mappingOperations()
+    # mappingOperations()
 
 
 # ------------ LISTS ------------

@@ -6,6 +6,8 @@ import random
 import pygame
 import os
 import subprocess
+import bext
+
 from function_mars import auto, more_arg_dictionaries, more_arg_mix, more_arg_tuple, suma
 class bcolors:
     HEADER = '\033[95m'
@@ -20,13 +22,16 @@ class bcolors:
 
 # --- Variables ---
 #getpass.getpass(prompt='Enter password getpass: ', stream=None)
+
+bext.fg('red')  # black, red, green, yellow, blue, purple, cyan, white
+
 a = getpass.getpass('Enter Password: ')
 b = input("Whatever: ")
 num1 = int(input("Number 1: "))
 num2 = input("Number 2: ")
 num2 = int(num2)                    # change type variable
 tajne_haslo = "password"
-
+bext.fg('reset')
 # --- Strings & Numbers ---
 print('%s' % (b))
 print("to jest zmienna b: {}". format(b))
@@ -86,5 +91,11 @@ while x < 5:
 subprocess.run(['ls -la'], shell=True)
 # subprocess.run(["qutebrowser https://www.teleman.pl"], shell=True)
 #output = stream.readlines()
+
+
+# ---- Justify / ALign (left, mid, right) ----
+print("{:<10}".format("Guido"))  # 'Guido     '
+print("{:>10}".format("Guido"))  # '     Guido'
+print("{:^10}".format("Guido"))  # '  Guido   '
 
 print=input("\n\033[41mPress Enter to Exit\033[0m")
