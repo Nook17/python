@@ -1,12 +1,18 @@
 #!/usr/bin/env python3
 import random, bext
 
+# scoreStart = {}
+# scoreGame = {}
+# scoreChoose = {}
+
+
 def main():
     score = {'Ones': [0, 0], 'Twos': [0, 0], 'Threes': [0, 0], 'Fours': [0, 0], 'Fives': [0, 0], 'Sixes': [0, 0],
              'Upper Section 1': [0, 0], 'Upper Bonus': [0, 0], '3 of a kind': [0, 0], '4 of a kind': [0, 0],
              'Full House': [0, 0], 'Low Straight': [0, 0], 'High Straight': [0, 0], 'AllFive!': [0, 0],
              'Chance': [0, 0], 'Upper Section 2': [0, 0], 'GRAND TOTAL': [0, 0]}
-    print('Start Game')
+    # print('Start Game')
+    setScore(score, 0)
     game()
 
 
@@ -65,7 +71,7 @@ def showScoreTable(score):
 
 
 def countPoints(dice):
-    score = setScore(False)
+    score = setScore(False, 1)
     dice.sort()
     diceNoDuplicate = list(dict.fromkeys(dice))
     flag = 0
@@ -120,27 +126,48 @@ def countPoints(dice):
     print('Choose the number')
     choose = input('> ')
     if choose.isdecimal() and 1 <= int(choose) <= 13:
-        setScore(score)
+        setScore(score, 2)
         game()
+    # else:
+    #     setScore(score, 3)
 
 
 def choose(score):
     print('Choose the number')
 
 
-def setScore(score):
-    if score:
-        score = {'Ones': [2, 1], 'Twos': [0, 0], 'Threes': [0, 0], 'Fours': [0, 0], 'Fives': [0, 0], 'Sixes': [0, 0],
+def setScore(score, state):
+    # global scoreStart
+    # global scoreGame
+    # global scoreChoose
+
+    if score and state == 0:        # Start Game - set score on 0
+        print('--- Start Game ---')
+        # scoreR = score
+        # scoreStart = score
+        # scoreGame = score
+        # scoreChoose = score
+        # return score
+
+    elif not score and state == 1:  # Game - return score
+        print('--- Game ---')
+        scoreG = {'Ones': [2, 1], 'Twos': [0, 0], 'Threes': [0, 0], 'Fours': [0, 0], 'Fives': [0, 0], 'Sixes': [0, 0],
                  'Upper Section 1': [0, 0], 'Upper Bonus': [0, 0], '3 of a kind': [0, 0], '4 of a kind': [0, 0],
                  'Full House': [0, 0], 'Low Straight': [30, 1], 'High Straight': [0, 0], 'AllFive!': [0, 0],
                  'Chance': [0, 0], 'Upper Section 2': [0, 0], 'GRAND TOTAL': [0, 0]}
-        print('-- choose ---')
+        # return scoreChoose
+        return scoreG
 
-    score = {'Ones': [0, 0], 'Twos': [0, 0], 'Threes': [0, 0], 'Fours': [0, 0], 'Fives': [0, 0], 'Sixes': [0, 0],
-             'Upper Section 1': [0, 0], 'Upper Bonus': [0, 0], '3 of a kind': [0, 0], '4 of a kind': [0, 0],
-             'Full House': [0, 0], 'Low Straight': [0, 0], 'High Straight': [0, 0], 'AllFive!': [0, 0],
-             'Chance': [0, 0], 'Upper Section 2': [0, 0], 'GRAND TOTAL': [0, 0]}
-    return score
+    elif score and state == 2:      # Choose - set score on choose
+        print('-- Choose ---')
+        # scoreChoose = score
+        scoreR = {'Ones': [2, 1], 'Twos': [0, 0], 'Threes': [0, 0], 'Fours': [0, 0], 'Fives': [0, 0], 'Sixes': [0, 0],
+                 'Upper Section 1': [0, 0], 'Upper Bonus': [0, 0], '3 of a kind': [0, 0], '4 of a kind': [0, 0],
+                 'Full House': [0, 0], 'Low Straight': [30, 1], 'High Straight': [0, 0], 'AllFive!': [0, 0],
+                 'Chance': [0, 0], 'Upper Section 2': [0, 0], 'GRAND TOTAL': [0, 0]}
+        # scoreGame = scoreChoose
+        # return scoreR
+    # return scoreR
 
 
 if __name__ == '__main__':
