@@ -5,21 +5,44 @@ import random, bext
 def main():
     # print(lottery())
     # print(showScore())
-    score = {'Ones': 0, 'Twos': 0, 'Threes': 0, 'Fours': 0, 'Fives': 0, 'Sixes': 0, 'Upper Section 1': 0, 'Upper Bonus': 0,
-             '3 of a kind': 0, '4 of a kind': 0, 'Full House': 0, 'Low Straight': 0, 'High Straight': 0, 'AllFive!': 0,
-             'Chance': 0, 'Upper Section 2': 0, 'GRAND TOTAL': 0}
+    # score = {'Ones': 0, 'Twos': 0, 'Threes': 0, 'Fours': 0, 'Fives': 0, 'Sixes': 0, 'Upper Section 1': 0, 'Upper Bonus': 0,
+    #          '3 of a kind': 0, '4 of a kind': 0, 'Full House': 0, 'Low Straight': 0, 'High Straight': 0, 'AllFive!': 0,
+    #          'Chance': 0, 'Upper Section 2': 0, 'GRAND TOTAL': 0}
     # print(showScoreTable(score))
-
-    countPoints(score)
+    # countPoints(score)
     # showScoreTable(score)
+    # score = setScore()
+    dices = lottery([], 5)
+    # countPoints(score, dices)
+    countPoints(dices)
+    keepDices = keep()
+    for i in range(1):
+        dices = lottery(keepDices, 5 - len(keepDices))
+        countPoints(dices)
+        keepDices = keep()
+    # dices = lottery(keepDices, 5 - len(keepDices))
+    # countPoints(score, dices)
+    # keepDices = keep()
+    dices = lottery(keepDices, 5 - len(keepDices))
+    countPoints(dices)
 
 
-def lottery():
-    dices = []
-    for i in range(5):
+def lottery(dices, length):
+    # dices = []
+    for i in range(length):
         d = random.randint(1, 6)
         dices.append(d)
+    # dices.sort()
+    print(dices)
     return dices
+
+def keep():
+    print('keep dice, e.g. > 566')
+    keep = input('> ')
+    keep = list(map(int, keep))
+    # keep.sort()
+    # print(keep)
+    return keep
 
 
 def showScoreTable(score):
@@ -37,14 +60,15 @@ def showScoreTable(score):
     print("=" * 29)
 
 
-def countPoints(score):
-    dice = lottery()
+def countPoints(dice):
+    # dice = lottery()
     # dice = [5, 5, 4, 2, 3]
+    score = setScore()
     dice.sort()
     diceNoDuplicate = list(dict.fromkeys(dice))
     flag = 0
-    print(dice)
-    print(diceNoDuplicate)
+    # print(dice)
+    # print(diceNoDuplicate)
     for i in range(5):
         if dice[i] == 1:
             score['Ones'] += 1
@@ -92,8 +116,15 @@ def countPoints(score):
     score['GRAND TOTAL'] = score['Upper Section 1'] + score['Upper Section 2']
     # print(dice.sort())
     showScoreTable(score)
-    print(flag)
+    # print(flag)
     # print(dice[2])
+
+
+def setScore():
+    score = {'Ones': 0, 'Twos': 0, 'Threes': 0, 'Fours': 0, 'Fives': 0, 'Sixes': 0, 'Upper Section 1': 0, 'Upper Bonus': 0,
+             '3 of a kind': 0, '4 of a kind': 0, 'Full House': 0, 'Low Straight': 0, 'High Straight': 0, 'AllFive!': 0,
+             'Chance': 0, 'Upper Section 2': 0, 'GRAND TOTAL': 0}
+    return score
 
 
 if __name__ == '__main__':

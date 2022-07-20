@@ -5,10 +5,13 @@ import random
 def main():
     lottery([], 5)
     keepDices = keep()
-    for i in range(1):
-        dices = lottery(keepDices, 5 - len(keepDices))
-        keepDices = keep()
-    print(dices)
+    # for i in range(1):
+    lottery(keepDices, 5 - len(keepDices))
+    keepDices = keep()
+    lottery(keepDices, 5 - len(keepDices))
+    keepDices = keep()
+    lottery(keepDices, 5 - len(keepDices))
+    # print(dices)
 
 def lottery(dices, length):
     # dices = []
@@ -17,7 +20,7 @@ def lottery(dices, length):
         dices.append(d)
     # dices.sort()
     print(dices)
-    return dices
+    # return dices
 
 
 def keep():
