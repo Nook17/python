@@ -28,7 +28,7 @@ def keep():
     keep = input('> ')
     keep = list(map(int, keep))
     # keep.sort()
-    # print(keep)
+    print(keep)
     return keep
 
 

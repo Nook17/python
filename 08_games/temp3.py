@@ -119,6 +119,8 @@ def countPoints(dice, round):
     if score['Chance'][1] == 0:
         score['Chance'][0] = sum(dice)
 
+    # score['Upper Section 1'][0] = score['Ones'][0] + score['Twos'][0] + score['Threes'][0] + score['Fours'][0] \
+    #                            + score['Fives'][0] + score['Sixes'][0]
     score['Upper Section 1'][0] = 0
     if score['Ones'][1] == 1:
         score['Upper Section 1'][0] += score['Ones'][0]
@@ -136,6 +138,9 @@ def countPoints(dice, round):
     if score['Upper Section 1'][0] >= 63:
         score['Upper Bonus'] = [35, 1]
 
+    # score['Upper Section 2'][0] = score['Upper Bonus'][0] + score['3 of a kind'][0] + score['4 of a kind'][0] \
+    #                            + score['Full House'][0] + score['Low Straight'][0] + score['High Straight'][0] \
+    #                            + score['AllFive!'][0] + score['Chance'][0]
     score['Upper Section 2'][0] = 0
     if score['Upper Bonus'][1] == 1:
         score['Upper Section 2'][0] += score['Upper Bonus'][0]
