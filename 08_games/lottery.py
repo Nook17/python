@@ -3,13 +3,14 @@ import random
 # from collections import OrderedDict
 
 def main():
-    lottery([], 5)
-    keepDices = keep()
+    dices = lottery([], 5)
+    # print(type(dices))
+    keepDices = keep(dices)
     # for i in range(1):
-    lottery(keepDices, 5 - len(keepDices))
-    keepDices = keep()
-    lottery(keepDices, 5 - len(keepDices))
-    keepDices = keep()
+    dices = lottery(keepDices, 5 - len(keepDices))
+    keepDices = keep(dices)
+    dices = lottery(keepDices, 5 - len(keepDices))
+    keepDices = keep(dices)
     lottery(keepDices, 5 - len(keepDices))
     # print(dices)
 
@@ -20,15 +21,25 @@ def lottery(dices, length):
         dices.append(d)
     # dices.sort()
     print(dices)
-    # return dices
+    return dices
 
 
-def keep():
+def keep(dices):
     print('keep dice, e.g. > 566')
-    keep = input('> ')
-    keep = list(map(int, keep))
-    # keep.sort()
-    print(keep)
+    while True:
+        keep = input('> ')
+        keep = list(map(int, keep))
+        for i in keep:
+            for j in dices:
+                if i == j:
+                    dices.remove(j)
+                    break
+
+        if len(keep) + len(dices) == 5:
+            break
+        else:
+            print("This number doesn't exist")
+
     return keep
 
 

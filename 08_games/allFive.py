@@ -18,12 +18,12 @@ def game():
     round = 1
     dices = lottery([], 5)
     countPoints(dices, round)
-    keepDices = keep()
+    keepDices = keep(dices)
     for i in range(1):
         round += 1
         dices = lottery(keepDices, 5 - len(keepDices))
         countPoints(dices, round)
-        keepDices = keep()
+        keepDices = keep(dices)
     dices = lottery(keepDices, 5 - len(keepDices))
     round = 3
     countPoints(dices, round)
@@ -37,10 +37,22 @@ def lottery(dices, length):
     return dices
 
 
-def keep():
+def keep(dices):
     print('keep dice, e.g. > 566')
-    keep = input('> ')
-    keep = list(map(int, keep))
+    while True:
+        keep = input('> ')
+        keep = list(map(int, keep))
+        for i in keep:
+            for j in dices:
+                if i == j:
+                    dices.remove(j)
+                    break
+
+        if len(keep) + len(dices) == 5:
+            break
+        else:
+            print("This number doesn't exist")
+
     return keep
 
 
