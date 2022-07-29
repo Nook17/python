@@ -4,9 +4,9 @@ from collections import Counter
 
 setFlag = 0
 scoreChoose = {'Ones': [0, 0], 'Twos': [0, 0], 'Threes': [0, 0], 'Fours': [0, 0], 'Fives': [0, 0], 'Sixes': [0, 0],
-         'Upper Section 1': [0, 0], 'Upper Bonus': [0, 0], '3 of a kind': [0, 0], '4 of a kind': [0, 0],
-         'Full House': [0, 0], 'Low Straight': [0, 0], 'High Straight': [0, 0], 'AllFive!': [0, 0],
-         'Chance': [0, 0], 'Upper Section 2': [0, 0], 'GRAND TOTAL': [0, 0]}
+               'Upper Section 1': [0, 0], 'Upper Bonus': [0, 0], '3 of a kind': [0, 0], '4 of a kind': [0, 0],
+               'Full House': [0, 0], 'Low Straight': [0, 0], 'High Straight': [0, 0], 'AllFive!': [0, 0],
+               'Chance': [0, 0], 'Upper Section 2': [0, 0], 'GRAND TOTAL': [0, 0]}
 
 
 def main():
@@ -120,8 +120,8 @@ def countPoints(dice, round):
         if dice.count(i) == 5 and score['AllFive!'][1] == 0:
             score['AllFive!'][0] = 50
 
-    for i in range(len(diceNoDuplicate)-1):
-        if diceNoDuplicate[i] + 1 == diceNoDuplicate[i+1]:
+    for i in range(len(diceNoDuplicate) - 1):
+        if diceNoDuplicate[i] + 1 == diceNoDuplicate[i + 1]:
             flag += 1
     if flag >= 3 and score['Low Straight'][1] == 0:
         score['Low Straight'][0] = 30
