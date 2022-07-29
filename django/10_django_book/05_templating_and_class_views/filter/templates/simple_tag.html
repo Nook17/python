@@ -1,0 +1,12 @@
+<html>
+<head>
+    <title>Simple Tag</title>
+</head>
+<body>
+{% load simple_tag inclusion_tag %}
+{% greet_user "Hello" username %}
+<br />
+<span class="message">Read Books</span>
+{% book_list books %}
+</body>
+</html>

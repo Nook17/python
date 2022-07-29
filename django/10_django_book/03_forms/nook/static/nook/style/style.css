@@ -1,0 +1,14 @@
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+    margin-bottom: 60px;
+	background-attachment: fixed;
+    background-position: center center;
+    background-image: url("/static/nook/assets/paper.png");
+}
+
+.card {
+    background-color: transparent;
+}

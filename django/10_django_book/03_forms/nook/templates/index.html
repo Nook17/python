@@ -1,0 +1,54 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Forms</title>
+    <link rel="stylesheet" href="{% static 'nook/style/style.css' %}">
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark sticky-top">
+      <a class="navbar-brand" href="{% url 'index' %}">
+        <img src="{% static 'nook/assets/logo_nook.png' %}" alt=""
+        width="30" height="24" class="d-inline-block align-text-top">
+        Forms
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="/form1">Form_1 <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="/form2">Form_2 <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="/form3">Form_3 <span class="sr-only">(current)</span></a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    {% block content %}
+    <h1 class="text-center display-2">Hello in Bookr!</h1>
+    {% endblock %}
+  <!-- Copyright -->
+  <div class="push"></div>
+  <footer class="page-footer font-small blue">
+    <div class="footer-copyright text-center py-3">© 2022 Copyright:
+      <a href="https://www.nook17.pl"> Nook17</a>
+      <p>Projekt: Nook17</p>
+      <p>Kontakt: <a href="mailto:arek@nook17.pl">arek@nook17.pl</a></p>
+    </div>
+  </footer>
+  <!-- Copyright -->
+  </body>
+</html>

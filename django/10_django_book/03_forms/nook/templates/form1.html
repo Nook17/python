@@ -1,0 +1,99 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<h2 class="text-center">Form - email & password</h2>
+<h3 class="text-center">Method: {{ method }}</h3>
+<div class="row">
+  <div class="col-md-4"></div>
+    <div class="col-md-4">
+      <form method="post" action="{% url 'form1' %}">
+{% csrf_token %}
+
+<div class="form-group">
+<label for="InputPassword">Password</label>
+<input type="password" name="Password" class="form-control" id="InputPassword">
+</div>
+
+<div class="form-group">
+<label for="InputEmail">Email address</label>
+<input type="email" name="Email" class="form-control" id="InputEmail" aria-describedby="emailHelp">
+<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+</div>
+
+<div class="form-group">
+<label for="firstNameInput">First name</label>
+<input type="text" name="First_Name" class="form-control" id="firstNameInput" placeholder="First name">
+</div>
+
+<div class="form-group">
+<label for="lastNameInput">Last name</label>
+<input type="text" name="Last_Name" class="form-control" id="lastNameInput" placeholder="Last name">
+</div>
+
+<div class="form-check">
+<input class="form-check-input" name="CheckBox" type="checkbox" value="check_nook" id="Check1">
+<label class="form-check-label" for="Check1">
+  Checkbox
+</label>
+</div>
+
+<div class="form-check form-check-inline">
+<input class="form-check-input" type="radio" name="Radio_1" id="inlineRadio1" value="option_1" checked>
+<label class="form-check-label" for="inlineRadio1">1</label>
+</div>
+<div class="form-check form-check-inline">
+<input class="form-check-input" type="radio" name="Radio_2" id="inlineRadio2" value="option_2">
+<label class="form-check-label" for="inlineRadio2">2</label>
+</div>
+<div class="form-check form-check-inline">
+<input class="form-check-input" type="radio" name="Radio_3" id="inlineRadio3" value="option_3" disabled>
+<label class="form-check-label" for="inlineRadio3">3 (disabled)</label>
+</div>
+
+<div class="form-group">
+<label for="FormControlSelect1">Books select</label>
+<select class="form-control" name="Book_select" id="FormControlSelect1" multiple>
+  <option value="1">Python</option>
+  <option value="2">Django</option>
+  <option value="3">HTLM</option>
+  <option value="4">C++</option>
+  <option value="5">Java</option>
+</select>
+</div>
+
+<div class="form-group">
+<label for="FormControlSelect2">Author select</label>
+<select class="form-control" name="Author_select" id="FormControlSelect2">
+  <optgroup label="Horror">
+    <option>Felek</option>
+    <option>Zenek</option>
+  </optgroup>
+  <optgroup label="Fiction">
+    <option>Ala</option>
+    <option>Zuzia</option>
+  </optgroup>
+</select>
+</div>
+
+<div class="form-group">
+<label for="FormControlTextarea">Textarea</label>
+<textarea class="form-control" name="Textarea" id="FormControlTextarea" rows="3"></textarea>
+</div>
+
+<div class="form-group">
+<label for="formDateInput">Date</label>
+<input type="date" name="Date" class="form-control" id="formDateInput" placeholder="input placeholder">
+</div>
+
+<div class="form-group">
+<label for="formNumberInput">Number</label>
+<input type="number" name="Number" class="form-control" id="formNumberInput" placeholder="123">
+</div>
+
+<button type="submit" class="btn btn-primary">Submit</button>
+<input type="hidden" name="Hidden_input" value="hidden content">
+</form>
+    </div>
+  <div class="com-md-4"></div>
+</div>
+{% endblock %}

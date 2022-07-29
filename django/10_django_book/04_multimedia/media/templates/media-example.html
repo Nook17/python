@@ -1,0 +1,19 @@
+{% extends 'index.html' %}
+{% load bootstrap %}
+{% block content %}
+<div class="row">
+    <div class="col-md-4"></div>
+        <div class="col-md-4 text-center">
+          <a href="{{ MEDIA_URL }}media.txt">file test</a>
+            <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+                <div class="custom-file mb-3">
+                    <input type="file" class="custom-file-input" id="validatedCustomFile" name="file_upload">
+                    <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
+                </div>
+                <button type="submit" class="btn btn-primary">Send</button>
+            </form>
+        </div>
+    <div class="com-md-4"></div>
+</div>
+{% endblock %}

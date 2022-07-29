@@ -1,0 +1,15 @@
+{% extends 'index.html' %}
+{% load bootstrap %}
+{% block content %}
+<div class="row">
+    <div class="col-md-4"></div>
+        <div class="col-md-4 text-center">
+            <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+                {{ form|bootstrap }}
+                <button type="submit" class="btn btn-primary">Send</button>
+            </form>
+        </div>
+    <div class="com-md-4"></div>
+</div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% comment %}{% load bootstrap %}{% endcomment %}
+{% block title %}
+    {% if form.is_valid and search_text %}
+        Search result for "{{ search_text }}"
+    {% else %}
+        Book search
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <h2>Book search</h2>
+            <form>
+                {% comment %}{{ form|bootstrap }}{% endcomment %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+            {% if form.is_valid and search_text %}
+                <h3>Search result for <em>{{ search_text }}</em></h3>
+                <h3>
+                    <ul class="list-group">
+                        {% for book in books %}
+                        <li class="list-group-item">
+                            <span class="text-info">Title: </span><a href="{% url 'book_detail' book.pk %}">{{ book }}</a>
+                            <br/>
+                            <span class="text-info">Contributors: </span>
+                            {% for contributor in book.contributor.all %}
+                            {{ contributor.first_name }} {{ contributor.last_name }}
+                                {% if not forloop %}, {% endif %}
+                            {% endfor %}
+                        </li>
+                        {% empty %}
+                        <li class="list-group-item">There is no search result.</li>
+                        {% endfor %}
+                    </ul>
+                </h3>
+            {% endif %}
+        </div>
+    <div class="com-md-4"></div>
+</div>
+{% endblock %}

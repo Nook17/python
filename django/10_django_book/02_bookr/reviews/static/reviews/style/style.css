@@ -1,0 +1,25 @@
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+    margin-bottom: 60px;
+	background-attachment: fixed;
+    background-position: center center;
+    background-image: url("/static/reviews/assets/paper.png");
+}
+
+.list-group-item {
+    background-color: transparent;
+}
+.flexrow { display: flex;
+           border: 2px black;
+}
+.flexrow > div { flex: 1; }
+
+.infocell {
+  border: 2px solid green;
+  border-radius: 5px 25px;
+  padding: 5px;
+  margin: 20px 5px 5px 5px;
+}
