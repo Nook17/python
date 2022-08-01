@@ -5,10 +5,15 @@ def main():
     # gettingHelp()
     # unicodeStrings()
     # sequenceOperations()
-    typeSpecificOperations()
+    # typeSpecificOperations()
     # nesting()
     # comprehensions()
     # mappingOperations()
+    # nestingRevisited()
+    # missingKeys()
+    # sortingKeys()
+    # tuples()
+    file()
 
 
 # ------------ LISTS ------------
@@ -86,6 +91,7 @@ def nesting():
     a = [[2, 4, 9], [5, 2, 8], [9, 1, 2]]
     print(a[1][2])
 
+
 def comprehensions():
     a = [[2, 4, 9],
          [6, 2, 8],
@@ -126,11 +132,66 @@ def mappingOperations():
     b['age'] = 42
     b['job'] = 'soldier'
     print(b)
-    c = dict(name = 'Michael', job = 'police', age = 10)
+    c = dict(name='Michael', job='police', age=10)
     print(c)
     d = dict(zip(['job', 'name', 'age'], ['fireman', 'Kojo', 12]))
     print(d)
 
+
+def nestingRevisited():
+    rec = {'name': {'first': 'Arek', 'second': 'Demko'},
+           'jobs': ['dev', 'mgr'],
+           'age': 42}
+    print(rec)
+    print(rec['name'])
+    print(rec['name']['second'])
+    print(rec['jobs'][-1])
+    rec['jobs'].append('driver')
+    print(rec['jobs'][-1])
+
+
+def missingKeys():
+    dic = {'a': 17, 'b': 22, 'c': 35, 'e': 15}
+    if not 'f' in dic:
+        print('This key not exist!')
+    value = dic.get('x', 'not')             # jak znajdzie indeks to zwróci jego wartość jak nie to 'not'
+    print(value)
+    value = dic['a'] if 'a' in dic else 0   # jak znajdzie indeks to zwróci jego wartość jak nie to '0'
+    print(value)
+
+
+def sortingKeys():
+    dic = {'a': 17, 'b': 22, 'g': 35, 'e': 15}
+    ks = list(dic.keys())
+    print(ks)
+    ks.sort()
+    print(ks)
+    for key in ks:
+        print('{} => {}'.format(key, dic[key]))
+    print('--- Teraz nowsza wersja sortowania ---')
+    for key in sorted(dic):
+        print('{} => {}'.format(key, dic[key]))
+    squares = [x ** 2 for x in [1, 2, 3, 4, 5]]
+    print(squares)
+
+
+# ---------------- TUPLES ----------------
+def tuples():
+    tup = (11, 23, 21, 17, 34, 22, 75, 5, 17)
+    print(tup[2])
+    print(tup.index(17))
+    print(tup.count(17))
+
+
+# ---------------- FILES ----------------
+def file():
+    f = open('nook.txt', 'w')   # w-write(create file) r-read
+    f.write('Hello ')
+    f.write('Nook\n ')
+    f.close()
+    f = open('nook.txt')
+    text = f.read()
+    print(text)
 
 
 if __name__ == '__main__':
