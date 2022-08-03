@@ -318,19 +318,24 @@ def checkNameScore(name):
 
 def endGame(score):
     global name
-    global setFlag
+    # global setFlag
     if score['Twos'][1] == 1 and score['Threes'][1] == 1 and score['Fours'][1] == 1 and score['Fives'][1] == 1 and \
             score['Sixes'][1] == 1 and score['3 of a kind'][1] == 1 and score['4 of a kind'][1] == 1 and \
             score['Full House'][1] == 1 and score['Low Straight'][1] == 1 and score['High Straight'][1] == 1 and \
             score['AllFive!'][1] == 1 and score['Chance'][1] == 1:
         data = openScore()
 
-        if data[name] < score['GRAND TOTAL'][0]:
+        if name in data:
+            if data[name] < score['GRAND TOTAL'][0]:
+                data[name] = score['GRAND TOTAL'][0]
+                saveScore(data)
+                print('Great. You beat your record !')
+            else:
+                print('Excellent {} Your score is {}'.format(name, score['GRAND TOTAL'][0]))
+        else:
             data[name] = score['GRAND TOTAL'][0]
             saveScore(data)
-            print('Great. You beat your record !')
-        else:
-            print('Excellent {} Your score is {}'.format(name, score['GRAND TOTAL'][0]))
+            print('Congratulations on the first result of {} points'.format(score['GRAND TOTAL'][0]))
         printScoreTable(name)
         while True:
             print("'s' - start game again or 'q' - quit")
@@ -340,7 +345,8 @@ def endGame(score):
             elif choose == 'Q':
                 exit()
     else:
-        return score
+        # return score
+        return
 
 
 if __name__ == '__main__':

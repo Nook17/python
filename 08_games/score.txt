@@ -1,1 +1,1 @@
-{"Nook": 134, "Kojo": 23, "Kama": 21, "Amon": 47}
+{"Nook": 134, "Kojo": 243, "Amon": 0, "Fiolka": 156}

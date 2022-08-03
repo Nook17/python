@@ -5,10 +5,11 @@ import json, bext
 def main():
     # score = {"Nook": 17, "Kojo": 23, "Kama": 21, "Amon": 0}
     name = input('Type Your name: ')
-    checkNameScore(name)
-    printScoreTable(name)
+    # checkNameScore(name)
+    # printScoreTable(name)
     # saveScore(score)
     # openScore()
+    endGame(117, name)
 
 
 def saveScore(score):
@@ -42,6 +43,7 @@ def printScoreTable(name):
         else:
             bext.fg('reset')
         print('{} => {}'.format(key, value))
+        bext.fg('reset')
 
 
 def checkNameScore(name):
@@ -53,6 +55,34 @@ def checkNameScore(name):
         bext.fg('cyan')
         print('Welcome first time {}'.format(name))
     bext.fg('reset')
+
+
+def endGame(score, name):
+    # global name
+    if score == 117:
+        data = openScore()
+
+        if name in data:
+            if data[name] < score:
+                data[name] = score
+                saveScore(data)
+                print('Great. You beat your record !')
+            else:
+                print('Excellent {} Your score is {}'.format(name, score))
+        else:
+            data[name] = score
+            saveScore(data)
+            print('Congratulations on the first result of {} points'.format(score))
+        printScoreTable(name)
+        while True:
+            print("'s' - start game again or 'q' - quit")
+            choose = input('> ').upper()
+            if choose == 'S':
+                main()
+            elif choose == 'Q':
+                exit()
+    else:
+        return
 
 
 if __name__ == '__main__':
