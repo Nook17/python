@@ -1,15 +1,22 @@
 #!/usr/bin/env python3
-import random, bext
+import random, bext, json
 from collections import Counter
 
 setFlag = 0
-scoreChoose = {'Ones': [0, 0], 'Twos': [0, 0], 'Threes': [0, 0], 'Fours': [0, 0], 'Fives': [0, 0], 'Sixes': [0, 0],
-               'Upper Section 1': [0, 0], 'Upper Bonus': [0, 0], '3 of a kind': [0, 0], '4 of a kind': [0, 0],
-               'Full House': [0, 0], 'Low Straight': [0, 0], 'High Straight': [0, 0], 'AllFive!': [0, 0],
-               'Chance': [0, 0], 'Upper Section 2': [0, 0], 'GRAND TOTAL': [0, 0]}
+name = ''
+scoreChoose = {}
 
 
 def main():
+    global scoreChoose
+    global name
+    name = input('Type Your name: ')
+    checkNameScore(name)
+    printScoreTable(name)
+    scoreChoose = {'Ones': [0, 0], 'Twos': [0, 0], 'Threes': [0, 0], 'Fours': [0, 0], 'Fives': [0, 0], 'Sixes': [0, 0],
+                   'Upper Section 1': [0, 0], 'Upper Bonus': [0, 0], '3 of a kind': [0, 0], '4 of a kind': [0, 0],
+                   'Full House': [0, 0], 'Low Straight': [0, 0], 'High Straight': [0, 0], 'AllFive!': [0, 0],
+                   'Chance': [0, 0], 'Upper Section 2': [0, 0], 'GRAND TOTAL': [0, 0]}
     game()
 
 
@@ -169,6 +176,8 @@ def countPoints(dice, round):
     score['GRAND TOTAL'][0] = score['Upper Section 1'][0] + score['Upper Section 2'][0]
 
     showScoreTable(score)
+
+    endGame(score)
     while True:
         print("Choose the number or 'q' - quit")
         choose = input('> ')
@@ -264,6 +273,74 @@ def zeroScore(score):
         score['Chance'][0] = 0
 
     return score
+
+
+def saveScore(score):
+    with open('score.txt', 'w') as file:
+        file.write(json.dumps(score))     # use 'json.loads' to do the reverse
+
+
+def openScore():
+    f = open('score.txt')   # opening JSON file
+    data = json.load(f)     # returns JSON object as a dictionary
+    f.close()               # closing file
+    return data
+
+
+def printScoreTable(name):
+    data = openScore()
+
+    sorted_data = {}
+    sorted_keys = sorted(data, key=data.get)
+
+    for w in sorted_keys:
+        sorted_data[w] = data[w]
+
+    for key, value in sorted_data.items():
+        if key == name:
+            bext.fg('yellow')
+        else:
+            bext.fg('reset')
+        print('{} => {}'.format(key, value))
+        bext.fg('reset')
+
+
+def checkNameScore(name):
+    score = openScore()
+    if name in score:
+        bext.fg('green')
+        print('Hello {} Your maximum score is {}'.format(name, score[name]))
+    else:
+        bext.fg('cyan')
+        print('Welcome first time {}'.format(name))
+    bext.fg('reset')
+
+
+def endGame(score):
+    global name
+    global setFlag
+    if score['Twos'][1] == 1 and score['Threes'][1] == 1 and score['Fours'][1] == 1 and score['Fives'][1] == 1 and \
+            score['Sixes'][1] == 1 and score['3 of a kind'][1] == 1 and score['4 of a kind'][1] == 1 and \
+            score['Full House'][1] == 1 and score['Low Straight'][1] == 1 and score['High Straight'][1] == 1 and \
+            score['AllFive!'][1] == 1 and score['Chance'][1] == 1:
+        data = openScore()
+
+        if data[name] < score['GRAND TOTAL'][0]:
+            data[name] = score['GRAND TOTAL'][0]
+            saveScore(data)
+            print('Great. You beat your record !')
+        else:
+            print('Excellent {} Your score is {}'.format(name, score['GRAND TOTAL'][0]))
+        printScoreTable(name)
+        while True:
+            print("'s' - start game again or 'q' - quit")
+            choose = input('> ').upper()
+            if choose == 'S':
+                main()
+            elif choose == 'Q':
+                exit()
+    else:
+        return score
 
 
 if __name__ == '__main__':

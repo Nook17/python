@@ -1,1 +1,1 @@
-{"Nook": 17, "Kojo": 23, "Kama": 21, "Amon": 0}
+{"Nook": 134, "Kojo": 23, "Kama": 21, "Amon": 47}
