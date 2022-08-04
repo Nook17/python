@@ -1,0 +1,5 @@
+Generate Binary with PyInstaller 
+
+$ pyinstaller filename.py --onefile 
+$ cd dist/ 
+$ ./filename 
