@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 import random, bext, json
 from collections import Counter
+from cryptography.fernet import Fernet
 
+key = b'Xy8u2GtHOaHlULVywaL6xBeAb48oiG1UAYxybLdNQ24='
 setFlag = 0
 name = ''
 scoreChoose = {}
@@ -275,38 +277,46 @@ def zeroScore(score):
     return score
 
 
-def saveScore(score):
-    with open('score.txt', 'w') as file:
-        file.write(json.dumps(score))     # use 'json.loads' to do the reverse
+def saveScore(score, keys):
+    scores = json.dumps(score).encode('utf-8')
+    f = Fernet(keys)
+    encrypted = f.encrypt(scores)
+    with open('score', 'wb') as encrypted_file:
+        encrypted_file.write(encrypted)
 
 
-def openScore():
-    f = open('score.txt')   # opening JSON file
-    data = json.load(f)     # returns JSON object as a dictionary
-    f.close()               # closing file
+def openScore(keys):
+    f = Fernet(keys)
+    with open('score', 'rb') as encrypted_file:
+        encrypted = encrypted_file.read()
+    decrypted = f.decrypt(encrypted)
+    d = decrypted.decode('utf8')
+    data = eval(d)
+
     return data
 
 
 def printScoreTable(name):
-    data = openScore()
-
+    global key
+    data = openScore(key)
     sorted_data = {}
     sorted_keys = sorted(data, key=data.get)
 
     for w in sorted_keys:
         sorted_data[w] = data[w]
 
-    for key, value in sorted_data.items():
-        if key == name:
+    for keys, value in sorted_data.items():
+        if keys == name:
             bext.fg('yellow')
         else:
             bext.fg('reset')
-        print('{} => {}'.format(key, value))
+        print('{} => {}'.format(keys, value))
         bext.fg('reset')
 
 
 def checkNameScore(name):
-    score = openScore()
+    global key
+    score = openScore(key)
     if name in score:
         bext.fg('green')
         print('Hello {} Your maximum score is {}'.format(name, score[name]))
@@ -318,23 +328,24 @@ def checkNameScore(name):
 
 def endGame(score):
     global name
-    # global setFlag
+    global key
+
     if score['Twos'][1] == 1 and score['Threes'][1] == 1 and score['Fours'][1] == 1 and score['Fives'][1] == 1 and \
             score['Sixes'][1] == 1 and score['3 of a kind'][1] == 1 and score['4 of a kind'][1] == 1 and \
             score['Full House'][1] == 1 and score['Low Straight'][1] == 1 and score['High Straight'][1] == 1 and \
             score['AllFive!'][1] == 1 and score['Chance'][1] == 1:
-        data = openScore()
+        data = openScore(key)
 
         if name in data:
             if data[name] < score['GRAND TOTAL'][0]:
                 data[name] = score['GRAND TOTAL'][0]
-                saveScore(data)
+                saveScore(data, key)
                 print('Great. You beat your record !')
             else:
                 print('Excellent {} Your score is {}'.format(name, score['GRAND TOTAL'][0]))
         else:
             data[name] = score['GRAND TOTAL'][0]
-            saveScore(data)
+            saveScore(data, key)
             print('Congratulations on the first result of {} points'.format(score['GRAND TOTAL'][0]))
         printScoreTable(name)
         while True:
