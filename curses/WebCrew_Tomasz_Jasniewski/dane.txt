@@ -1,0 +1,5 @@
+Pierwsza linia tekstu w pliku śćźńąłó.
+Druga linia tekstu w pliku.
+Trzecia linia tekstu w pliku.
+AB
+C
