@@ -21,13 +21,13 @@ root.iconphoto(True, icon)
 
 
 # ----------- MOUSE EVENTS -----------
-# root.bind("<Button-1>", doSomething)
+root.bind("<Button-1>", doSomething)
 # root.bind("<Button-2>", doSomething)
 # root.bind("<Button-3>", doSomething)
 # root.bind("<ButtonRelease>", doSomething)
 # root.bind("<Enter>", doSomething)
 # root.bind("<Leave>", doSomething)
-root.bind("<Motion>", doSomething)
+# root.bind("<Motion>", doSomething)
 
 label = Label(root, font=("Helvetica", 50))
 label.pack()

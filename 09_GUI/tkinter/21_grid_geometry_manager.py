@@ -16,7 +16,7 @@ root.iconphoto(True, icon)
 
 
 # ----------- GRID GEOMETRY MANAGER -----------
-titleLabel = Label(root, text='Enter your info', font=('Arial', 25)).grid(row=0, column=0, columnspan=2)
+titleLabel = Label(root, text='Enter your info', font=('Consolas', 25)).grid(row=0, column=0, columnspan=2)
 
 firstnameLabel = Label(root, text='First name: ', width=20).grid(row=1, column=0)
 firstNameEntry = Entry(root).grid(row=1, column=1)

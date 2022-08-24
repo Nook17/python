@@ -6,10 +6,12 @@
 from tkinter import *
 
 
+def kojo():
+    print('kojo wcisnął W')
 # ----------- WINDOW -----------
 root = Tk()
 root.title('Nook Window')
-root.geometry("275x125")
+root.geometry("420x250")
 icon = PhotoImage(file='images/Logo_Nook_thin_radius_4.png')
 root.iconphoto(True, icon)
 root.config(background='#a0abbd')
@@ -19,7 +21,7 @@ root.config(background='#a0abbd')
 frame = Frame(root, bg='#a0bbcd', bd=4, relief=SUNKEN)
 frame.place(x=10, y=10)
 
-Button(frame, text='W', font=('Consolas', 25), width=3).pack(side=TOP)
+Button(frame, text='W', font=('Consolas', 25), width=3, command=kojo).pack(side=TOP)
 Button(frame, text='A', font=('Consolas', 25), width=3).pack(side=LEFT)
 Button(frame, text='S', font=('Consolas', 25), width=3).pack(side=LEFT)
 Button(frame, text='D', font=('Consolas', 25), width=3).pack(side=LEFT)

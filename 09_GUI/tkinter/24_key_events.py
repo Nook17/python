@@ -7,7 +7,7 @@ from tkinter import *
 
 
 def doSomething(event):
-    # print('You presses: ' + event.keysym)
+    print('You presses: ' + event.keysym)
     label.config(text=event.keysym)
 
 
