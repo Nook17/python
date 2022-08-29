@@ -55,8 +55,8 @@ for index in range(len(food)):
                               width=300,
                               command=order)
 
-    radiobutton.pack(anchor=W)
-
+    # radiobutton.pack(anchor=W)
+    radiobutton.pack()
 
 
 root.mainloop()
