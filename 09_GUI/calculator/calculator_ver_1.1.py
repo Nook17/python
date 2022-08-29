@@ -15,7 +15,7 @@ B_HEIGHT = 70
 B_WIDTH_RECT = 8
 B_HEIGHT_RECT = 4
 B_X = 10
-B_Y = 60
+B_Y = 80
 B_PADDING = 80
 BG_COLOR = "#152126"
 FG_COLOR = "#87c8b9"
@@ -69,7 +69,7 @@ def sign_enter():
 # ----------- WINDOW -----------
 root = Tk()
 root.title('Calculator - Nook')
-root.geometry("430x595")
+root.geometry("430x605")
 icon = PhotoImage(file='logo_Nook.png')
 root.iconphoto(True, icon)
 root.config(background=BG_COLOR)
@@ -98,8 +98,10 @@ root.bind("<Return>", lambda event: equal_press())
 root.bind("<Escape>", lambda event: clear_enter())
 root.bind("<BackSpace>", lambda event: back_enter())
 
-display_label = Label(root, font=("Arial", 20), fg=FG_COLOR, bg=BG_COLOR_ACTIVE, width=27, height=1)
-display_label.place(x=10, y=10)
+# display_label = Label(root, font=("Arial", 20), fg=FG_COLOR, bg=BG_COLOR_ACTIVE, width=27, height=1)
+# display_label.place(x=10, y=10)
+display_label = Label(root, font=("Arial", 20), fg=FG_COLOR, bg=BG_COLOR_ACTIVE)
+display_label.place(x=B_X+(B_PADDING*0), y=5, width=410, height=60)
 
 one_button = Button(root, text='1', font=("Arial", 20), fg=FG_COLOR, bg=BG_COLOR,
                     activeforeground=FG_COLOR_ACTIVE, activebackground=BG_COLOR_ACTIVE, highlightthickness=0,

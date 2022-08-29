@@ -1,0 +1,20 @@
+[Desktop Entry]
+Categories=Favorites
+Comment[en_US]=Calculator Nook
+Comment=Calculator Nook
+Exec=/home/arek/magazyn/projects/python/00_run_file/calculator_ver_1.1.py
+GenericName[en_US]=
+GenericName=
+Icon=/home/arek/magazyn/projects/python/00_run_file/logo_Nook.png
+MimeType=
+Name[en_US]=Calculator Nook
+Name=Calculator Nook
+Path=
+StartupNotify=true
+Terminal=true
+TerminalOptions=
+Type=Application
+X-DBUS-ServiceName=
+X-DBUS-StartupType=
+X-KDE-SubstituteUID=false
+X-KDE-Username=
