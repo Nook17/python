@@ -1,0 +1,66 @@
+{% extends "cfd/base.html" %}
+
+{% block content %}
+	<main class="container flex-shrink-0">
+	  <div class="p-5 rounded">
+		<p class="lead">Withdrawal</p>
+		<div class="row">
+			<div class="col-lg-7 col-md-12">
+				<table class="table table-striped">
+				  <thead>
+					<tr>
+					  <th scope="col">Date</th>
+					  <th scope="col">Amount</th>
+					  <th scope="col">Bank</th>
+					  <th scope="col"></th>
+					</tr>
+				  </thead>
+				  <tbody>
+					{% for wd in wdd %}
+					<tr>
+					  <td>{{ wd.date_wd|date:'d M Y' }}</td>
+					  <td>{{ wd.amount_wd }}</td>
+					  <td>{{ wd.bank_name }}</td>
+					  <td>
+						  <a href="{% url 'cfd:update_withdrawal' wd.id %}">
+							  <i class="bi bi-pen text-info" 
+								  data-bs-toggle="tooltip" 
+								  data-bs-placement="top" title="Edit"></i>
+						  </a>
+						  <a href="{% url 'cfd:delete_withdrawal' wd.id %}">
+							  <i class="bi bi-trash text-danger ml-4" 
+								  data-bs-toggle="tooltip" 
+								  data-bs-placement="top" title="Delete"></i>
+						  </a>
+					  </td>
+					</tr>
+					{% endfor %}
+				  </tbody>
+				</table>
+				<div class='text-center'>
+				  <form>
+					<button type="submit" formaction="{% url 'cfd:new_withdrawal' %}" 
+					  class="btn btn-outline-dark btn-sm">New w/d</button>
+				  </form>
+				</div>
+			</div> <!-- col -->
+			<div class="col-lg-3 col-md-12">
+				<table class="table table-striped text-center">
+				  <thead>
+					<tr>
+					  <th scope="col">SUM</th>
+					</tr>
+				  </thead>
+				  <tbody>
+					<tr>
+					  <td>{{ sum }}</td>
+					</tr>
+				  </tbody>
+				</table>
+			</div> <!-- col -->
+		</div> <!-- row -->
+	  </div>
+	</main>
+  {% include "cfd/footer.html" %}
+{% endblock content %}
+

@@ -126,7 +126,7 @@ def f_stat():
             if i < 0:
                 loss_profit += i
         loss_per_day.append(loss_profit)
-        # --- Balance ----
+        # --- Balance ---
         day_sum = sum_profit + commission_day + loss_profit
         balance_per_day.append(day_sum)
         # --- Sum Profit & Amount ---
@@ -374,7 +374,7 @@ def new_statement(request):
     df['open_time'] = pd.to_datetime(df['open_time'])
     df['close_time'] = pd.to_datetime(df['close_time'])
     # --- conect to SQL database ---
-    engine = create_engine('mysql+pymysql://root@localhost:3306/statement')
+    engine = create_engine('mysql+pymysql://nook17_nook17:Nook,1771@localhost:3306/nook17_statement')
     # --- Write to database ---
     df.to_sql(
             name='cfd_statement',
@@ -637,8 +637,8 @@ def calc_buy_delete(request, buy_id):
 @login_required
 def pipmargin(request):
     df = pipmargin_db_pandas()
-    # last_margin = df.resample('D', on='updated_at')['margin'].max()
-    # last_pip = df.resample('D', on='updated_at')['pip'].max()
+    last_margin = df.resample('D', on='updated_at')['margin'].max()
+    last_pip = df.resample('D', on='updated_at')['pip'].max()
     lvol = []
     lmargin1, lpip1, lmargin2, lpip2, lmargin3, lpip3, = [], [], [], [], [], []
     lmargin4, lpip4, lmargin5, lpip5, lmargin6, lpip6, = [], [], [], [], [], []
@@ -656,7 +656,8 @@ def pipmargin(request):
     lists = list(zip(lmargin1, lpip1, lmargin2, lpip2, lmargin3, lpip3,
                      lmargin4, lpip4, lmargin5, lpip5, lmargin6, lpip6))
     dicts = dict(zip(lvol, lists))
-    context = {'dicts': dicts, 'lists': lists}
+    context = {'last_pip': float(last_pip), 'last_margin': int(last_margin),
+               'dicts': dicts}    
     return render(request, 'cfd/pipmargin.html', context)
 
 
@@ -683,8 +684,8 @@ def pipmargin_set(request):
 def daily(request):
     today_is = time.strftime("%A - %d %B %Y")
     wall = wallet()
-    divide_by = [0.7, 0.5, 0.33, 0.25, 0.20, 0.1, 0.05, 0.03, 0.02]
-    percent_by = [0.3, 0.5, 0.7, 1, 1.2, 1.5, 2, 2.5, 3.0]
+    divide_by = [0.5, 0.33, 0.25, 0.20, 0.1, 0.05, 0.02]
+    percent_by = [0.5, 0.7, 1, 1.5, 2, 2.5, 3]
     threshold, margin, percent, profit = [], [], [], []
     for m in divide_by:
         threshold.append(m*100)

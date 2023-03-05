@@ -1,0 +1,35 @@
+/* .tg  {border-collapse:collapse;border-spacing:0;} */
+/* tr {border-collapse:collapse;border-spacing:0;} */
+/* .tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px; */
+th{background-color:transparent;border-color:#c1c1c1;color:#cb0000;text-align:center;vertical-align:top;padding:5px 5px}
+/* th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px; */
+  /* font-weight:normal;overflow:hidden;padding:5px 5px;word-break:normal;} */
+td th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;padding:5px 5px;word-break:normal;}
+td{background-color:transparent;border-color:#c1c1c1;color:#3d3d3d;text-align:center;vertical-align:top;padding:5px 5px}
+.tg .tg-percent{background-color:transparent;border-color:#c1c1c1;color:#009901;text-align:right;vertical-align:top}
+.tg .tg-summonth{background-color:transparent;border-color:#c1c1c1;color:#6434fc;text-align:right;vertical-align:top}
+/* .tg .tg-amount{background-color:transparent;border-color:#c1c1c1;color:#3d3d3d;text-align:left;vertical-align:top} */
+.tg .tg-no{background-color:transparent;border-color:#c1c1c1;color:#9b9b9b;text-align:left;vertical-align:top}
+/* .tg .tg-month{background-color:transparent;border-color:#c1c1c1;color:#cb0000;text-align:center;vertical-align:top} */
+.tg .tg-profit{background-color:transparent;border-color:#c1c1c1;color:#FF8000;text-align:left;vertical-align:top}
+.tg .tg-sumday{background-color:transparent;border-color:#c1c1c1;color:#158466;text-align:left;vertical-align:top}
+.tg .tg-date{background-color:transparent;border-color:#c1c1c1;color:#5D6D7E;text-align:left;vertical-align:top}
+.tg .tg-qamount{background-color:transparent;border-color:#c1c1c1;color:#28B463;text-align:left;vertical-align:top}
+.tg .tg-qpercent{background-color:transparent;border-color:#c1c1c1;color:#5DADE2;text-align:left;vertical-align:top}
+.tg .tg-qdayprofit{background-color:transparent;border-color:#c1c1c1;color:#229954;text-align:left;vertical-align:top}
+.tg .tg-minus{background-color:transparent;border-color:#c1c1c1;color:#E74C3C;text-align:left;vertical-align:top}
+.text-temp{color:#9b9b9b}
+.form-control{background-color: rgb(0 0 0 / 8%)}
+.form-control:focus{background-color: rgb(0 0 0 / 25%)}
+.row-margin-05 { margin-top: 0.5em; }
+.row-margin-10 { margin-top: 1.0em; }
+.row-margin-20 { margin-top: 2.0em; }
+.row-margin-30 { margin-top: 3.0em; }
+.col-margin-05 { margin-top: 0.5em; }
+.col-margin-10 { margin-top: 1.0em; }
+.col-margin-20 { margin-top: 2.0em; }
+.col-margin-30 { margin-top: 3.0em; }
+body .year-sm-text { font-size: 0.7rem; color: #686868; }
+.tpcolor { background-color: rgba(64, 255, 51, 0.29) }
+.slcolor { background-color: rgba(255, 51, 51, 0.29) }

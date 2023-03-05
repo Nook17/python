@@ -1,0 +1,271 @@
+{% extends "cfd/base.html" %}
+{% load static %}
+{% block link %}
+	<link rel="stylesheet" href="{% static 'cfd/style/table.css' %}" type="text/css">
+{% endblock link %}
+
+{% block content %}
+  <main class="container flex-shrink-0">
+    <div class="p-5 rounded">
+	  <p class="lead">Calculate strategy</p>
+
+ 	<!-- ****** SET REAL VALUE ***** -->
+	<h1 class="display-6 text-center n_font_h1">Calculation of volume and points from real deposit</h1>
+      <div class="row mt-5">
+		  <div class="col-md-6">
+			<form action="{% url 'cfd:strategy_set' id=1 %}" method="post" class="row g-3">
+			  {% csrf_token %}
+			  <div class="col-md-3 input-group-sm">
+				<input type="text"
+				value="{{ wallet_real|floatformat:"0" }}" class="form-control" disabled>
+				<label for="real_wallet" class="year-sm-text">Real Wallet</label>
+			  </div>
+			  <div class="col-md-3 input-group-sm">
+				<input type="number" step="1" name="point_real"
+				value="{{ point_real }}" class="form-control">
+				<label for="point_real" class="year-sm-text">Point</label>
+			  </div>
+			  <div class="col-md-3 input-group-sm">
+				<input type="number" step="0.01" name="percent_real"
+			   	value="{{ percent_real|floatformat:"2" }}" class="form-control">
+				<label for="percent_real" class="year-sm-text">Percent</label>
+			  </div>
+			  <div class="col-3 input-group-sm text-center">
+				<button type="submit" class="btn btn-outline-secondary btn-sm">Set</button>
+			  </div>
+			</form>
+		  </div> <!-- col-md -->
+	  </div> <!-- row -->
+	  <div class="row mt-3">
+		  <div class="col-md-3">
+			<div class="ncard border-success mb-3" style="max-width: 18rem;">
+			  <div class="card-header text-center">Profit</div>
+				<div class="card-body text-secondary">
+				  <h5 class="card-title text-center">
+				  	{{ profit_real|floatformat:"0" }} zł</h5>
+				</div>
+			</div>
+		  </div> <!-- col -->
+		  <div class="col-md-3">
+			<div class="ncard border-danger mb-3" style="max-width: 18rem;">
+			  <div class="card-header text-center">Volumen</div>
+				<div class="card-body text-secondary">
+				  <h5 class="card-title text-center">
+					  {{ vol_real|floatformat:"3" }}</h5>
+				</div>
+			</div>
+		  </div> <!-- col -->
+		  <div class="col-md-3">
+			<div class="ncard border-warning mb-3" style="max-width: 18rem;">
+			  <div class="card-header text-center">Margin</div>
+				<div class="card-body text-secondary">
+				  <h5 class="card-title text-center">
+				  	{{ margin_real|floatformat:"0" }} zł</h5>
+				</div>
+			</div>
+		  </div> <!-- col -->
+		  <div class="col-md-3">
+			<div class="ncard border-warning mb-3" style="max-width: 18rem;">
+			  <div class="card-header text-center">Percent</div>
+				<div class="card-body text-secondary">
+				  <h5 class="card-title text-center">
+				  	{{ percent_depo_real|floatformat:"0" }} %</h5>
+				</div>
+			</div>
+		  </div> <!-- col -->
+	  </div> <!-- row real value -->
+
+ 	<!-- ****** SET VIRTUAL VALUE ***** -->
+	<hr class="hr" />
+	<h1 class="display-6 text-center n_font_h1">Calculation of volume and points from virtual deposit</h1>
+      <div class="row mt-5">
+		  <div class="col-md-6">
+			<form action="{% url 'cfd:strategy_set' id=2 %}" method="post" class="row g-3">
+			  {% csrf_token %}
+			  <div class="col-md-3 input-group-sm">
+				<input type="number" step="1" name="virtual_depo"
+				value="{{ wallet_virtual|safe }}" class="form-control">
+				<label for="virtual_depo" class="year-sm-text">Virtual Wallet</label>
+			  </div>
+			  <div class="col-md-3 input-group-sm">
+				<input type="number" step="1" name="point_virtual"
+				value="{{ point_virtual }}" class="form-control">
+				<label for="point_virtual" class="year-sm-text">Point</label>
+			  </div>
+			  <div class="col-md-3 input-group-sm">
+				<input type="number" step="0.01" name="percent_virtual"
+			   	value="{{ percent_virtual|floatformat:"2" }}" class="form-control">
+				<label for="percent_virtual" class="year-sm-text">Percent</label>
+			  </div>
+			  <div class="col-3 input-group-sm text-center">
+				<button type="submit" class="btn btn-outline-secondary btn-sm">Set</button>
+			  </div>
+			</form>
+		  </div> <!-- col-md -->
+	  </div> <!-- row -->
+	  <div class="row mt-3">
+		  <div class="col-md-3">
+			<div class="ncard border-success mb-3" style="max-width: 18rem;">
+			  <div class="card-header text-center">Profit</div>
+				<div class="card-body text-secondary">
+				  <h5 class="card-title text-center">
+				 	{{ profit_virtual|floatformat:"0" }} zł</h5>
+				</div>
+			</div>
+		  </div> <!-- col -->
+		  <div class="col-md-3">
+			<div class="ncard border-danger mb-3" style="max-width: 18rem;">
+			  <div class="card-header text-center">Volumen</div>
+				<div class="card-body text-secondary">
+				  <h5 class="card-title text-center">
+				 	{{ vol_virtual|floatformat:"3" }}</h5>
+				</div>
+			</div>
+		  </div> <!-- col -->
+		  <div class="col-md-3">
+			<div class="ncard border-warning mb-3" style="max-width: 18rem;">
+			  <div class="card-header text-center">Margin</div>
+				<div class="card-body text-secondary">
+				  <h5 class="card-title text-center">
+				  	{{ margin_virtual|floatformat:"0" }} zł</h5>
+				</div>
+			</div>
+		  </div> <!-- col -->
+		  <div class="col-md-3">
+			<div class="ncard border-warning mb-3" style="max-width: 18rem;">
+			  <div class="card-header text-center">Percent</div>
+				<div class="card-body text-secondary">
+				  <h5 class="card-title text-center">
+				  	{{ percent_depo_virtual|floatformat:"0" }} %</h5>
+				</div>
+			</div>
+		  </div> <!-- col -->
+	  </div> <!-- row virtual value -->
+
+ 	<!-- ****** LONG CALCULATE ***** -->
+	<hr class="hr" />
+	<h1 class="display-6 text-center n_font_h1">Long term profit calculation</h1>
+      <div class="row mt-5">
+		  <div class="col-md-9">
+			<form action="{% url 'cfd:strategy_set' id=3 %}" method="post" class="row g-3">
+			  {% csrf_token %}
+			  <div class="col-md-2 input-group-sm">
+				<input type="text" step="1000"
+				value="{{ depo_year|safe }}" class="form-control" name="depo_year">
+				<label for="depo_year" class="year-sm-text">Start Depo</label>
+			  </div>
+			  <div class="col-md-2 input-group-sm">
+				<input type="number" step="0.01" name="percent_year"
+				value="{{ percent_year|floatformat:"2" }}" class="form-control">
+				<label for="percent_year" class="year-sm-text">Percent</label>
+			  </div>
+			  <div class="col-md-2 input-group-sm">
+				<input type="number" step="1" name="years_year"
+			   	value="{{ years_year }}" class="form-control">
+				<label for="years_year" class="year-sm-text">Years</label>
+			  </div>
+			  <div class="col-md-2 input-group-sm">
+				<input type="number" step="1" name="months_year"
+			   	value="{{ months_year }}" class="form-control">
+				<label for="months_year" class="year-sm-text">Months</label>
+			  </div>
+			  <div class="col-md-2 input-group-sm">
+				<input type="number" step="1" name="days_year"
+			   	value="{{ days_year }}" class="form-control">
+				<label for="days_year" class="year-sm-text">days</label>
+			  </div>
+			  <div class="col-2 input-group-sm text-center">
+				<button type="submit" class="btn btn-outline-secondary btn-sm">Set</button>
+			  </div>
+			</form>
+		  </div> <!-- col-md -->
+	  </div> <!-- row -->
+	  <div class="row mt-3">
+		  <div class="col-md-3">
+			<div class="ncard border-secondary mb-3" style="max-width: 18rem;">
+			  <div class="card-header text-center">Number of sessions</div>
+				<div class="card-body text-secondary">
+				  <h5 class="card-title text-center">
+				  	{{ numb_sessions|floatformat:"0" }}</h5>
+				</div>
+			</div>
+		  </div> <!-- col -->
+		  <div class="col-md-4">
+			<div class="ncard border-success mb-3" style="max-width: 20rem;">
+			  <div class="card-header text-center">Profit</div>
+				<div class="card-body text-secondary">
+				  <h5 class="card-title text-center">
+				  	{{ profit_year|floatformat:"0" }} zł</h5>
+				</div>
+			</div>
+		  </div> <!-- col -->
+		  <div class="col-md-4">
+			<div class="ncard border-danger mb-3" style="max-width: 20rem;">
+			  <div class="card-header text-center">Profit + start depo</div>
+				<div class="card-body text-secondary">
+				  <h5 class="card-title text-center">
+				  	{{ profit_depo|floatformat:"0" }} zł</h5>
+				</div>
+			</div>
+		  </div> <!-- col -->
+	  </div> <!-- row - long calculate -->
+
+	<!-- ****** Multiplying the deposit and withdrawal in the month ***** -->
+	<hr class="hr " />
+	<h1 class="display-6 text-center n_font_h1">Multiplying the deposit and withdrawal in the month</h1>
+	  <div class="row mt-5">
+		  <div class="col-md-6">
+			<form action="{% url 'cfd:strategy_set' id=4 %}" method="post" class="row g-3">
+			  {% csrf_token %}
+			  <div class="col-md-3 input-group-sm">
+				<input type="number" step="1" name="depo_month"
+				value="{{ depo_month|safe }}" class="form-control">
+				<label for="depo_month" class="year-sm-text">Start Depo</label>
+			  </div>
+			  <div class="col-md-3 input-group-sm">
+				<input type="number" step="0.01" name="percent_month"
+				value="{{ percent_month|floatformat:"2" }}" class="form-control">
+				<label for="percent_month" class="year-sm-text">Percent</label>
+			  </div>
+			  <div class="col-md-3 input-group-sm">
+				<input type="number" step="1" name="wd_month"
+			   	value="{{ wd_month|safe }}" class="form-control">
+				<label for="wd_month" class="year-sm-text">Payouts in a month</label>
+			  </div>
+			  <div class="col-3 input-group-sm text-center">
+				<button type="submit" class="btn btn-outline-secondary btn-sm">Set</button>
+			  </div>
+			</form>
+		  </div> <!-- col-md -->
+	  </div> <!-- row -->
+	  <div class="row mt-4">
+		<div class="col-md-12">
+			<table class="table table-sm mt-4">
+			  <thead>
+				<tr>
+				  <th scope="col">Month</th>
+				  <th scope="col">Earning</th>
+				  <th scope="col">WD</th>
+				  <th scope="col">Saving</th>
+				  <th scope="col">Next_mth</th>
+				</tr>
+			  </thead>
+			  <tbody>
+				{% for wd_l in wd_zip %}
+				<tr class="text-center">
+				  <td>{{ wd_l.0 }}</td>
+				  <td>{{ wd_l.1|floatformat:"0" }}</td>
+				  <td>{{ wd_month }}</td>
+				  <td>{{ wd_l.2|floatformat:"0" }}</td>
+				  <td>{{ wd_l.3|floatformat:"0" }}</td>
+				</tr>
+				{% endfor %}
+			  </tbody>
+			</table>
+		</div> <!-- col -->
+	  </div> <!-- row -->
+
+	</div><!-- p-5 rounded -->
+  </main>
+{% include "cfd/footer.html" %}
+{% endblock content %}

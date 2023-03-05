@@ -1,0 +1,139 @@
+{% extends "cfd/base.html" %}
+{% load static %}
+{% block link %}
+	<link rel="stylesheet" href="{% static 'cfd/style/statement.css' %}" type="text/css">
+{% endblock link %}
+
+{% block content %}
+	<main class="container flex-shrink-0">
+		<div class="row">
+			<div class="col-md-12">
+			  <div class="p-2 rounded">
+				<p class="lead">Statement</p>
+				  <p>Day: <b>{{ format_day }}</b>*</p>
+			  </div>
+
+				<table class="table table-sm">
+				  <thead>
+					<tr>
+					  <th scope="col">Open Time</th>
+					  <th scope="col">Type</th>
+					  <th scope="col">Size</th>
+					  <th scope="col">Item</th>
+					  <th scope="col">Open Price</th>
+					  <th scope="col">Stop Loss</th>
+					  <th scope="col">Take Profit</th>
+					  <th scope="col">Close Price</th>
+					  <th scope="col">Commission</th>
+					  <th scope="col">Swap</th>
+					  <th scope="col">Profit</th>
+					</tr>
+				  </thead>
+				  <tbody>
+					{% for i, day in day_st.iterrows %}
+					<tr>
+					  <td>{{ day.1 }}</td> <!-- Open Time -->
+					  <td>{{ day.2 }}</td> <!-- Type -->
+					  <td>{{ day.3 }}</td> <!-- Size -->
+					  <td>{{ day.4 }}</td> <!-- Item -->
+					  <td>{{ day.5 }}</td> <!-- Open Price -->
+					  {% if day.6 == day.9 %}
+					  	  <td class="slcolor">{{ day.6 }}</td> <!-- Stop Loss -->
+					  {% else %}
+					  	  <td>{{ day.6 }}</td> <!-- Stop Loss -->
+					  {% endif %}
+					  {% if day.7 == day.9 %}
+						  <td class="tpcolor">{{ day.7 }}</td> <!-- Take Profit -->
+					  {% else %}
+						  <td>{{ day.7 }}</td> <!-- Take Profit -->
+					  {% endif %}
+					  <td>{{ day.9 }}</td> <!-- Close Price -->
+					  <td>{{ day.10 }}</td> <!-- Commission -->
+					  <td>{{ day.11 }}</td> <!-- Swap -->
+					  <td>{{ day.12 }}</td> <!-- Profit -->
+					  <td>
+						  <a href="{% url 'cfd:delete_statement' day.0 url_statement %}">
+							  <i class="bi bi-trash text-danger ml-4" 
+								  data-bs-toggle="tooltip" 
+								  data-bs-placement="top" title="Delete"></i>
+						  </a>
+					  </td>
+					</tr>
+					{% endfor %}
+				  </tbody>
+				</table>
+
+			</div> <!-- col -->
+		</div> <!-- row -->
+		<div class="row">
+			<div class="col-md-12">
+				<table class="table table-striped">
+				  <thead>
+					<tr >
+					  <th class="text-secondary">Profit</th>
+					  <th class="text-secondary">Loss</th>
+					  <th class="text-secondary">Balance</th>
+					  <th class="text-secondary">pkt</th>
+					  <th class="text-secondary">Commission</th>
+					  <th class="text-secondary">Swap</th>
+					</tr>
+				  </thead>
+				  <tbody>
+					<tr>
+					  <td>{{ sum_profit }}</td>
+					  <td>{{ loss_profit }}</td>
+					  <td>{{ day_sum }}</td>
+					  <td>{{ pkt_sum }}</td>
+					  <td>{{ commission_sum }}</td>
+					  <td>{{ swap_sum }}</td>
+					</tr>
+				  </tbody>
+				</table>
+			</div> <!-- col -->
+		</div> <!-- row -->
+
+		<div class="row">
+			<div class="col-md-2"></div>
+				<div class="col-md-8">
+					<canvas id="myChart"></canvas>
+				</div> <!-- col -->
+			<div class="col-md-2"></div>
+		</div> <!-- row -->
+
+		<div class="row">
+			<div class="col-md-12">
+			  <div class="p-2 rounded">
+				  <p>* - Close Time</p>
+			  </div>
+		</div> <!-- row -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script>
+var ctx = document.getElementById('myChart').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: {{chartx}},
+        datasets: [{
+            label: '{{format_day}}',
+            data: {{charty}},
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+</script>
+
+
+
+	</main>
+  {% include "cfd/footer.html" %}
+{% endblock content %}
+
