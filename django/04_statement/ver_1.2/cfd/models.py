@@ -74,6 +74,9 @@ class Strategy(models.Model):
     depo_month = models.IntegerField(null=True, blank=True)
     percent_month = models.FloatField(null=True, blank=True)
     wd_month = models.IntegerField(null=True, blank=True)
+    depo_month_cp = models.IntegerField(null=True, blank=True)
+    profit_month_cp = models.IntegerField(null=True, blank=True)
+    wd_month_cp = models.IntegerField(null=True, blank=True)
 
     objects = DataFrameManager()
 

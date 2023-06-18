@@ -346,7 +346,7 @@ def delete_withdrawal(request, withdrawal_id):
 @login_required
 def statement(request):
     context = f_stat()
-    return render(request, 'cfd/statement.html', context)
+    return render(request, 'cfd/statementt.html', context)
 
 
 @login_required
@@ -390,7 +390,7 @@ def new_statement(request):
 @login_required
 def statements(request, url_statement):
     context = f_stats(url_statement)
-    return render(request, 'cfd/statements.html', context)
+    return render(request, 'cfd/statementts.html', context)
 
 
 @login_required
@@ -402,7 +402,7 @@ def delete_statement(request, ticket_id, url_statement):
         return redirect('cfd:statements')
     delstat.delete()
     context = f_stats(url_statement)
-    return render(request, 'cfd/statements.html', context)
+    return render(request, 'cfd/statementts.html', context)
 
 
 @login_required

@@ -210,9 +210,9 @@
 		  </div> <!-- col -->
 	  </div> <!-- row - long calculate -->
 
-	<!-- ****** Multiplying the deposit and withdrawal in the month ***** -->
+	<!-- ****** Multiplying the deposit and withdrawal in the month ===> compound interest profit ***** -->
 	<hr class="hr " />
-	<h1 class="display-6 text-center n_font_h1">Multiplying the deposit and withdrawal in the month</h1>
+	<h1 class="display-6 text-center n_font_h1">Multiplying the deposit and withdrawal in the month ===> compound interest profit</h1>
 	  <div class="row mt-5">
 		  <div class="col-md-6">
 			<form action="{% url 'cfd:strategy_set' id=4 %}" method="post" class="row g-3">
@@ -258,6 +258,61 @@
 				  <td>{{ wd_month }}</td>
 				  <td>{{ wd_l.2|floatformat:"0" }}</td>
 				  <td>{{ wd_l.3|floatformat:"0" }}</td>
+				</tr>
+				{% endfor %}
+			  </tbody>
+			</table>
+		</div> <!-- col -->
+	  </div> <!-- row -->
+
+	<!-- ****** Multiplying the deposit and withdrawal in the month ===> constant profit ***** -->
+	<hr class="hr " />
+	<h1 class="display-6 text-center n_font_h1">Multiplying the deposit and withdrawal in the month ===> constant profit</h1>
+	  <div class="row mt-5">
+		  <div class="col-md-6">
+			<form action="{% url 'cfd:strategy_set' id=5 %}" method="post" class="row g-3">
+			  {% csrf_token %}
+			  <div class="col-md-3 input-group-sm">
+				<input type="number" step="1" name="depo_month_cp"
+				value="{{ depo_month_cp|safe }}" class="form-control">
+				<label for="depo_month_cp" class="year-sm-text">Start Depo</label>
+			  </div>
+			  <div class="col-md-3 input-group-sm">
+				<input type="number" step="1" name="profit_month_cp"
+				value="{{ profit_month_cp|safe }}" class="form-control">
+				<label for="profit_month_cp" class="year-sm-text">Profit</label>
+			  </div>
+			  <div class="col-md-3 input-group-sm">
+				<input type="number" step="1" name="wd_month_cp"
+			   	value="{{ wd_month_cp|safe }}" class="form-control">
+				<label for="wd_month_cp" class="year-sm-text">Payouts in a month</label>
+			  </div>
+			  <div class="col-3 input-group-sm text-center">
+				<button type="submit" class="btn btn-outline-secondary btn-sm">Set</button>
+			  </div>
+			</form>
+		  </div> <!-- col-md -->
+	  </div> <!-- row -->
+	  <div class="row mt-4">
+		<div class="col-md-12">
+			<table class="table table-sm mt-4">
+			  <thead>
+				<tr>
+				  <th scope="col">Month</th>
+				  <th scope="col">Earning</th>
+				  <th scope="col">WD</th>
+				  <th scope="col">Saving</th>
+				  <th scope="col">Next_mth</th>
+				</tr>
+			  </thead>
+			  <tbody>
+				{% for wd_l in wd_cp_zip %}
+				<tr class="text-center">
+				  <td>{{ wd_l.0 }}</td>
+				  <td>{{ earning_cp }}</td>
+				  <td>{{ wd_month_cp }}</td>
+				  <td>{{ savings_cp }}</td>
+				  <td>{{ wd_l.1 }}</td>
 				</tr>
 				{% endfor %}
 			  </tbody>
